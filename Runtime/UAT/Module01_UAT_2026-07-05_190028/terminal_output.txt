@@ -1,0 +1,11 @@
+$ python3 -m src.main
+Discovered 7 file(s):
+  - IMG_4821.jpg (.jpg, 191140 bytes)
+  - Resume_Jordan_Patel.docx (.docx, 36635 bytes)
+  - Screenshot 2026-07-05 at 3.42.11 PM.png (.png, 14322 bytes)
+  - Setup Installer.dmg (.dmg, 460 bytes)
+  - invoice_amazon_order_38291.pdf (.pdf, 1406 bytes)
+  - podcast_episode_142.mp3 (.mp3, 510 bytes)
+  - project_files.zip (.zip, 136 bytes)
+
+Module 01 complete. Later pipeline stages are not yet implemented.

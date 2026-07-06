@@ -1,0 +1,24 @@
+# Downloads Intelligence — pipeline dependencies
+# Unpinned for now (scaffold stage); pin exact versions once modules are implemented and tested.
+
+PyYAML          # load config/sources.yaml (the only non-deprecated config file — see src/README.md)
+pdfplumber      # PDF text extraction + page rendering (core/pdf.py)
+pypdf           # PDF encryption/password-protection detection (core/pdf.py)
+python-docx     # .docx text extraction (core/text.py)
+langdetect      # non-English detection signal (core/text.py) — Module 02
+Pillow          # image handling + EXIF (core/images.py, core/exif.py)
+imagehash       # perceptual hashing for near-duplicate images (core/hashing.py) — Module 04
+rapidfuzz       # filename similarity for version-chain grouping (duplicate_detector.py) — Module 04
+mutagen         # embedded audio-tag reading (core/media.py) — Module 03, approved per
+                # Build-out/03 Metadata Extraction/Module 03 Design.md §16 (pure-Python,
+                # no system binary dependency; video tag/duration reading deliberately
+                # not pursued in v1 for the same reason — see that section)
+
+# Notes:
+# - watchdog is NOT included: Watch Folder (real-time) mode is deferred past v1 (see ROADMAP.md).
+#   Manual/Scheduled modes only need a directory listing, not a filesystem event watcher.
+# - hashlib is stdlib, no install needed (core/hashing.py exact-duplicate hashing).
+# - python-magic was removed: Module 01 uses stdlib mimetypes instead (see CHANGELOG.md),
+#   so a libmagic system dependency was never actually needed.
+# - exifread was removed: Pillow's own Image.getexif() covers what Module 02 needs
+#   (core/exif.py) — no reason to carry a second EXIF library for the same result.

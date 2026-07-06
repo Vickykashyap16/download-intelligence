@@ -1,0 +1,26 @@
+$ python3 -m src.main
+Scanned /tmp/uat_downloads
+  Total entries seen: 12
+  Discovered:         7
+  Skipped:            5
+
+Discovered files:
+  - IMG_4821.jpg (.jpg, 191140 bytes)
+  - Resume_Jordan_Patel.docx (.docx, 36635 bytes)
+  - Screenshot 2026-07-05 at 3.42.11 PM.png (.png, 14322 bytes)
+  - Setup Installer.dmg (.dmg, 460 bytes)
+  - invoice_amazon_order_38291.pdf (.pdf, 1406 bytes)
+  - podcast_episode_142.mp3 (.mp3, 510 bytes)
+  - project_files.zip (.zip, 136 bytes)
+
+Skipped items:
+  - .DS_Store — OS/system junk file (e.g. .DS_Store, Thumbs.db)
+  - Old Screenshots — a folder (v1 only scans the top level, not subfolders)
+  - empty_failed_download.pdf — empty file (0 bytes) — likely an incomplete/failed download
+  - partially_downloaded_movie.mp4.crdownload — in-progress/partial download (e.g. .crdownload, .part)
+  - torrent_magnet_link.torrent — file type not yet supported by this pipeline
+
+Metadata written to:    /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Runtime/Logs/action_log.jsonl
+
+Module 01 complete. Later pipeline stages are not yet implemented.

@@ -1,0 +1,12 @@
+# Source config — see Build-out/01 Watch & Ingest/01 Watch & Ingest.md for the "Source" concept.
+# v1 has exactly one entry. Adding a source later (Desktop, Google Drive, OneDrive, Dropbox — see
+# ROADMAP.md Version 3) means adding another entry here, not redesigning the pipeline.
+
+sources:
+  - source_id: downloads
+    path: null   # filled in at runtime from the user's actual Downloads folder path
+    type: local_folder
+    enabled: true
+    recursive: false   # v1 only scans the top level — see Rules/Ignore Rules.md "Source scope"
+
+execution_mode: manual   # manual | scheduled | watch_folder — see README.md "Execution modes"

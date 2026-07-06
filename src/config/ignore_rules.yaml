@@ -1,0 +1,8 @@
+# DEPRECATED — not used in v1.
+#
+# Decision (see CHANGELOG.md): Rules/ stays the single source of truth while the
+# business rules are still evolving. Machine-readable config mirrors are deferred to
+# a future version, once the rules have stabilized. v1 code implements the current
+# rules directly (see Rules/Ignore Rules.md), rather than reading generated YAML.
+#
+# Kept as an empty placeholder only because files can't be deleted from this workspace.

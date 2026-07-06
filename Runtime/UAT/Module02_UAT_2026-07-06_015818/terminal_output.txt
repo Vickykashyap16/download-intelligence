@@ -1,0 +1,61 @@
+Scanned /tmp/uat_m02_downloads
+  Total entries seen: 18
+  Discovered:         16
+  Skipped:            2
+
+Discovered files:
+  - Amazon_Order_Invoice_2026.pdf (.pdf, 1568 bytes)
+  - Chase_Statement_June2026.pdf (.pdf, 1506 bytes)
+  - Confidential_Agreement.pdf (.pdf, 1392 bytes)
+  - IMG_4821.jpg (.jpg, 8228 bytes)
+  - JordanPatel_Resume_2026.docx (.docx, 36715 bytes)
+  - NDA_signed_copy.pdf (.pdf, 1535 bytes)
+  - Screen Shot 2026-07-04 at 3.42.11 PM.png (.png, 8595 bytes)
+  - SomeApp_Installer.dmg (.dmg, 1020 bytes)
+  - download_error.pdf (.pdf, 47 bytes)
+  - facture_boulangerie.pdf (.pdf, 1546 bytes)
+  - inv_09234_multicur.pdf (.pdf, 1676 bytes)
+  - payment_confirmation.pdf (.pdf, 1462 bytes)
+  - product_demo_final.mp4 (.mp4, 11100 bytes)
+  - project_files.zip (.zip, 150 bytes)
+  - user_manual_v3.txt (.txt, 169 bytes)
+  - voice_memo.mp3 (.mp3, 1340 bytes)
+
+Skipped items:
+  - .DS_Store — system_file
+  - movie_download.torrent — unsupported_extension
+
+Metadata written to: /tmp/uat_m02_run/metadata_store.json
+Action log written to: /tmp/uat_m02_run/action_log.jsonl
+EOF marker not found
+Classified files:
+  - Amazon_Order_Invoice_2026.pdf: Invoice
+  - Chase_Statement_June2026.pdf: Bank Statement
+  - Confidential_Agreement.pdf: Unknown [locked]
+  - IMG_4821.jpg: Screenshot
+  - JordanPatel_Resume_2026.docx: Resume
+  - NDA_signed_copy.pdf: Contract
+  - Screen Shot 2026-07-04 at 3.42.11 PM.png: Screenshot
+  - SomeApp_Installer.dmg: Application
+  - download_error.pdf: Unknown
+  - facture_boulangerie.pdf: Invoice [non_english(fr)]
+  - inv_09234_multicur.pdf: Invoice
+  - payment_confirmation.pdf: Invoice [ambiguous]
+  - product_demo_final.mp4: Video
+  - project_files.zip: Archive
+  - user_manual_v3.txt: Document
+  - voice_memo.mp3: Audio
+
+Provider was called 8 times (expected 8 -- the text-bearing files with real judgment needed).
+Files that triggered a provider call:
+  - Amazon_Order_Invoice_2026.pdf (mode=text)
+  - Chase_Statement_June2026.pdf (mode=text)
+  - JordanPatel_Resume_2026.docx (mode=text)
+  - NDA_signed_copy.pdf (mode=text)
+  - facture_boulangerie.pdf (mode=text)
+  - inv_09234_multicur.pdf (mode=text)
+  - payment_confirmation.pdf (mode=text)
+  - user_manual_v3.txt (mode=text)
+
+Metadata written to: /tmp/uat_m02_run/metadata_store.json
+Action log written to: /tmp/uat_m02_run/action_log.jsonl

@@ -1,0 +1,105 @@
+Scanned /tmp/uat_m03_downloads
+  Total entries seen: 19
+  Discovered:         16
+  Skipped:            3
+
+Discovered files:
+  - Amazon_Order_Invoice_2026.pdf (.pdf, 1570 bytes)
+  - Chase_Statement_June2026.pdf (.pdf, 1540 bytes)
+  - Confidential_Agreement.pdf (.pdf, 1387 bytes)
+  - IMG_4821.jpg (.jpg, 198300 bytes)
+  - JordanPatel_Resume_2026.docx (.docx, 36750 bytes)
+  - NDA_signed_copy.pdf (.pdf, 1640 bytes)
+  - Screen Shot 2026-07-04 at 3.42.11 PM.png (.png, 10398 bytes)
+  - SomeApp_2.4.1_Mac.dmg (.dmg, 41 bytes)
+  - corrupted_project.zip (.zip, 75 bytes)
+  - download_error.pdf (.pdf, 54 bytes)
+  - facture_boulangerie.pdf (.pdf, 1571 bytes)
+  - payment_confirmation.pdf (.pdf, 1603 bytes)
+  - product_demo_final.mp4 (.mp4, 3051 bytes)
+  - project_files.zip (.zip, 393 bytes)
+  - user_manual_v3.txt (.txt, 386 bytes)
+  - voice_memo.mp3 (.mp3, 2499 bytes)
+
+Skipped items:
+  - .DS_Store — OS/system junk file (e.g. .DS_Store, Thumbs.db)
+  - empty_placeholder.pdf — empty file (0 bytes) — likely an incomplete/failed download
+  - movie_download.torrent — file type not yet supported by this pipeline
+
+Metadata written to:    /tmp/uat_m03_run/metadata_store.json
+Action log written to: /tmp/uat_m03_run/action_log.jsonl
+
+Module 01 complete.
+
+Classified 16 file(s):
+  - Amazon_Order_Invoice_2026.pdf: Invoice
+  - Chase_Statement_June2026.pdf: Bank Statement
+  - Confidential_Agreement.pdf: Unknown [locked]
+  - IMG_4821.jpg: Image
+  - JordanPatel_Resume_2026.docx: Resume
+  - NDA_signed_copy.pdf: Contract
+  - Screen Shot 2026-07-04 at 3.42.11 PM.png: Screenshot
+  - SomeApp_2.4.1_Mac.dmg: Application
+  - corrupted_project.zip: Archive
+  - download_error.pdf: Unknown
+  - facture_boulangerie.pdf: Invoice
+  - payment_confirmation.pdf: Invoice
+  - product_demo_final.mp4: Video
+  - project_files.zip: Archive
+  - user_manual_v3.txt: Document
+  - voice_memo.mp3: Audio
+
+By category:
+  - Application: 1
+  - Archive: 2
+  - Audio: 1
+  - Bank Statement: 1
+  - Contract: 1
+  - Document: 1
+  - Image: 1
+  - Invoice: 3
+  - Resume: 1
+  - Screenshot: 1
+  - Unknown: 2
+  - Video: 1
+
+By mode:
+  - deterministic: 7
+  - text: 9
+
+1 file(s) fell back to Unknown (provider unavailable/invalid response).
+
+Metadata written to: /tmp/uat_m03_run/metadata_store.json
+Action log written to: /tmp/uat_m03_run/action_log.jsonl
+
+Module 02 complete.
+
+Extracted metadata for 14 file(s):
+  - Amazon_Order_Invoice_2026.pdf: Invoice
+  - Chase_Statement_June2026.pdf: Bank Statement [redacted: account_last4]
+  - IMG_4821.jpg: Image
+  - JordanPatel_Resume_2026.docx: Resume
+  - NDA_signed_copy.pdf: Contract
+  - Screen Shot 2026-07-04 at 3.42.11 PM.png: Screenshot
+  - SomeApp_2.4.1_Mac.dmg: Application
+  - corrupted_project.zip: Archive [incomplete]
+  - facture_boulangerie.pdf: Invoice
+  - payment_confirmation.pdf: Invoice
+  - product_demo_final.mp4: Video
+  - project_files.zip: Archive
+  - user_manual_v3.txt: Document
+  - voice_memo.mp3: Audio
+
+By mode:
+  - deterministic: 5
+  - mixed: 2
+  - text: 7
+
+Provider was called 9 time(s).
+1 file(s) fell back (provider unavailable/extraction failed).
+1 file(s) have incomplete extraction (a required field is missing).
+
+Metadata written to: /tmp/uat_m03_run/metadata_store.json
+Action log written to: /tmp/uat_m03_run/action_log.jsonl
+
+Module 03 complete.
