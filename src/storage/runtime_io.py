@@ -35,12 +35,14 @@ def append_action_log(batch_id: str, file_id: str, action: str,
 
     `action` values defined in Build-out/08 .../Metadata & Log Schema.md: move_rename |
     archive_duplicate | archive_superseded_version | skip | error | undo. Module 01
-    additionally uses `discover` (a supported file was found and queued), and Module 02
+    additionally uses `discover` (a supported file was found and queued), Module 02
     additionally uses `classify` (a file was assigned a category and classification
-    signals) — both minimal, documented extensions to that vocabulary, since the
-    original schema was written before any module existed and didn't anticipate
-    either event. (The `classify` addition was missing from this docstring and the
-    schema doc until the Module 02 release audit, 2026-07-06, found the gap.)
+    signals), and Module 03 additionally uses `extract_metadata` — minimal, documented
+    extensions to that vocabulary, since the original schema was written before any
+    module existed and didn't anticipate any of them. Module 04 additionally uses
+    `detect_duplicates_and_versions` (Module 04 Design.md §18, F6) — updated in the
+    same release cycle Module 04 ships, per that design's own explicit requirement
+    not to repeat the gap this docstring/schema doc already had to close twice before.
     """
     _ACTION_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     entry = {

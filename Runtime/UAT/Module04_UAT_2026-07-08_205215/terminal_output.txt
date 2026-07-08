@@ -1,0 +1,156 @@
+EOF marker not found
+======================================================================
+MODULE 01: scan()
+======================================================================
+Scanned /tmp/uat_m04_downloads
+  Total entries seen: 22
+  Discovered:         19
+  Skipped:            3
+
+Discovered files:
+  - Amazon_Order_Invoice (1).pdf (.pdf, 1610 bytes)
+  - Amazon_Order_Invoice.pdf (.pdf, 1610 bytes)
+  - Chase_Bank_Statement.pdf (.pdf, 1518 bytes)
+  - Confidential_Agreement.pdf (.pdf, 828 bytes)
+  - Corrupted_Invoice.pdf (.pdf, 230 bytes)
+  - Corrupted_Photo.jpg (.jpg, 216 bytes)
+  - Diagram_v1.png (.png, 191236 bytes)
+  - Diagram_v2.png (.png, 4789 bytes)
+  - IMG_4821.jpg (.jpg, 191236 bytes)
+  - IMG_4821_edited.jpg (.jpg, 191139 bytes)
+  - NDA_Contract_v1.pdf (.pdf, 1492 bytes)
+  - NDA_Contract_v2.pdf (.pdf, 1530 bytes)
+  - Report_Draft_v1.pdf (.pdf, 1465 bytes)
+  - Report_Draft_v2.pdf (.pdf, 1496 bytes)
+  - Resume_JordanPatel_v1.pdf (.pdf, 1546 bytes)
+  - Resume_JordanPatel_v2.pdf (.pdf, 1611 bytes)
+  - SomeApp_1.0.0_Mac.dmg (.dmg, 116 bytes)
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt (.txt, 72 bytes)
+  - project_files.zip (.zip, 260 bytes)
+
+Skipped items:
+  - .DS_Store — OS/system junk file (e.g. .DS_Store, Thumbs.db)
+  - empty_placeholder.pdf — empty file (0 bytes) — likely an incomplete/failed download
+  - movie_download.torrent — file type not yet supported by this pipeline
+
+Metadata written to:    /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 01 complete.
+
+======================================================================
+MODULE 02: classify(provider=LiveClassificationProvider())
+======================================================================
+Classified 19 file(s):
+  - Amazon_Order_Invoice (1).pdf: Invoice
+  - Amazon_Order_Invoice.pdf: Invoice
+  - Chase_Bank_Statement.pdf: Bank Statement
+  - Confidential_Agreement.pdf: Unknown [locked]
+  - Corrupted_Invoice.pdf: Unknown
+  - Corrupted_Photo.jpg: Unknown
+  - Diagram_v1.png: Image
+  - Diagram_v2.png: Screenshot
+  - IMG_4821.jpg: Image
+  - IMG_4821_edited.jpg: Screenshot
+  - NDA_Contract_v1.pdf: Contract
+  - NDA_Contract_v2.pdf: Contract
+  - Report_Draft_v1.pdf: Document
+  - Report_Draft_v2.pdf: Document
+  - Resume_JordanPatel_v1.pdf: Resume
+  - Resume_JordanPatel_v2.pdf: Resume
+  - SomeApp_1.0.0_Mac.dmg: Application
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt: Document
+  - project_files.zip: Archive
+
+By category:
+  - Application: 1
+  - Archive: 1
+  - Bank Statement: 1
+  - Contract: 2
+  - Document: 3
+  - Image: 2
+  - Invoice: 2
+  - Resume: 2
+  - Screenshot: 2
+  - Unknown: 3
+
+By mode:
+  - deterministic: 7
+  - text: 12
+
+2 file(s) fell back to Unknown (provider unavailable/invalid response).
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 02 complete.
+
+======================================================================
+MODULE 03: extract(provider=LiveMetadataExtractionProvider())
+======================================================================
+Extracted metadata for 16 file(s):
+  - Amazon_Order_Invoice (1).pdf: Invoice
+  - Amazon_Order_Invoice.pdf: Invoice
+  - Chase_Bank_Statement.pdf: Bank Statement
+  - Diagram_v1.png: Image
+  - Diagram_v2.png: Screenshot
+  - IMG_4821.jpg: Image
+  - IMG_4821_edited.jpg: Screenshot [incomplete]
+  - NDA_Contract_v1.pdf: Contract
+  - NDA_Contract_v2.pdf: Contract
+  - Report_Draft_v1.pdf: Document
+  - Report_Draft_v2.pdf: Document
+  - Resume_JordanPatel_v1.pdf: Resume
+  - Resume_JordanPatel_v2.pdf: Resume
+  - SomeApp_1.0.0_Mac.dmg: Application
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt: Document
+  - project_files.zip: Archive
+
+By mode:
+  - deterministic: 2
+  - mixed: 4
+  - text: 10
+
+Provider was called 14 time(s).
+1 file(s) have incomplete extraction (a required field is missing).
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 03 complete.
+
+======================================================================
+MODULE 04: detect_duplicates()
+======================================================================
+Checked 19 file(s) for duplicates/versions:
+  - Amazon_Order_Invoice (1).pdf
+  - Amazon_Order_Invoice.pdf [exact duplicate of c16b9254-fcc8-425f-9d91-c09af836b381]
+  - Chase_Bank_Statement.pdf
+  - Confidential_Agreement.pdf
+  - Corrupted_Invoice.pdf
+  - Corrupted_Photo.jpg
+  - Diagram_v1.png
+  - Diagram_v2.png [near-duplicate, phash_distance=0]
+  - IMG_4821.jpg [exact duplicate of a526e42a-cc02-477f-a21e-7ab8dba088ad]
+  - IMG_4821_edited.jpg [near-duplicate, phash_distance=0]
+  - NDA_Contract_v1.pdf [superseded, version_group_id=6e759793-dd88-4b47-be5d-2d1d3984e9b4]
+  - NDA_Contract_v2.pdf [latest, version_group_id=6e759793-dd88-4b47-be5d-2d1d3984e9b4] [conflict: date_token_disagreement]
+  - Report_Draft_v1.pdf [superseded, version_group_id=3a36d0d3-12b6-46dc-b1ba-522118da0db9]
+  - Report_Draft_v2.pdf [latest, version_group_id=3a36d0d3-12b6-46dc-b1ba-522118da0db9] [conflict: date_token_disagreement]
+  - Resume_JordanPatel_v1.pdf [superseded, version_group_id=9e595603-150a-4544-8b41-58c3606c4bc1]
+  - Resume_JordanPatel_v2.pdf [latest, version_group_id=9e595603-150a-4544-8b41-58c3606c4bc1]
+  - SomeApp_1.0.0_Mac.dmg
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt
+  - project_files.zip
+
+Exact duplicates:  2
+Near-duplicates:   2
+Version chains:    6
+Conflicts flagged: 2 (never auto-resolved — see action log)
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 04 complete.
+
+>>> sources.yaml restored to original (path: null).

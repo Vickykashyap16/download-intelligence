@@ -1,0 +1,304 @@
+EOF marker not found
+######################################################################
+# RUN 1: initial batch
+######################################################################
+Scanned /tmp/uat_m04_downloads
+  Total entries seen: 22
+  Discovered:         19
+  Skipped:            3
+
+Discovered files:
+  - Amazon_Order_Invoice (1).pdf (.pdf, 1610 bytes)
+  - Amazon_Order_Invoice.pdf (.pdf, 1610 bytes)
+  - Chase_Bank_Statement.pdf (.pdf, 1518 bytes)
+  - Confidential_Agreement.pdf (.pdf, 828 bytes)
+  - Corrupted_Invoice.pdf (.pdf, 230 bytes)
+  - Corrupted_Photo.jpg (.jpg, 216 bytes)
+  - Diagram_v1.png (.png, 191236 bytes)
+  - Diagram_v2.png (.png, 4789 bytes)
+  - IMG_4821.jpg (.jpg, 191236 bytes)
+  - IMG_4821_edited.jpg (.jpg, 191139 bytes)
+  - NDA_Contract_v1.pdf (.pdf, 1492 bytes)
+  - NDA_Contract_v2.pdf (.pdf, 1530 bytes)
+  - Report_Draft_v1.pdf (.pdf, 1465 bytes)
+  - Report_Draft_v2.pdf (.pdf, 1496 bytes)
+  - Resume_JordanPatel_v1.pdf (.pdf, 1546 bytes)
+  - Resume_JordanPatel_v2.pdf (.pdf, 1611 bytes)
+  - SomeApp_1.0.0_Mac.dmg (.dmg, 116 bytes)
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt (.txt, 72 bytes)
+  - project_files.zip (.zip, 260 bytes)
+
+Skipped items:
+  - .DS_Store — OS/system junk file (e.g. .DS_Store, Thumbs.db)
+  - empty_placeholder.pdf — empty file (0 bytes) — likely an incomplete/failed download
+  - movie_download.torrent — file type not yet supported by this pipeline
+
+Metadata written to:    /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 01 complete.
+Classified 19 file(s):
+  - Amazon_Order_Invoice (1).pdf: Invoice
+  - Amazon_Order_Invoice.pdf: Invoice
+  - Chase_Bank_Statement.pdf: Bank Statement
+  - Confidential_Agreement.pdf: Unknown [locked]
+  - Corrupted_Invoice.pdf: Unknown
+  - Corrupted_Photo.jpg: Unknown
+  - Diagram_v1.png: Image
+  - Diagram_v2.png: Screenshot
+  - IMG_4821.jpg: Image
+  - IMG_4821_edited.jpg: Screenshot
+  - NDA_Contract_v1.pdf: Contract
+  - NDA_Contract_v2.pdf: Contract
+  - Report_Draft_v1.pdf: Document
+  - Report_Draft_v2.pdf: Document
+  - Resume_JordanPatel_v1.pdf: Resume
+  - Resume_JordanPatel_v2.pdf: Resume
+  - SomeApp_1.0.0_Mac.dmg: Application
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt: Document
+  - project_files.zip: Archive
+
+By category:
+  - Application: 1
+  - Archive: 1
+  - Bank Statement: 1
+  - Contract: 2
+  - Document: 3
+  - Image: 2
+  - Invoice: 2
+  - Resume: 2
+  - Screenshot: 2
+  - Unknown: 3
+
+By mode:
+  - deterministic: 7
+  - text: 12
+
+2 file(s) fell back to Unknown (provider unavailable/invalid response).
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 02 complete.
+Extracted metadata for 16 file(s):
+  - Amazon_Order_Invoice (1).pdf: Invoice
+  - Amazon_Order_Invoice.pdf: Invoice
+  - Chase_Bank_Statement.pdf: Bank Statement
+  - Diagram_v1.png: Image
+  - Diagram_v2.png: Screenshot
+  - IMG_4821.jpg: Image
+  - IMG_4821_edited.jpg: Screenshot [incomplete]
+  - NDA_Contract_v1.pdf: Contract
+  - NDA_Contract_v2.pdf: Contract
+  - Report_Draft_v1.pdf: Document
+  - Report_Draft_v2.pdf: Document
+  - Resume_JordanPatel_v1.pdf: Resume
+  - Resume_JordanPatel_v2.pdf: Resume
+  - SomeApp_1.0.0_Mac.dmg: Application
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt: Document
+  - project_files.zip: Archive
+
+By mode:
+  - deterministic: 2
+  - mixed: 4
+  - text: 10
+
+Provider was called 14 time(s).
+1 file(s) have incomplete extraction (a required field is missing).
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 03 complete.
+Checked 19 file(s) for duplicates/versions:
+  - Amazon_Order_Invoice (1).pdf
+  - Amazon_Order_Invoice.pdf [exact duplicate of 5e7d1036-b0ab-48ca-b13e-24054ea30399]
+  - Chase_Bank_Statement.pdf
+  - Confidential_Agreement.pdf
+  - Corrupted_Invoice.pdf
+  - Corrupted_Photo.jpg
+  - Diagram_v1.png
+  - Diagram_v2.png
+  - IMG_4821.jpg [exact duplicate of 6f438bdf-bde8-47a2-9749-09d667911bb5]
+  - IMG_4821_edited.jpg [near-duplicate, phash_distance=0]
+  - NDA_Contract_v1.pdf [superseded, version_group_id=a017f2f7-7154-4322-a1db-e23992018213]
+  - NDA_Contract_v2.pdf [latest, version_group_id=a017f2f7-7154-4322-a1db-e23992018213] [conflict: date_token_disagreement]
+  - Report_Draft_v1.pdf [superseded, version_group_id=69f3c846-e6f6-4cf1-b97b-a4677a3c0486]
+  - Report_Draft_v2.pdf [latest, version_group_id=69f3c846-e6f6-4cf1-b97b-a4677a3c0486] [conflict: date_token_disagreement]
+  - Resume_JordanPatel_v1.pdf [superseded, version_group_id=2695ca4d-1c14-49ae-9522-6a2220decb8b]
+  - Resume_JordanPatel_v2.pdf [latest, version_group_id=2695ca4d-1c14-49ae-9522-6a2220decb8b]
+  - SomeApp_1.0.0_Mac.dmg
+  - Weird File Name With 'Quotes" And Emoji 📄_v1.txt
+  - project_files.zip
+
+Exact duplicates:  2
+Near-duplicates:   1
+Version chains:    6
+Conflicts flagged: 2 (never auto-resolved — see action log)
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 04 complete.
+
+=== RUN 1: duplicate/version state ===
+  Amazon_Order_Invoice (1).pdf                  cat=Invoice         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Amazon_Order_Invoice.pdf                      cat=Invoice         dup_of=5e7d1036-b0ab-48ca-b13e-24054ea30399 group=None rank=None sig=DuplicateSignals(exact_duplicate=True, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Chase_Bank_Statement.pdf                      cat=Bank Statement  dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Confidential_Agreement.pdf                    cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Corrupted_Invoice.pdf                         cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Corrupted_Photo.jpg                           cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Diagram_v1.png                                cat=Image           dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Diagram_v2.png                                cat=Screenshot      dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  IMG_4821.jpg                                  cat=Image           dup_of=6f438bdf-bde8-47a2-9749-09d667911bb5 group=None rank=None sig=DuplicateSignals(exact_duplicate=True, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  IMG_4821_edited.jpg                           cat=Screenshot      dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=True, phash_distance=0, version_conflict=False)
+  NDA_Contract_v1.pdf                           cat=Contract        dup_of=None group=a017f2f7-7154-4322-a1db-e23992018213 rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  NDA_Contract_v2.pdf                           cat=Contract        dup_of=None group=a017f2f7-7154-4322-a1db-e23992018213 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Report_Draft_v1.pdf                           cat=Document        dup_of=None group=69f3c846-e6f6-4cf1-b97b-a4677a3c0486 rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Report_Draft_v2.pdf                           cat=Document        dup_of=None group=69f3c846-e6f6-4cf1-b97b-a4677a3c0486 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Resume_JordanPatel_v1.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Resume_JordanPatel_v2.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  SomeApp_1.0.0_Mac.dmg                         cat=Application     dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Weird File Name With 'Quotes" And Emoji 📄_v1.txt cat=Document        dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  project_files.zip                             cat=Archive         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+
+detect_duplicates_and_versions log entries after Run 1: 22
+
+######################################################################
+# RUN 2: idempotency re-run (no new files)
+######################################################################
+Records selected for re-processing (should be 0): 0
+Nothing to check — no discovered records still awaiting duplicate/version detection.
+Records whose state changed across Run 2 (should be 0): 0
+
+######################################################################
+# SEEDING synthetic pre-existing Report_Draft 'Group B' lineage
+######################################################################
+Seeded group 8535de33-68b3-4ee1-a1c0-153aace1c733 with Report_Draft_v4.pdf, Report_Draft_v5.pdf
+
+######################################################################
+# RUN 3: Resume_v3 (joins chain) + Report_Draft_v3 (cross-group conflict)
+######################################################################
+Scanned /tmp/uat_m04_downloads_run2
+  Total entries seen: 2
+  Discovered:         2
+  Skipped:            0
+
+Discovered files:
+  - Report_Draft_v3.pdf (.pdf, 1491 bytes)
+  - Resume_JordanPatel_v3.pdf (.pdf, 1611 bytes)
+
+Metadata written to:    /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 01 complete.
+Classified 2 file(s):
+  - Report_Draft_v3.pdf: Document
+  - Resume_JordanPatel_v3.pdf: Resume
+
+By category:
+  - Document: 1
+  - Resume: 1
+
+By mode:
+  - text: 2
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 02 complete.
+Extracted metadata for 4 file(s):
+  - Report_Draft_v4.pdf: Document [incomplete]
+  - Report_Draft_v5.pdf: Document [incomplete]
+  - Report_Draft_v3.pdf: Document
+  - Resume_JordanPatel_v3.pdf: Resume
+
+By mode:
+  - text: 4
+
+Provider was called 2 time(s).
+2 file(s) fell back (provider unavailable/extraction failed).
+2 file(s) have incomplete extraction (a required field is missing).
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 03 complete.
+Checked 2 file(s) for duplicates/versions:
+  - Report_Draft_v3.pdf [conflict: cross_group]
+  - Resume_JordanPatel_v3.pdf [latest, version_group_id=2695ca4d-1c14-49ae-9522-6a2220decb8b] [conflict: date_token_disagreement]
+
+Exact duplicates:  0
+Near-duplicates:   0
+Version chains:    1
+Conflicts flagged: 2 (never auto-resolved — see action log)
+
+Metadata written to: /tmp/uat_m04_runtime/Database/Metadata/metadata_store.json
+Action log written to: /tmp/uat_m04_runtime/Runtime/Logs/action_log.jsonl
+
+Module 04 complete.
+
+=== RUN 3: duplicate/version state ===
+  Amazon_Order_Invoice (1).pdf                  cat=Invoice         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Amazon_Order_Invoice.pdf                      cat=Invoice         dup_of=5e7d1036-b0ab-48ca-b13e-24054ea30399 group=None rank=None sig=DuplicateSignals(exact_duplicate=True, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Chase_Bank_Statement.pdf                      cat=Bank Statement  dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Confidential_Agreement.pdf                    cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Corrupted_Invoice.pdf                         cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Corrupted_Photo.jpg                           cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Diagram_v1.png                                cat=Image           dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Diagram_v2.png                                cat=Screenshot      dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  IMG_4821.jpg                                  cat=Image           dup_of=6f438bdf-bde8-47a2-9749-09d667911bb5 group=None rank=None sig=DuplicateSignals(exact_duplicate=True, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  IMG_4821_edited.jpg                           cat=Screenshot      dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=True, phash_distance=0, version_conflict=False)
+  NDA_Contract_v1.pdf                           cat=Contract        dup_of=None group=a017f2f7-7154-4322-a1db-e23992018213 rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  NDA_Contract_v2.pdf                           cat=Contract        dup_of=None group=a017f2f7-7154-4322-a1db-e23992018213 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Report_Draft_v1.pdf                           cat=Document        dup_of=None group=69f3c846-e6f6-4cf1-b97b-a4677a3c0486 rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Report_Draft_v2.pdf                           cat=Document        dup_of=None group=69f3c846-e6f6-4cf1-b97b-a4677a3c0486 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Report_Draft_v3.pdf                           cat=Document        dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Report_Draft_v4.pdf                           cat=Document        dup_of=None group=8535de33-68b3-4ee1-a1c0-153aace1c733 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Report_Draft_v5.pdf                           cat=Document        dup_of=None group=8535de33-68b3-4ee1-a1c0-153aace1c733 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Resume_JordanPatel_v1.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Resume_JordanPatel_v2.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Resume_JordanPatel_v3.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  SomeApp_1.0.0_Mac.dmg                         cat=Application     dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Weird File Name With 'Quotes" And Emoji 📄_v1.txt cat=Document        dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  project_files.zip                             cat=Archive         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+
+Resume_v3: group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=latest
+Report_v3: group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+Report_Draft_v3.pdf's detect_duplicates_and_versions log: [{'batch_id': '2026-07-08_154151', 'file_id': 'bffd5aea-943e-4106-a9bb-a603e1085d7e', 'action': 'detect_duplicates_and_versions', 'from': '/tmp/uat_m04_downloads_run2/Report_Draft_v3.pdf', 'to': None, 'timestamp': '2026-07-08T15:41:52.439090+00:00', 'approved_by': 'auto', 'details': {'duplicate_of': None, 'version_group_id': None, 'version_rank': None, 'match_type': 'version', 'phash_distance': None, 'version_conflict': True, 'conflict_type': 'cross_group', 'processing_time_ms': 0, 'conflicting_group_ids': ['69f3c846-e6f6-4cf1-b97b-a4677a3c0486', '8535de33-68b3-4ee1-a1c0-153aace1c733']}}]
+
+######################################################################
+# RUN 4: idempotency re-check after cross-group conflict
+######################################################################
+Records still eligible for re-processing: ['Report_Draft_v3.pdf']
+Confirmed: only Report_Draft_v3.pdf (unresolved cross-group conflict) remains eligible.
+
+>>> sources.yaml restored to original (path: null).
+
+
+=== FINAL FULL STATE ===
+
+=== FINAL: duplicate/version state ===
+  Amazon_Order_Invoice (1).pdf                  cat=Invoice         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Amazon_Order_Invoice.pdf                      cat=Invoice         dup_of=5e7d1036-b0ab-48ca-b13e-24054ea30399 group=None rank=None sig=DuplicateSignals(exact_duplicate=True, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Chase_Bank_Statement.pdf                      cat=Bank Statement  dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Confidential_Agreement.pdf                    cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Corrupted_Invoice.pdf                         cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Corrupted_Photo.jpg                           cat=Unknown         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Diagram_v1.png                                cat=Image           dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Diagram_v2.png                                cat=Screenshot      dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  IMG_4821.jpg                                  cat=Image           dup_of=6f438bdf-bde8-47a2-9749-09d667911bb5 group=None rank=None sig=DuplicateSignals(exact_duplicate=True, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  IMG_4821_edited.jpg                           cat=Screenshot      dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=True, phash_distance=0, version_conflict=False)
+  NDA_Contract_v1.pdf                           cat=Contract        dup_of=None group=a017f2f7-7154-4322-a1db-e23992018213 rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  NDA_Contract_v2.pdf                           cat=Contract        dup_of=None group=a017f2f7-7154-4322-a1db-e23992018213 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Report_Draft_v1.pdf                           cat=Document        dup_of=None group=69f3c846-e6f6-4cf1-b97b-a4677a3c0486 rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Report_Draft_v2.pdf                           cat=Document        dup_of=None group=69f3c846-e6f6-4cf1-b97b-a4677a3c0486 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Report_Draft_v3.pdf                           cat=Document        dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  Report_Draft_v4.pdf                           cat=Document        dup_of=None group=8535de33-68b3-4ee1-a1c0-153aace1c733 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Report_Draft_v5.pdf                           cat=Document        dup_of=None group=8535de33-68b3-4ee1-a1c0-153aace1c733 rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Resume_JordanPatel_v1.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Resume_JordanPatel_v2.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=superseded sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Resume_JordanPatel_v3.pdf                     cat=Resume          dup_of=None group=2695ca4d-1c14-49ae-9522-6a2220decb8b rank=latest sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=True)
+  SomeApp_1.0.0_Mac.dmg                         cat=Application     dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  Weird File Name With 'Quotes" And Emoji 📄_v1.txt cat=Document        dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)
+  project_files.zip                             cat=Archive         dup_of=None group=None rank=None sig=DuplicateSignals(exact_duplicate=False, fuzzy_duplicate=False, phash_distance=None, version_conflict=False)

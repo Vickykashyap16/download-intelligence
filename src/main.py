@@ -4,9 +4,10 @@ Entry point for Downloads Intelligence.
 Usage: `python -m src.main` (run from the project root, so the `src.` package
 imports resolve correctly).
 
-Module 01 (Watch & Ingest), Module 02 (Classification), and Module 03 (Metadata
-Extraction) are implemented and wired in below. Everything past metadata extraction
-(naming/destination onward) is still scaffold.
+Module 01 (Watch & Ingest), Module 02 (Classification), Module 03 (Metadata
+Extraction), and Module 04 (Duplicate & Version Detection) are implemented and wired
+in below. Everything past duplicate/version detection (naming/destination onward) is
+still scaffold.
 """
 
 import json
@@ -14,6 +15,7 @@ from collections import Counter
 from pathlib import Path
 
 from src.pipeline.classification import classify_batch
+from src.pipeline.duplicate_detector import detect_duplicates_batch, needs_duplicate_detection
 from src.pipeline.metadata import extract_metadata_batch
 from src.pipeline.watch_ingest import load_source_config, scan_source
 from src.storage.database import (
@@ -216,6 +218,70 @@ def extract(provider=None) -> None:
     print("\nModule 03 complete.")
 
 
+def detect_duplicates() -> None:
+    """Run Module 04 on every `status == "discovered"` record nothing has run
+    duplicate/version detection on yet, persist the results, and print a summary.
+
+    Unlike `classify()`/`extract()`, this takes no `provider` parameter — Module 04
+    is fully deterministic, with no Provider layer at all (Module 04 Design.md §14).
+    Also unlike them, the filter below does not require a real, non-Unknown
+    `category` — exact-duplicate detection runs on every discovered record
+    regardless of category (§3/§9), so gating on category here would silently skip
+    files this module is specifically designed to still cover.
+
+    The "not yet processed" check itself is `needs_duplicate_detection()`, not a
+    bare field-null check — see that function's docstring for why (§7, post-freeze
+    correction #2): checking `duplicate_of`/`version_group_id`/`version_rank`
+    directly would re-select every record Module 04 already correctly found
+    nothing for, on every single run, forever.
+    """
+    records = [
+        record for record in load_metadata_store()
+        if record.status == "discovered" and needs_duplicate_detection(record)
+    ]
+    if not records:
+        print("Nothing to check — no discovered records still awaiting duplicate/version detection.")
+        return
+
+    file_ids = {record.file_id for record in records}
+    detect_duplicates_batch(records)
+
+    log_details_by_file_id = _read_action_log_details(file_ids, action="detect_duplicates_and_versions")
+
+    exact_count = sum(1 for r in records if r.duplicate_of is not None)
+    fuzzy_count = sum(
+        1 for r in records if r.duplicate_signals and r.duplicate_signals.fuzzy_duplicate
+    )
+    version_count = sum(1 for r in records if r.version_group_id is not None)
+    conflict_count = sum(
+        1 for r in records if r.duplicate_signals and r.duplicate_signals.version_conflict
+    )
+
+    print(f"Checked {len(records)} file(s) for duplicates/versions:")
+    for record in records:
+        note = ""
+        if record.duplicate_of is not None:
+            note = f" [exact duplicate of {record.duplicate_of}]"
+        elif record.version_group_id is not None:
+            note = f" [{record.version_rank}, version_group_id={record.version_group_id}]"
+        elif record.duplicate_signals and record.duplicate_signals.fuzzy_duplicate:
+            note = f" [near-duplicate, phash_distance={record.duplicate_signals.phash_distance}]"
+        details = log_details_by_file_id.get(record.file_id, {})
+        if details.get("conflict_type"):
+            note += f" [conflict: {details['conflict_type']}]"
+        print(f"  - {record.original_name}{note}")
+
+    print(f"\nExact duplicates:  {exact_count}")
+    print(f"Near-duplicates:   {fuzzy_count}")
+    print(f"Version chains:    {version_count}")
+    if conflict_count:
+        print(f"Conflicts flagged: {conflict_count} (never auto-resolved — see action log)")
+
+    print(f"\nMetadata written to: {metadata_store_path()}")
+    print(f"Action log written to: {action_log_path()}")
+    print("\nModule 04 complete.")
+
+
 def _read_classify_log_details(file_ids: set) -> dict:
     """Read back this run's `classify` action-log entries for `file_ids`, keyed by
     file_id — used only to build the CLI summary from the authoritative log rather
@@ -243,3 +309,4 @@ if __name__ == "__main__":
     scan()
     classify()
     extract()
+    detect_duplicates()

@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from src.models.classification import Category, ClassificationSignals
+from src.models.duplicate import DuplicateSignals
 
 
 @dataclass
@@ -66,6 +67,10 @@ class FileRecord:
     duplicate_of: Optional[str] = None
     version_group_id: Optional[str] = None
     version_rank: Optional[str] = None   # "latest" | "superseded"
+    duplicate_signals: Optional[DuplicateSignals] = None   # None until Module 04
+                                           # processes this record; always a full
+                                           # DuplicateSignals instance afterward, never
+                                           # partially filled in (Module 04 Design.md §17).
 
     # --- Confidence & Review (Module 06) ---
     confidence_score: Optional[int] = None            # 0-100

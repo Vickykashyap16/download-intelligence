@@ -1,0 +1,53 @@
+{
+  "6e759793-dd88-4b47-be5d-2d1d3984e9b4": {
+    "version_group_id": "6e759793-dd88-4b47-be5d-2d1d3984e9b4",
+    "files": [
+      {
+        "file_id": "d64e4633-7568-4faa-b52c-150c8d95bcc6",
+        "filename": "NDA_Contract_v1.pdf",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-08T15:19:22.009325+00:00"
+      },
+      {
+        "file_id": "10fa9c5d-614f-4692-9dd0-eb77d2469578",
+        "filename": "NDA_Contract_v2.pdf",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  },
+  "3a36d0d3-12b6-46dc-b1ba-522118da0db9": {
+    "version_group_id": "3a36d0d3-12b6-46dc-b1ba-522118da0db9",
+    "files": [
+      {
+        "file_id": "6b0c7ecf-9d53-4ff5-bd43-ddc878bea06c",
+        "filename": "Report_Draft_v1.pdf",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-08T15:19:22.013580+00:00"
+      },
+      {
+        "file_id": "b29f2add-d66b-4ee7-a577-e3fc563f7fc5",
+        "filename": "Report_Draft_v2.pdf",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  },
+  "9e595603-150a-4544-8b41-58c3606c4bc1": {
+    "version_group_id": "9e595603-150a-4544-8b41-58c3606c4bc1",
+    "files": [
+      {
+        "file_id": "81a98d48-499f-42aa-b887-ce9e7c5273df",
+        "filename": "Resume_JordanPatel_v1.pdf",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-08T15:19:22.018367+00:00"
+      },
+      {
+        "file_id": "4d3215ae-39a4-4663-ae24-2fdf8236b25b",
+        "filename": "Resume_JordanPatel_v2.pdf",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  }
+}
