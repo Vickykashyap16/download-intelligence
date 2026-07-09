@@ -3,8 +3,8 @@
 Pipeline build status, one page. For *feature* roadmap (Version 2/3 ideas, future capabilities), see the top-level `ROADMAP.md` — that document is scope, this one is progress.
 
 ```
-Pipeline Version:     0.3.0
-Last updated:         2026-07-06
+Pipeline Version:     0.5.0
+Last updated:         2026-07-09
 ```
 
 ## Released modules
@@ -14,17 +14,17 @@ Last updated:         2026-07-06
 | 01 | Watch & Ingest | 1.0.0 | Released |
 | 02 | Classification | 1.0.0 | Released |
 | 03 | Metadata Extraction | 1.0.0 | Released — **permanently frozen** |
+| 04 | Duplicate & Version Detection | 1.0.0 | Released — **permanently frozen** |
+| 05 | Naming & Destination | 1.0.0 | Released |
 
 ## Current module
 
-None in progress. Module 03 is frozen; Module 04 has not yet begun (`Governance/ENGINEERING_STANDARD.md` and this roadmap are being established first, at the project owner's direction, before Module 04's design phase starts).
+None in progress. Module 05 is released (`Release/Module05/`); Module 06 has not yet begun. See `Release/VERSIONS.md` for the authoritative version ledger.
 
 ## Remaining modules
 
 | # | Module | Status |
 |---|---|---|
-| 04 | Duplicate & Version Detection | Not started |
-| 05 | Naming & Destination | Not started |
 | 06 | Confidence & Review | Not started |
 | 07 | Preview, Approval & Execution | Not started |
 | 08 | Logging & Reporting | Not started |
@@ -36,8 +36,8 @@ None in progress. Module 03 is frozen; Module 04 has not yet begun (`Governance/
 - ✅ Module 02 (Classification) shipped — Engine/Provider pattern established, live-Claude-judgment model proven end-to-end.
 - ✅ Module 03 (Metadata Extraction) shipped — closed metadata taxonomy, structural redaction, four-tier timestamp hierarchy.
 - ✅ **Engineering governance established** (`Governance/ENGINEERING_STANDARD.md`, `ARCHITECTURE_DECISIONS.md`, this document, `PIPELINE_CONTRACT_VERIFICATION.md`) — formalizing the process the first three modules were already built under, before Module 04 begins.
-- ⬜ Module 04 (Duplicate & Version Detection) — first module to depend on `content_hash` for its actual stated purpose.
-- ⬜ Module 05 (Naming & Destination) — first consumer of Module 03's full metadata taxonomy; will need to resolve the `Rules/Naming Rules.md` field-name alignment flagged in `Release/Module03/KNOWN_LIMITATIONS.md`.
+- ✅ Module 04 (Duplicate & Version Detection) shipped — first module to depend on `content_hash` for its actual stated purpose; fully deterministic, no provider.
+- ✅ Module 05 (Naming & Destination) shipped — first consumer of Module 03's full metadata taxonomy; fully deterministic, no provider, the same architectural departure Module 04 established for itself. The `Rules/Naming Rules.md` field-name alignment flagged in `Release/Module03/KNOWN_LIMITATIONS.md` has been resolved (`Module 05 Design.md` §10).
 - ⬜ Module 06 (Confidence & Review) — first consumer of `Rules/Confidence Rules.md`'s deduction formula against real `extracted_metadata`/`classification_signals` data.
 - ⬜ Module 07 (Preview, Approval & Execution) — first module to actually move/rename files and implement undo.
 - ⬜ Module 08 (Logging & Reporting) — Daily/Weekly Summary and Duplicate/Storage Report generation.
@@ -49,9 +49,9 @@ None in progress. Module 03 is frozen; Module 04 has not yet begun (`Governance/
 |---|---|
 | 0.1.0 | Module 01 released |
 | 0.2.0 | Module 02 released |
-| **0.3.0** | **Module 03 released (current)** |
-| 0.4.0 | Module 04 released (projected) |
-| 0.5.0 | Module 05 released (projected) |
+| 0.3.0 | Module 03 released |
+| 0.4.0 | Module 04 released |
+| **0.5.0** | **Module 05 released (current)** |
 | 0.6.0 | Module 06 released (projected) |
 | 0.7.0 | Module 07 released (projected) |
 | 0.8.0 | Module 08 released (projected) |

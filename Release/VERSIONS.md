@@ -4,7 +4,7 @@ Tracks the overall pipeline version and each module's independent version. This 
 
 ## Current
 
-**Pipeline Version: 0.4.0**
+**Pipeline Version: 0.5.0**
 
 | Module | Version | Status |
 |---|---|---|
@@ -12,7 +12,7 @@ Tracks the overall pipeline version and each module's independent version. This 
 | 02 — Classification | 1.0.0 | Released |
 | 03 — Metadata Extraction | 1.0.0 | Released |
 | 04 — Duplicate & Version Detection | 1.0.0 | Released |
-| 05 — Naming & Destination | — | Not started |
+| 05 — Naming & Destination | 1.0.0 | Released |
 | 06 — Confidence & Review | — | Not started |
 | 07 — Preview, Approval & Execution | — | Not started |
 | 08 — Logging & Reporting | — | Not started |
@@ -29,6 +29,7 @@ Tracks the overall pipeline version and each module's independent version. This 
 
 ## History
 
+- **2026-07-09** — Pipeline 0.5.0. Module 05 (Naming & Destination) released at v1.0.0 — fifth module in the pipeline, frozen and feature-complete, production-ready for both interactive Claude-assisted and autonomous/unattended operation identically (Module 05 has no provider of any kind, the same architectural departure Module 04 established for itself — see `Release/Module05/KNOWN_LIMITATIONS.md`). One genuine defect found and correctly disclosed rather than silently patched: UAT's first run stopped on a genuine, real finding (Finding UAT-1, whitespace stripped instead of converted to underscore in sanitized filenames), independently verified as a design-completeness gap and resolved via a disclosed post-freeze design-correction cycle (post-freeze correction #1), after which a full UAT restart completed with zero defects and additionally verified idempotency and a dedicated adversarial sanitization pass. A first Independent Implementation Audit found and resolved 3 Medium and 2 Low findings (fallback field-name accuracy, truncation correctness, missing committed test cases, a weak test assertion, duplicated override logic); zero implementation defects found during Integration Testing. A final independent release audit, performed in two passes, found and resolved 4 Medium and 1 Cosmetic documentation/evidence findings, then re-verified all 13 Pipeline Contract Verification checks passing (see `Release/Module05/IMPLEMENTATION_AUDIT.md`/`RELEASE_AUDIT.md`). Modules 06–08 not yet started.
 - **2026-07-08** — Pipeline 0.4.0. Module 04 (Duplicate & Version Detection) released at v1.0.0 — fourth module in the pipeline, frozen and feature-complete, production-ready for both interactive Claude-assisted and autonomous/unattended operation identically (Module 04 has no provider of any kind — see `Release/Module04/KNOWN_LIMITATIONS.md`). Two genuine defects found and correctly disclosed rather than silently patched: a first Independent Implementation Audit found and resolved 1 High and 3 Medium findings (idempotency, an undisclosed candidate tie-break, non-exhaustive immutability tests, missing committed test cases); zero implementation defects found during Integration Testing (2 test-harness bugs found and fixed instead); UAT's first run stopped on a genuine, independently-reproduced defect (Finding UAT-1, near-duplicate detection not category-scoped), which was independently verified as a design-completeness gap and resolved via a disclosed post-freeze design-correction cycle (post-freeze correction #4), after which a full UAT restart completed with zero defects; a final independent release audit found and resolved 2 Medium documentation-completeness findings (see `Release/Module04/IMPLEMENTATION_AUDIT.md`/`RELEASE_AUDIT.md`). Modules 05–08 not yet started.
 - **2026-07-06** — Pipeline 0.3.0. Module 03 (Metadata Extraction) released at v1.0.0 — third module in the pipeline, frozen and feature-complete, production-ready for interactive Claude-assisted operation (no autonomous provider exists in v1 — see `Release/Module03/KNOWN_LIMITATIONS.md`). Zero implementation defects found during integration testing (4 test-harness bugs found and fixed instead); zero defects found during UAT; an independent implementation audit before integration testing found and resolved 2 Medium findings; an independent release audit before freeze found and resolved 3 Medium and 2 Low findings (see `Release/Module03/IMPLEMENTATION_AUDIT.md`/`RELEASE_AUDIT.md`). Modules 04–08 not yet started.
 - **2026-07-06** — Pipeline 0.2.0. Module 02 (Classification) released at v1.0.0 — second module in the pipeline, frozen and feature-complete, production-ready for interactive Claude-assisted operation (no autonomous provider exists in v1 — see `Release/Module02/KNOWN_LIMITATIONS.md`). One defect found and fixed during integration testing (unwrapped image-read failures in `ClassificationEngine`); zero defects found during UAT; an independent release audit before freeze found and resolved 3 High and 3 Medium findings (see `Release/Module02/RELEASE_AUDIT.md`/`RELEASE_AUDIT_2.md`). Modules 03–08 not yet started.

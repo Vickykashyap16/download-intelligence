@@ -1,0 +1,19 @@
+{
+  "797efed8-b7f4-4bba-a773-9675c8feae27": {
+    "version_group_id": "797efed8-b7f4-4bba-a773-9675c8feae27",
+    "files": [
+      {
+        "file_id": "8590c60f-1617-4653-9491-3e1463129ca4",
+        "filename": "Resume_Taylor_Kim_v1.pdf",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-09T04:16:46.846757+00:00"
+      },
+      {
+        "file_id": "d6bfc7d9-7cd8-47b3-83ae-e295867dc2bc",
+        "filename": "Resume_Taylor_Kim_v2.pdf",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  }
+}

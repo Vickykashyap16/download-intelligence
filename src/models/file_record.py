@@ -14,6 +14,7 @@ from typing import Optional
 
 from src.models.classification import Category, ClassificationSignals
 from src.models.duplicate import DuplicateSignals
+from src.models.naming import NamingSignals
 
 
 @dataclass
@@ -62,6 +63,11 @@ class FileRecord:
     # --- Naming & Destination (Module 05) ---
     suggested_name: Optional[str] = None
     suggested_destination: Optional[str] = None
+    naming_signals: Optional[NamingSignals] = None   # None until Module 05
+                                           # processes this record; always a full
+                                           # NamingSignals instance afterward, never
+                                           # partially filled in (Module 05 Design.md
+                                           # §5, confirmed §29 item 3).
 
     # --- Duplicate & Version Detection (Module 04) ---
     duplicate_of: Optional[str] = None

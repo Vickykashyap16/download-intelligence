@@ -23,6 +23,7 @@ from src.core.hashing import hamming_distance, perceptual_hash
 from src.models.classification import Category, ClassificationSignals
 from src.models.duplicate import DuplicateSignals
 from src.models.file_record import FileRecord
+from src.models.naming import NamingSignals
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _METADATA_STORE_PATH = _PROJECT_ROOT / "Database" / "Metadata" / "metadata_store.json"
@@ -56,14 +57,16 @@ def _ensure_metadata_store_exists() -> None:
 
 
 def _reconstruct_typed_fields(raw_record: dict) -> dict:
-    """Turn the plain JSON forms of Module 02's typed fields back into real objects.
+    """Turn the plain JSON forms of every module's typed FileRecord fields back into
+    real objects: `category`/`classification_signals` (Module 02), `duplicate_signals`
+    (Module 04), `naming_signals` (Module 05).
 
     `asdict()` (used by `_write_metadata_store()`) already flattens a nested
-    `ClassificationSignals` dataclass into a plain dict on write, and a `Category`
-    enum member serializes to its plain string value automatically (it's a `str`
-    subclass) — neither needs special handling to WRITE. But `json.loads()` on the
-    way back in only ever produces plain dicts/strings, never dataclass instances or
-    enum members, so this step is required on every load — see
+    dataclass into a plain dict on write, and a `Category` enum member serializes to
+    its plain string value automatically (it's a `str` subclass) — none of these need
+    special handling to WRITE. But `json.loads()` on the way back in only ever
+    produces plain dicts/strings, never dataclass instances or enum members, so this
+    step is required on every load for every typed field — see
     Build-out/02 Classification/Module 02 Design.md §13 for why.
     """
     if raw_record.get("category") is not None:
@@ -74,6 +77,8 @@ def _reconstruct_typed_fields(raw_record: dict) -> dict:
         )
     if raw_record.get("duplicate_signals") is not None:
         raw_record["duplicate_signals"] = DuplicateSignals(**raw_record["duplicate_signals"])
+    if raw_record.get("naming_signals") is not None:
+        raw_record["naming_signals"] = NamingSignals(**raw_record["naming_signals"])
     return raw_record
 
 

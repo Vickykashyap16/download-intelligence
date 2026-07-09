@@ -43,6 +43,8 @@ def append_action_log(batch_id: str, file_id: str, action: str,
     `detect_duplicates_and_versions` (Module 04 Design.md §18, F6) — updated in the
     same release cycle Module 04 ships, per that design's own explicit requirement
     not to repeat the gap this docstring/schema doc already had to close twice before.
+    Module 05 additionally uses `suggest_naming_and_destination` (Module 05
+    Design.md §18) — updated at implementation time for the same reason.
     """
     _ACTION_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     entry = {

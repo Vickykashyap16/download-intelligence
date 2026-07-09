@@ -5,9 +5,9 @@ Usage: `python -m src.main` (run from the project root, so the `src.` package
 imports resolve correctly).
 
 Module 01 (Watch & Ingest), Module 02 (Classification), Module 03 (Metadata
-Extraction), and Module 04 (Duplicate & Version Detection) are implemented and wired
-in below. Everything past duplicate/version detection (naming/destination onward) is
-still scaffold.
+Extraction), Module 04 (Duplicate & Version Detection), and Module 05 (Naming &
+Destination) are implemented and wired in below. Everything past naming/destination
+(confidence/review onward) is still scaffold.
 """
 
 import json
@@ -17,6 +17,7 @@ from pathlib import Path
 from src.pipeline.classification import classify_batch
 from src.pipeline.duplicate_detector import detect_duplicates_batch, needs_duplicate_detection
 from src.pipeline.metadata import extract_metadata_batch
+from src.pipeline.naming import suggest_naming_and_destination_batch
 from src.pipeline.watch_ingest import load_source_config, scan_source
 from src.storage.database import (
     load_metadata_store,
@@ -282,6 +283,71 @@ def detect_duplicates() -> None:
     print("\nModule 04 complete.")
 
 
+def suggest_naming() -> None:
+    """Run Module 05 on every `status == "discovered"` record with a real category
+    that hasn't had a name/destination suggested yet, persist the results, and
+    print a summary. Mirrors `classify()`/`extract()`'s exact shape.
+
+    Unlike `classify()`/`extract()`, this takes no `provider` parameter — Module 05
+    is fully deterministic, with no Provider layer at all (Module 05 Design.md §17,
+    confirmed §29 item 11). Unlike `extract()`, the filter below does NOT exclude
+    `Category.UNKNOWN` — Module 05 must include it (§3): `Rules/Folder Rules.md`'s
+    own override table always routes Unknown-category files to `Unknown/`.
+
+    The "not yet processed" check is a direct `suggested_name is None` field check,
+    not a Module-04-style dedicated idempotency function — mirrors `classify()`'s
+    `category is None`/`extract()`'s `extracted_metadata == {}` precedent, since
+    `suggested_name` is unambiguously null only pre-processing and always a real,
+    non-empty string afterward (Module 05 Design.md §5's guarantee) — no
+    "legitimately stays null forever" case exists here the way it does for Module
+    04's `duplicate_of`/`version_group_id`/`version_rank`.
+    """
+    records = [
+        record for record in load_metadata_store()
+        if record.status == "discovered"
+        and record.category is not None
+        and record.suggested_name is None
+    ]
+    if not records:
+        print("Nothing to name — no discovered, classified records still awaiting a suggested name/destination.")
+        return
+
+    file_ids = {record.file_id for record in records}
+    suggest_naming_and_destination_batch(records)
+
+    log_details_by_file_id = _read_action_log_details(file_ids, action="suggest_naming_and_destination")
+
+    fallback_count = sum(
+        1 for r in records if r.naming_signals and r.naming_signals.fields_fell_back
+    )
+    collision_count = sum(
+        1 for details in log_details_by_file_id.values() if details.get("collision_suffix_applied")
+    )
+    override_counts = Counter(
+        details.get("override_applied") for details in log_details_by_file_id.values()
+        if details.get("override_applied")
+    )
+
+    print(f"Suggested a name/destination for {len(records)} file(s):")
+    for record in records:
+        note = ""
+        if record.naming_signals and record.naming_signals.fields_fell_back:
+            note = f" [fallback: {', '.join(record.naming_signals.fields_fell_back)}]"
+        print(f"  - {record.original_name} -> {record.suggested_destination}{record.suggested_name}{note}")
+
+    if fallback_count:
+        print(f"\n{fallback_count} file(s) used a naming fallback for at least one field.")
+    if collision_count:
+        print(f"{collision_count} file(s) got a collision suffix (another record in this batch suggested the same name/destination).")
+    for override, count in sorted(override_counts.items()):
+        if override:
+            print(f"{count} file(s) routed via override: {override}")
+
+    print(f"\nMetadata written to: {metadata_store_path()}")
+    print(f"Action log written to: {action_log_path()}")
+    print("\nModule 05 complete.")
+
+
 def _read_classify_log_details(file_ids: set) -> dict:
     """Read back this run's `classify` action-log entries for `file_ids`, keyed by
     file_id — used only to build the CLI summary from the authoritative log rather
@@ -310,3 +376,4 @@ if __name__ == "__main__":
     classify()
     extract()
     detect_duplicates()
+    suggest_naming()

@@ -16,6 +16,7 @@ import src.storage.database as database_module
 from src.models.classification import Category, ClassificationSignals
 from src.models.duplicate import DuplicateSignals
 from src.models.file_record import FileRecord
+from src.models.naming import NamingSignals
 
 
 def _isolate_store(tmp_path, monkeypatch):
@@ -103,6 +104,51 @@ def test_save_and_load_round_trips_duplicate_signals(tmp_path, monkeypatch):
     assert reloaded.duplicate_signals.exact_duplicate is False  # untouched default
     assert reloaded.version_group_id == "group-1"
     assert reloaded.version_rank == "latest"
+
+
+# --- Module 05 (Naming & Destination) — Build-out/05 Naming & Destination/
+# Module 05 Design.md §5/§25 ---
+
+def test_save_and_load_round_trips_naming_signals(tmp_path, monkeypatch):
+    _isolate_store(tmp_path, monkeypatch)
+
+    record = FileRecord(
+        file_id="name-1",
+        source_id="downloads",
+        original_name="invoice.pdf",
+        original_path="/tmp/invoice.pdf",
+        current_path="/tmp/invoice.pdf",
+        category=Category.INVOICE,
+        suggested_name="Unknown_Vendor_2026-07-05.pdf",
+        suggested_destination="Finance/",
+        naming_signals=NamingSignals(fields_fell_back=["vendor"]),
+    )
+    database_module.save_file_record(record)
+
+    reloaded = database_module.load_metadata_store()[0]
+    assert isinstance(reloaded.naming_signals, NamingSignals)
+    assert reloaded.naming_signals.fields_fell_back == ["vendor"]
+    assert reloaded.suggested_name == "Unknown_Vendor_2026-07-05.pdf"
+    assert reloaded.suggested_destination == "Finance/"
+
+
+def test_load_handles_records_module_05_never_touched(tmp_path, monkeypatch):
+    """A record still at its pre-Module-05 defaults (suggested_name=None,
+    naming_signals=None) must load cleanly — no crash on None fields."""
+    _isolate_store(tmp_path, monkeypatch)
+
+    record = FileRecord(
+        file_id="name-2",
+        source_id="downloads",
+        original_name="notes.txt",
+        original_path="/tmp/notes.txt",
+        current_path="/tmp/notes.txt",
+    )
+    database_module.save_file_record(record)
+
+    loaded = database_module.load_metadata_store()
+    assert loaded[0].suggested_name is None
+    assert loaded[0].naming_signals is None
 
 
 def test_lookup_hash_returns_none_when_not_indexed(tmp_path, monkeypatch):

@@ -36,17 +36,19 @@ neither of which was anticipated when this doc was first drafted pre-implementat
     "tax_type": "GST"
   },
 
-  "suggested_name": "GST_Invoice_Amazon_2026-07-05.pdf",
+  "suggested_name": "Amazon_2026-07-05.pdf",
   "suggested_destination": "Finance/",
+  "naming_signals": {
+    "fields_fell_back": []
+  },
 
   "duplicate_of": null,
   "version_group_id": null,
   "version_rank": null,
 
-  "confidence_score": 82,
+  "confidence_score": 92,
   "confidence_breakdown": {
-    "missing_required_field:invoice_number": -8,
-    "naming_fallback:vendor": -10
+    "missing_required_field:invoice_number": -8
   },
   "tier": "approval_required",
 
@@ -115,7 +117,7 @@ One JSON line per action:
 {"batch_id": "2026-07-05_batch01", "file_id": "uuid", "action": "move_rename", "from": "/Users/vicky/Downloads/invoice.pdf", "to": "/.../Finance/GST_Invoice_Amazon_2026-07-05.pdf", "timestamp": "2026-07-05T14:32:00Z", "approved_by": "user"}
 ```
 
-Other `action` values: `discover` (Module 01 — a supported file was found and queued), `classify` (Module 02 — a file was assigned a category and classification signals; `details` carries `category`, `signals`, `mode`, `processing_time_ms`, `fallback_used`, `fallback_reason`, `error_detail` when a fallback occurred, and `provider_metadata` when a provider was actually called — see `Build-out/02 Classification/Module 02 Design.md` §12), `extract_metadata` (Module 03 — a classified file had its metadata extracted; `details` carries `category`, `fields_extracted`, `fields_missing`, `mode` (`deterministic` | `text` | `vision` | `mixed`), `processing_time_ms`, `extraction_complete`, `fallback_used`, `fallback_reason`, `redacted_fields` (always present, even when empty — see the Bank Statement `account_last4` rule above), `error_detail` when a fallback occurred, and `provider_metadata` when a provider was actually called — see `Build-out/03 Metadata Extraction/Module 03 Design.md` §7/§13/§18), `detect_duplicates_and_versions` (Module 04 — a file's duplicate/version relationships were detected; `details` carries `duplicate_of`, `version_group_id`, `version_rank`, `match_type` (`exact` | `fuzzy` | `version` | `null`), `phash_distance`, `version_conflict`, `conflict_type` (`date_token_disagreement` | `cross_group` | `null`, plus `conflicting_group_ids` when `cross_group`), `processing_time_ms` — see `Build-out/04 Duplicate & Version Detection/Module 04 Design.md` §7/§17/§18. When Module 04's one disclosed side effect (§4/§7) touches a *different*, earlier-processed record's `version_group_id`/`version_rank`, that other record gets its own second `detect_duplicates_and_versions` log line — `joined_by`/`superseded_by` — rather than a rewrite of its original entry, per the append-only logging philosophy), `archive_duplicate`, `archive_superseded_version`, `skip`, `error`, `undo`. (Documentation gaps found and fixed during release audits: `classify` — Module 02 release audit, 2026-07-06; `extract_metadata` — Module 03 release audit, 2026-07-06. Both action types had been in use since their respective modules shipped but were never added here; see `CHANGELOG.md`. `detect_duplicates_and_versions` was added at Module 04's own implementation time specifically to avoid a third recurrence of this gap.)
+Other `action` values: `discover` (Module 01 — a supported file was found and queued), `classify` (Module 02 — a file was assigned a category and classification signals; `details` carries `category`, `signals`, `mode`, `processing_time_ms`, `fallback_used`, `fallback_reason`, `error_detail` when a fallback occurred, and `provider_metadata` when a provider was actually called — see `Build-out/02 Classification/Module 02 Design.md` §12), `extract_metadata` (Module 03 — a classified file had its metadata extracted; `details` carries `category`, `fields_extracted`, `fields_missing`, `mode` (`deterministic` | `text` | `vision` | `mixed`), `processing_time_ms`, `extraction_complete`, `fallback_used`, `fallback_reason`, `redacted_fields` (always present, even when empty — see the Bank Statement `account_last4` rule above), `error_detail` when a fallback occurred, and `provider_metadata` when a provider was actually called — see `Build-out/03 Metadata Extraction/Module 03 Design.md` §7/§13/§18), `detect_duplicates_and_versions` (Module 04 — a file's duplicate/version relationships were detected; `details` carries `duplicate_of`, `version_group_id`, `version_rank`, `match_type` (`exact` | `fuzzy` | `version` | `null`), `phash_distance`, `version_conflict`, `conflict_type` (`date_token_disagreement` | `cross_group` | `null`, plus `conflicting_group_ids` when `cross_group`), `processing_time_ms` — see `Build-out/04 Duplicate & Version Detection/Module 04 Design.md` §7/§17/§18. When Module 04's one disclosed side effect (§4/§7) touches a *different*, earlier-processed record's `version_group_id`/`version_rank`, that other record gets its own second `detect_duplicates_and_versions` log line — `joined_by`/`superseded_by` — rather than a rewrite of its original entry, per the append-only logging philosophy), `suggest_naming_and_destination` (Module 05 — a file's name and destination were suggested; `details` carries `suggested_name`, `suggested_destination`, `fields_fell_back` (which taxonomy fields used their "Unknown_X" placeholder — always present, even when empty, mirroring `redacted_fields`'s convention), `collision_suffix_applied` (bool), `override_applied` (`"exact_duplicate"` | `"superseded_version"` | `null`), `processing_time_ms` — see `Build-out/05 Naming & Destination/Module 05 Design.md` §7/§11/§18. No `fallback_used`/`provider_metadata` — Module 05 has no Provider, §17), `archive_duplicate`, `archive_superseded_version`, `skip`, `error`, `undo`. (Documentation gaps found and fixed during release audits: `classify` — Module 02 release audit, 2026-07-06; `extract_metadata` — Module 03 release audit, 2026-07-06. Both action types had been in use since their respective modules shipped but were never added here; see `CHANGELOG.md`. `detect_duplicates_and_versions` and `suggest_naming_and_destination` were both added at their respective module's own implementation time specifically to avoid a further recurrence of this gap.)
 
 An undo replays the matching line(s) for a `batch_id` with `from`/`to` swapped.
 

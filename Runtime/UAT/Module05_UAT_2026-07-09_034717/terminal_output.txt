@@ -1,0 +1,171 @@
+======================================================================
+MODULE 05 UAT — RUN 1 — real main.py CLI, real sources.yaml, live judgment
+======================================================================
+Scanned /tmp/uat_m05_downloads
+  Total entries seen: 19
+  Discovered:         17
+  Skipped:            2
+
+Discovered files:
+  - Bank_Statement_Chase_June.pdf (.pdf, 1468 bytes)
+  - Confidential_Agreement.pdf (.pdf, 828 bytes)
+  - Corrupted_Invoice.pdf (.pdf, 55 bytes)
+  - IMG_5521.jpg (.jpg, 191208 bytes)
+  - Invoice_Amazon_Order (1).pdf (.pdf, 1472 bytes)
+  - Invoice_Amazon_Order.pdf (.pdf, 1472 bytes)
+  - June_Bank_Records_2026.pdf (.pdf, 1477 bytes)
+  - NDA_Contract_Acme.pdf (.pdf, 1486 bytes)
+  - ProjectFiles_Backup.zip (.zip, 409 bytes)
+  - Resume_Taylor_Kim_v1.pdf (.pdf, 1451 bytes)
+  - Resume_Taylor_Kim_v2.pdf (.pdf, 1490 bytes)
+  - Screenshot_2026-07-05_Error.png (.png, 8595 bytes)
+  - Slack_4.36.140_Mac.dmg (.dmg, 380 bytes)
+  - User_Manual_Espresso.pdf (.pdf, 1458 bytes)
+  - Vacation_Clip.mp4 (.mp4, 2326 bytes)
+  - Voice_Memo.mp3 (.mp3, 8636 bytes)
+  - invoice_📄_final_—_v2.pdf (.pdf, 1445 bytes)
+
+Skipped items:
+  - Empty_File.pdf — empty file (0 bytes) — likely an incomplete/failed download
+  - Mystery_Data.xyz — file type not yet supported by this pipeline
+
+Metadata written to:    /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Runtime/Logs/action_log.jsonl
+
+Module 01 complete.
+
+Classified 17 file(s):
+  - Bank_Statement_Chase_June.pdf: Bank Statement
+  - Confidential_Agreement.pdf: Unknown [locked]
+  - Corrupted_Invoice.pdf: Unknown
+  - IMG_5521.jpg: Image
+  - Invoice_Amazon_Order (1).pdf: Invoice
+  - Invoice_Amazon_Order.pdf: Invoice
+  - June_Bank_Records_2026.pdf: Bank Statement
+  - NDA_Contract_Acme.pdf: Contract
+  - ProjectFiles_Backup.zip: Archive
+  - Resume_Taylor_Kim_v1.pdf: Resume
+  - Resume_Taylor_Kim_v2.pdf: Resume
+  - Screenshot_2026-07-05_Error.png: Screenshot
+  - Slack_4.36.140_Mac.dmg: Application
+  - User_Manual_Espresso.pdf: Document
+  - Vacation_Clip.mp4: Video
+  - Voice_Memo.mp3: Audio
+  - invoice_📄_final_—_v2.pdf: Invoice
+
+By category:
+  - Application: 1
+  - Archive: 1
+  - Audio: 1
+  - Bank Statement: 2
+  - Contract: 1
+  - Document: 1
+  - Image: 1
+  - Invoice: 3
+  - Resume: 2
+  - Screenshot: 1
+  - Unknown: 2
+  - Video: 1
+
+By mode:
+  - deterministic: 6
+  - text: 11
+
+1 file(s) fell back to Unknown (provider unavailable/invalid response).
+
+Metadata written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Runtime/Logs/action_log.jsonl
+
+Module 02 complete.
+
+Extracted metadata for 15 file(s):
+  - Bank_Statement_Chase_June.pdf: Bank Statement
+  - IMG_5521.jpg: Image
+  - Invoice_Amazon_Order (1).pdf: Invoice
+  - Invoice_Amazon_Order.pdf: Invoice
+  - June_Bank_Records_2026.pdf: Bank Statement
+  - NDA_Contract_Acme.pdf: Contract
+  - ProjectFiles_Backup.zip: Archive
+  - Resume_Taylor_Kim_v1.pdf: Resume
+  - Resume_Taylor_Kim_v2.pdf: Resume
+  - Screenshot_2026-07-05_Error.png: Screenshot [incomplete]
+  - Slack_4.36.140_Mac.dmg: Application
+  - User_Manual_Espresso.pdf: Document
+  - Vacation_Clip.mp4: Video
+  - Voice_Memo.mp3: Audio
+  - invoice_📄_final_—_v2.pdf: Invoice
+
+By mode:
+  - deterministic: 4
+  - mixed: 2
+  - text: 9
+
+Provider was called 11 time(s).
+1 file(s) have incomplete extraction (a required field is missing).
+
+Metadata written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Runtime/Logs/action_log.jsonl
+
+Module 03 complete.
+
+Checked 17 file(s) for duplicates/versions:
+  - Bank_Statement_Chase_June.pdf
+  - Confidential_Agreement.pdf
+  - Corrupted_Invoice.pdf
+  - IMG_5521.jpg
+  - Invoice_Amazon_Order (1).pdf
+  - Invoice_Amazon_Order.pdf [exact duplicate of c0845b5b-adaa-4b8b-8da6-64bacdfe03cf]
+  - June_Bank_Records_2026.pdf
+  - NDA_Contract_Acme.pdf
+  - ProjectFiles_Backup.zip
+  - Resume_Taylor_Kim_v1.pdf [superseded, version_group_id=85b85d24-e6cd-4751-af7f-6227039216e9]
+  - Resume_Taylor_Kim_v2.pdf [latest, version_group_id=85b85d24-e6cd-4751-af7f-6227039216e9]
+  - Screenshot_2026-07-05_Error.png
+  - Slack_4.36.140_Mac.dmg
+  - User_Manual_Espresso.pdf
+  - Vacation_Clip.mp4
+  - Voice_Memo.mp3
+  - invoice_📄_final_—_v2.pdf
+
+Exact duplicates:  1
+Near-duplicates:   0
+Version chains:    2
+
+Metadata written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Runtime/Logs/action_log.jsonl
+
+Module 04 complete.
+
+Suggested a name/destination for 17 file(s):
+  - Bank_Statement_Chase_June.pdf -> Finance/Chase_Statement_2026-06.pdf
+  - Confidential_Agreement.pdf -> Unknown/Unsorted_Confidential_Agreement.pdf
+  - Corrupted_Invoice.pdf -> Unknown/Unsorted_Corrupted_Invoice.pdf
+  - IMG_5521.jpg -> Images/Solidblue-graycolorswatch_Blue.jpg
+  - Invoice_Amazon_Order (1).pdf -> Finance/Amazon_2026-07-03.pdf
+  - Invoice_Amazon_Order.pdf -> ~ARCHIVE~/Duplicates/Amazon_2026-07-03.pdf
+  - June_Bank_Records_2026.pdf -> Finance/Chase_Statement_2026-06_2.pdf
+  - NDA_Contract_Acme.pdf -> Documents/Nda_Acmeindustries_2026-06-15.pdf
+  - ProjectFiles_Backup.zip -> Archives/Notestxtassets_2026-07-08.zip
+  - Resume_Taylor_Kim_v1.pdf -> ~ARCHIVE~/Old Versions/Resume_Taylorkim_Unknown.pdf [fallback: version_indicator, last_modified_date]
+  - Resume_Taylor_Kim_v2.pdf -> Documents/Resume_Taylorkim_V2.pdf
+  - Screenshot_2026-07-05_Error.png -> Images/Screenshots/Screenshot_Unknown_Context_Unknown_Date.png [fallback: context_description, capture_date]
+  - Slack_4.36.140_Mac.dmg -> Applications/Slack_436140_Mac.dmg
+  - User_Manual_Espresso.pdf -> Documents/Espressomachineem-200usermanual_Unknown_Date.pdf [fallback: document_date]
+  - Vacation_Clip.mp4 -> Videos/Vacation_Clip_2026-07-08.mp4
+  - Voice_Memo.mp3 -> Audio/Voicememodraft_Taylorkim.mp3
+  - invoice_📄_final_—_v2.pdf -> Finance/Northwindtraders_2026-07-04.pdf
+
+3 file(s) used a naming fallback for at least one field.
+1 file(s) got a collision suffix (another record in this batch suggested the same name/destination).
+1 file(s) routed via override: exact_duplicate
+1 file(s) routed via override: superseded_version
+
+Metadata written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4/Runtime/Logs/action_log.jsonl
+
+Module 05 complete.
+
+Classification provider received 9 real requests.
+Extraction provider received 11 real requests.
+
+TMP ROOT (uat run1): /sessions/nice-fervent-wozniak/tmp/m05_uat_o1iwhjn4
