@@ -1,0 +1,249 @@
+EOF marker not found
+======================================================================
+MODULE 01: scan()
+======================================================================
+Scanned /tmp/uat_m06_downloads
+  Total entries seen: 25
+  Discovered:         23
+  Skipped:            2
+
+Discovered files:
+  - BankStatement_Chase_June2026.pdf (.pdf, 1562 bytes)
+  - BankStatement_Chase_June2026_copy.pdf (.pdf, 1562 bytes)
+  - Batch_Invoices_Merged.pdf (.pdf, 2498 bytes)
+  - Confidential_Payroll_Statement.pdf (.pdf, 1439 bytes)
+  - Contract_ServiceAgreement_v1.pdf (.pdf, 1673 bytes)
+  - Contract_ServiceAgreement_v2.pdf (.pdf, 1823 bytes)
+  - Corrupted_Invoice_Damaged.pdf (.pdf, 175 bytes)
+  - Document_Employee_Handbook.pdf (.pdf, 1698 bytes)
+  - Facture_Boulangerie_Paris.pdf (.pdf, 1852 bytes)
+  - Family_Vacation_Clip.mp4 (.mp4, 212 bytes)
+  - Invoice_Northwind_Traders.pdf (.pdf, 1760 bytes)
+  - Invoice_Sparse_Draft.pdf (.pdf, 1570 bytes)
+  - Product_Shot_Angle.jpg (.jpg, 9064 bytes)
+  - Product_Shot_Front.jpg (.jpg, 9222 bytes)
+  - Project_Archive_2026.zip (.zip, 301 bytes)
+  - Receipt_Or_Invoice_Ambiguous.pdf (.pdf, 1716 bytes)
+  - Resume_Morgan_Ellis_v1.pdf (.pdf, 1566 bytes)
+  - Resume_Morgan_Ellis_v2.pdf (.pdf, 1673 bytes)
+  - Scan_Blank_Page.pdf (.pdf, 1298 bytes)
+  - Screenshot_Login_Error.png (.png, 8654 bytes)
+  - Voice_Memo_070826.mp3 (.mp3, 49007 bytes)
+  - Zoom_Installer_6.1.2.dmg (.dmg, 470 bytes)
+  - invoice_🧾_northstar_—_v2.pdf (.pdf, 1511 bytes)
+
+Skipped items:
+  - mystery_notes.xyz — file type not yet supported by this pipeline
+  - zero_byte_file.pdf — empty file (0 bytes) — likely an incomplete/failed download
+
+Metadata written to:    /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Runtime/Logs/action_log.jsonl
+
+Module 01 complete.
+
+======================================================================
+MODULE 02: classify(provider=LiveClassificationProvider())
+======================================================================
+Classified 23 file(s):
+  - BankStatement_Chase_June2026.pdf: Bank Statement
+  - BankStatement_Chase_June2026_copy.pdf: Bank Statement
+  - Batch_Invoices_Merged.pdf: Invoice
+  - Confidential_Payroll_Statement.pdf: Unknown [locked]
+  - Contract_ServiceAgreement_v1.pdf: Contract
+  - Contract_ServiceAgreement_v2.pdf: Contract
+  - Corrupted_Invoice_Damaged.pdf: Unknown
+  - Document_Employee_Handbook.pdf: Document
+  - Facture_Boulangerie_Paris.pdf: Invoice
+  - Family_Vacation_Clip.mp4: Video
+  - Invoice_Northwind_Traders.pdf: Invoice
+  - Invoice_Sparse_Draft.pdf: Invoice
+  - Product_Shot_Angle.jpg: Screenshot
+  - Product_Shot_Front.jpg: Screenshot
+  - Project_Archive_2026.zip: Archive
+  - Receipt_Or_Invoice_Ambiguous.pdf: Invoice
+  - Resume_Morgan_Ellis_v1.pdf: Resume
+  - Resume_Morgan_Ellis_v2.pdf: Resume
+  - Scan_Blank_Page.pdf: Unknown
+  - Screenshot_Login_Error.png: Screenshot
+  - Voice_Memo_070826.mp3: Audio
+  - Zoom_Installer_6.1.2.dmg: Application
+  - invoice_🧾_northstar_—_v2.pdf: Invoice
+
+By category:
+  - Application: 1
+  - Archive: 1
+  - Audio: 1
+  - Bank Statement: 2
+  - Contract: 2
+  - Document: 1
+  - Invoice: 6
+  - Resume: 2
+  - Screenshot: 3
+  - Unknown: 3
+  - Video: 1
+
+By mode:
+  - deterministic: 7
+  - text: 15
+  - vision: 1
+
+2 file(s) fell back to Unknown (provider unavailable/invalid response).
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Runtime/Logs/action_log.jsonl
+
+Module 02 complete.
+
+======================================================================
+MODULE 03: extract(provider=LiveMetadataExtractionProvider())
+======================================================================
+Extracted metadata for 20 file(s):
+  - BankStatement_Chase_June2026.pdf: Bank Statement
+  - BankStatement_Chase_June2026_copy.pdf: Bank Statement
+  - Batch_Invoices_Merged.pdf: Invoice
+  - Contract_ServiceAgreement_v1.pdf: Contract
+  - Contract_ServiceAgreement_v2.pdf: Contract
+  - Document_Employee_Handbook.pdf: Document
+  - Facture_Boulangerie_Paris.pdf: Invoice
+  - Family_Vacation_Clip.mp4: Video
+  - Invoice_Northwind_Traders.pdf: Invoice
+  - Invoice_Sparse_Draft.pdf: Invoice [incomplete]
+  - Product_Shot_Angle.jpg: Screenshot
+  - Product_Shot_Front.jpg: Screenshot
+  - Project_Archive_2026.zip: Archive
+  - Receipt_Or_Invoice_Ambiguous.pdf: Invoice
+  - Resume_Morgan_Ellis_v1.pdf: Resume
+  - Resume_Morgan_Ellis_v2.pdf: Resume
+  - Screenshot_Login_Error.png: Screenshot
+  - Voice_Memo_070826.mp3: Audio
+  - Zoom_Installer_6.1.2.dmg: Application
+  - invoice_🧾_northstar_—_v2.pdf: Invoice
+
+By mode:
+  - deterministic: 4
+  - mixed: 3
+  - text: 13
+
+Provider was called 16 time(s).
+1 file(s) have incomplete extraction (a required field is missing).
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Runtime/Logs/action_log.jsonl
+
+Module 03 complete.
+
+======================================================================
+MODULE 04: detect_duplicates()
+======================================================================
+Checked 23 file(s) for duplicates/versions:
+  - BankStatement_Chase_June2026.pdf [latest, version_group_id=209ceef2-3ac3-4308-9c94-318b20616d0a]
+  - BankStatement_Chase_June2026_copy.pdf [superseded, version_group_id=209ceef2-3ac3-4308-9c94-318b20616d0a]
+  - Batch_Invoices_Merged.pdf
+  - Confidential_Payroll_Statement.pdf
+  - Contract_ServiceAgreement_v1.pdf [superseded, version_group_id=79c6ecec-9604-4d25-8ae4-11b4e21a57b9]
+  - Contract_ServiceAgreement_v2.pdf [latest, version_group_id=79c6ecec-9604-4d25-8ae4-11b4e21a57b9] [conflict: date_token_disagreement]
+  - Corrupted_Invoice_Damaged.pdf
+  - Document_Employee_Handbook.pdf
+  - Facture_Boulangerie_Paris.pdf
+  - Family_Vacation_Clip.mp4
+  - Invoice_Northwind_Traders.pdf
+  - Invoice_Sparse_Draft.pdf
+  - Product_Shot_Angle.jpg
+  - Product_Shot_Front.jpg [near-duplicate, phash_distance=4]
+  - Project_Archive_2026.zip
+  - Receipt_Or_Invoice_Ambiguous.pdf
+  - Resume_Morgan_Ellis_v1.pdf [superseded, version_group_id=f0ed1963-7dc4-4534-92b4-6ebeed9a20c7]
+  - Resume_Morgan_Ellis_v2.pdf [latest, version_group_id=f0ed1963-7dc4-4534-92b4-6ebeed9a20c7] [conflict: date_token_disagreement]
+  - Scan_Blank_Page.pdf
+  - Screenshot_Login_Error.png
+  - Voice_Memo_070826.mp3
+  - Zoom_Installer_6.1.2.dmg
+  - invoice_🧾_northstar_—_v2.pdf
+
+Exact duplicates:  0
+Near-duplicates:   1
+Version chains:    6
+Conflicts flagged: 2 (never auto-resolved — see action log)
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Runtime/Logs/action_log.jsonl
+
+Module 04 complete.
+
+======================================================================
+MODULE 05: suggest_naming()
+======================================================================
+Suggested a name/destination for 23 file(s):
+  - BankStatement_Chase_June2026.pdf -> Finance/Chase_Statement_June_1_-_June_30_2026.pdf
+  - BankStatement_Chase_June2026_copy.pdf -> ~ARCHIVE~/Old Versions/Chase_Statement_June_1_-_June_30_2026.pdf
+  - Batch_Invoices_Merged.pdf -> Finance/Cascade_Hardware_A-1001_2026-04-01.pdf
+  - Confidential_Payroll_Statement.pdf -> Unknown/Unsorted_Confidential_Payroll_Statement.pdf
+  - Contract_ServiceAgreement_v1.pdf -> ~ARCHIVE~/Old Versions/Service_Agreement_Oakview_Retail_Inc_2026-03-01.pdf
+  - Contract_ServiceAgreement_v2.pdf -> Documents/Service_Agreement_Oakview_Retail_Inc_2026-01-15.pdf
+  - Corrupted_Invoice_Damaged.pdf -> Unknown/Unsorted_Corrupted_Invoice_Damaged.pdf
+  - Document_Employee_Handbook.pdf -> Documents/Employee_Handbook_2026-04-18.pdf
+  - Facture_Boulangerie_Paris.pdf -> Finance/Boulangerie_Saint-germain_Fr-2026-0417_2026-06-12.pdf
+  - Family_Vacation_Clip.mp4 -> Videos/Family_Vacation_Clip_2026-07-11.mp4
+  - Invoice_Northwind_Traders.pdf -> Finance/Northwind_Traders_Inv-88213_2026-06-15.pdf
+  - Invoice_Sparse_Draft.pdf -> Finance/Unknown_Vendor_2026-05-02.pdf [fallback: vendor]
+  - Product_Shot_Angle.jpg -> Images/Screenshots/Photo_Of_An_Box_Next_To_A_Blue_Item_On_A_Neutral_Shown_From_A_Angle_Unknown_Date.jpg [fallback: capture_date]
+  - Product_Shot_Front.jpg -> Images/Screenshots/Product_Photo_Of_An_O_Box_Next_To_A_Blue_Circular_Item_On_A_Neutral_Unknown_Date.jpg [fallback: capture_date]
+  - Project_Archive_2026.zip -> Archives/Notestxt_Budgetcsv_2026-07-11.zip
+  - Receipt_Or_Invoice_Ambiguous.pdf -> Finance/Riverside_Cafe_Goods_2026-06-20.pdf
+  - Resume_Morgan_Ellis_v1.pdf -> ~ARCHIVE~/Old Versions/Resume_Morgan_Ellis_Unknown.pdf [fallback: version_indicator, last_modified_date]
+  - Resume_Morgan_Ellis_v2.pdf -> Documents/Resume_Morgan_Ellis_2026-05-10.pdf
+  - Scan_Blank_Page.pdf -> Unknown/Unsorted_Scan_Blank_Page.pdf
+  - Screenshot_Login_Error.png -> Images/Screenshots/Login_Screen_Sho_An_Error_Dialog_Invalid_Or_With_A_Try_Again_Button_Unknown_Date.png [fallback: capture_date]
+  - Voice_Memo_070826.mp3 -> Audio/Client_Call_Notes_Vicky.mp3
+  - Zoom_Installer_6.1.2.dmg -> Applications/Zoom_Installer_612_Unknown_Platform.dmg [fallback: platform]
+  - invoice_🧾_northstar_—_v2.pdf -> Finance/North_Star_Freight_Co_Ns-3390_2026-06-28.pdf
+
+6 file(s) used a naming fallback for at least one field.
+3 file(s) routed via override: superseded_version
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Runtime/Logs/action_log.jsonl
+
+Module 05 complete.
+
+======================================================================
+MODULE 06: score_confidence()
+======================================================================
+Scored 23 file(s):
+  - BankStatement_Chase_June2026.pdf: 100 (auto)
+  - BankStatement_Chase_June2026_copy.pdf: 100 (auto)
+  - Batch_Invoices_Merged.pdf: 96 (review_required) [hard floor: multi_document_detected]
+  - Confidential_Payroll_Statement.pdf: 60 (review_required) [hard floor: unknown_category, locked_file]
+  - Contract_ServiceAgreement_v1.pdf: 100 (auto)
+  - Contract_ServiceAgreement_v2.pdf: 75 (review_required)
+  - Corrupted_Invoice_Damaged.pdf: 70 (review_required) [hard floor: unknown_category]
+  - Document_Employee_Handbook.pdf: 100 (auto)
+  - Facture_Boulangerie_Paris.pdf: 90 (approval_required)
+  - Family_Vacation_Clip.mp4: 96 (auto)
+  - Invoice_Northwind_Traders.pdf: 100 (auto)
+  - Invoice_Sparse_Draft.pdf: 74 (review_required)
+  - Product_Shot_Angle.jpg: 88 (approval_required)
+  - Product_Shot_Front.jpg: 68 (review_required) [hard floor: fuzzy_duplicate]
+  - Project_Archive_2026.zip: 100 (auto)
+  - Receipt_Or_Invoice_Ambiguous.pdf: 81 (approval_required)
+  - Resume_Morgan_Ellis_v1.pdf: 76 (review_required)
+  - Resume_Morgan_Ellis_v2.pdf: 73 (review_required)
+  - Scan_Blank_Page.pdf: 70 (review_required) [hard floor: unknown_category]
+  - Screenshot_Login_Error.png: 88 (approval_required)
+  - Voice_Memo_070826.mp3: 100 (auto)
+  - Zoom_Installer_6.1.2.dmg: 88 (approval_required)
+  - invoice_🧾_northstar_—_v2.pdf: 98 (auto)
+
+By tier:
+  - approval_required: 5
+  - auto: 9
+  - review_required: 9
+
+5 file(s) had at least one hard floor applied.
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence /Runtime/Logs/action_log.jsonl
+
+Module 06 complete.
+
+UAT Run 1 pipeline execution complete.

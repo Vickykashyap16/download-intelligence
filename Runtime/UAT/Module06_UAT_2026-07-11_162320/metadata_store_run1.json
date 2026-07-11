@@ -1,0 +1,1265 @@
+[
+  {
+    "file_id": "561d1dc2-89cf-407b-896f-7272e80d52a3",
+    "source_id": "downloads",
+    "original_name": "BankStatement_Chase_June2026.pdf",
+    "original_path": "/tmp/uat_m06_downloads/BankStatement_Chase_June2026.pdf",
+    "current_path": "/tmp/uat_m06_downloads/BankStatement_Chase_June2026.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1562,
+    "created_at": "2026-07-11T16:10:52.431001+00:00",
+    "modified_at": "2026-07-11T16:10:52.431001+00:00",
+    "content_hash": "931a93d3225fdc48c337092fa888351ccf10d770c4f4d0efd621a08b44415569",
+    "discovered_at": "2026-07-11T16:16:43.541509+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Bank Statement",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "bank_name": "Chase",
+      "statement_period": "June 1 - June 30, 2026",
+      "account_last4": "4821"
+    },
+    "suggested_name": "Chase_Statement_June_1_-_June_30_2026.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": "209ceef2-3ac3-4308-9c94-318b20616d0a",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "372e793b-4fce-4cf9-bf5b-511e36dab4d9",
+    "source_id": "downloads",
+    "original_name": "BankStatement_Chase_June2026_copy.pdf",
+    "original_path": "/tmp/uat_m06_downloads/BankStatement_Chase_June2026_copy.pdf",
+    "current_path": "/tmp/uat_m06_downloads/BankStatement_Chase_June2026_copy.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1562,
+    "created_at": "2026-07-11T16:10:52.432001+00:00",
+    "modified_at": "2026-07-11T16:10:52.432001+00:00",
+    "content_hash": "96e74bc4acf58bee3c40087008d3a7ef4a06b25aa900efa883cb067e2481ba26",
+    "discovered_at": "2026-07-11T16:16:44.057806+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Bank Statement",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "bank_name": "Chase",
+      "statement_period": "June 1 - June 30, 2026",
+      "account_last4": "4821"
+    },
+    "suggested_name": "Chase_Statement_June_1_-_June_30_2026.pdf",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": "209ceef2-3ac3-4308-9c94-318b20616d0a",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "8a94ce07-394b-40f0-988f-405a3cda91da",
+    "source_id": "downloads",
+    "original_name": "Batch_Invoices_Merged.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Batch_Invoices_Merged.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Batch_Invoices_Merged.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 2498,
+    "created_at": "2026-07-11T16:10:52.425001+00:00",
+    "modified_at": "2026-07-11T16:10:52.425001+00:00",
+    "content_hash": "f3a92224135050e8e1b3d1205bbc2cea7fb8a2c24d48e5d0323c07e1e3edb6db",
+    "discovered_at": "2026-07-11T16:16:44.567023+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": true,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "Cascade Hardware",
+      "invoice_date": "2026-04-01",
+      "invoice_number": "A-1001",
+      "amount": "$340.00",
+      "currency": null,
+      "tax_type": null
+    },
+    "suggested_name": "Cascade_Hardware_A-1001_2026-04-01.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 96,
+    "confidence_breakdown": {
+      "missing_optional_field:currency": -2,
+      "missing_optional_field:tax_type": -2
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "ec7c91dc-040a-4d68-a349-4243e1731e8c",
+    "source_id": "downloads",
+    "original_name": "Confidential_Payroll_Statement.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Confidential_Payroll_Statement.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Confidential_Payroll_Statement.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1439,
+    "created_at": "2026-07-11T16:10:52.430001+00:00",
+    "modified_at": "2026-07-11T16:10:52.430001+00:00",
+    "content_hash": "c119b3626e0a6212e387e41c928acb55b0e40c63fd7bfdbc064342b7668fde0d",
+    "discovered_at": "2026-07-11T16:16:45.077706+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Unknown",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": true
+    },
+    "extracted_metadata": {},
+    "suggested_name": "Unsorted_Confidential_Payroll_Statement.pdf",
+    "suggested_destination": "Unknown/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 60,
+    "confidence_breakdown": {
+      "locked_file": -40
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "854f1cae-5fb1-49f7-bff3-a5035d2c3c5f",
+    "source_id": "downloads",
+    "original_name": "Contract_ServiceAgreement_v1.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Contract_ServiceAgreement_v1.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Contract_ServiceAgreement_v1.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1673,
+    "created_at": "2026-07-11T16:10:52.432001+00:00",
+    "modified_at": "2026-07-11T16:10:52.432001+00:00",
+    "content_hash": "33f0021d9cfccd8838000be570e9cd41d753087f61b3d0ab54f1c24b1e5b254c",
+    "discovered_at": "2026-07-11T16:16:45.586746+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Contract",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "contract_type": "Service Agreement",
+      "counterparty": "Oakview Retail Inc.",
+      "effective_date": "2026-03-01",
+      "term_length": "12 months"
+    },
+    "suggested_name": "Service_Agreement_Oakview_Retail_Inc_2026-03-01.pdf",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": "79c6ecec-9604-4d25-8ae4-11b4e21a57b9",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "9577e2e7-7470-491a-92b6-703e696bb56a",
+    "source_id": "downloads",
+    "original_name": "Contract_ServiceAgreement_v2.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Contract_ServiceAgreement_v2.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Contract_ServiceAgreement_v2.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1823,
+    "created_at": "2026-07-11T16:10:52.433001+00:00",
+    "modified_at": "2026-07-11T16:10:52.433001+00:00",
+    "content_hash": "8012cf04a0829ae4fedae740a3aa85211165a7b7624032047901f5b557b52ca3",
+    "discovered_at": "2026-07-11T16:16:46.098385+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Contract",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "contract_type": "Service Agreement",
+      "counterparty": "Oakview Retail Inc.",
+      "effective_date": "2026-01-15",
+      "term_length": "12 months"
+    },
+    "suggested_name": "Service_Agreement_Oakview_Retail_Inc_2026-01-15.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": "79c6ecec-9604-4d25-8ae4-11b4e21a57b9",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": true
+    },
+    "confidence_score": 75,
+    "confidence_breakdown": {
+      "version_conflict": -25
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "fa1fedd1-b0fb-4197-80f6-feb93686259d",
+    "source_id": "downloads",
+    "original_name": "Corrupted_Invoice_Damaged.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Corrupted_Invoice_Damaged.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Corrupted_Invoice_Damaged.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 175,
+    "created_at": "2026-07-11T16:10:52.479001+00:00",
+    "modified_at": "2026-07-11T16:10:52.479001+00:00",
+    "content_hash": "85eeb0f8f5c3e3b1017852c180dbeed6018a8de27c7f77cf94c2438e08f9f318",
+    "discovered_at": "2026-07-11T16:16:46.608974+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Unknown",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": true,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {},
+    "suggested_name": "Unsorted_Corrupted_Invoice_Damaged.pdf",
+    "suggested_destination": "Unknown/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "no_extractable_text": -30
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "d24b5d8e-88b2-4841-92c5-e9fa4da011b2",
+    "source_id": "downloads",
+    "original_name": "Document_Employee_Handbook.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Document_Employee_Handbook.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Document_Employee_Handbook.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1698,
+    "created_at": "2026-07-11T16:10:52.457001+00:00",
+    "modified_at": "2026-07-11T16:10:52.457001+00:00",
+    "content_hash": "8a8e36a38f05e79fe0e0d9f0df66731e21c4a467ea086edca442b5958a81e308",
+    "discovered_at": "2026-07-11T16:16:47.119484+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Employee Handbook",
+      "document_date": "2026-04-18",
+      "description": "Company policy handbook covering remote work and PTO policies"
+    },
+    "suggested_name": "Employee_Handbook_2026-04-18.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "bfa22d8f-7308-432d-8110-dcd589e3e495",
+    "source_id": "downloads",
+    "original_name": "Facture_Boulangerie_Paris.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Facture_Boulangerie_Paris.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Facture_Boulangerie_Paris.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1852,
+    "created_at": "2026-07-11T16:10:52.425001+00:00",
+    "modified_at": "2026-07-11T16:10:52.425001+00:00",
+    "content_hash": "447f9c80e6fd5738e0ba67c74f52622b9cc561e55368b340aa061f163be05e43",
+    "discovered_at": "2026-07-11T16:16:47.628685+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": true,
+      "detected_language": "fr",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "Boulangerie Saint-Germain",
+      "invoice_date": "2026-06-12",
+      "invoice_number": "FR-2026-0417",
+      "amount": "276,00 EUR",
+      "currency": "EUR",
+      "tax_type": "TVA (20%)"
+    },
+    "suggested_name": "Boulangerie_Saint-germain_Fr-2026-0417_2026-06-12.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 90,
+    "confidence_breakdown": {
+      "non_english_content": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "fa5aa32c-9da7-477f-be2c-8a68b1242ca6",
+    "source_id": "downloads",
+    "original_name": "Family_Vacation_Clip.mp4",
+    "original_path": "/tmp/uat_m06_downloads/Family_Vacation_Clip.mp4",
+    "current_path": "/tmp/uat_m06_downloads/Family_Vacation_Clip.mp4",
+    "extension": ".mp4",
+    "mime_type": "video/mp4",
+    "size_bytes": 212,
+    "created_at": "2026-07-11T16:10:52.479001+00:00",
+    "modified_at": "2026-07-11T16:10:52.479001+00:00",
+    "content_hash": "8fe8b0eaf9e227987ffb2bf29b65219437f1d821a4ca6461ed348c9f3b76277e",
+    "discovered_at": "2026-07-11T16:16:48.140172+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Video",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": "Family_Vacation_Clip",
+      "duration": null,
+      "content_date": null
+    },
+    "suggested_name": "Family_Vacation_Clip_2026-07-11.mp4",
+    "suggested_destination": "Videos/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 96,
+    "confidence_breakdown": {
+      "missing_optional_field:duration": -2,
+      "missing_optional_field:content_date": -2
+    },
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "a40a2b0f-1fc1-48a3-bc29-6944c641d2b8",
+    "source_id": "downloads",
+    "original_name": "Invoice_Northwind_Traders.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Invoice_Northwind_Traders.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Invoice_Northwind_Traders.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1760,
+    "created_at": "2026-07-11T16:10:52.423001+00:00",
+    "modified_at": "2026-07-11T16:10:52.423001+00:00",
+    "content_hash": "44c75c5990d83be32a715f73246d87849e54bfb4c94d6d507c37ed0f5de99829",
+    "discovered_at": "2026-07-11T16:16:48.651066+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "Northwind Traders",
+      "invoice_date": "2026-06-15",
+      "invoice_number": "INV-88213",
+      "amount": "$4,230.00",
+      "currency": "USD",
+      "tax_type": "Sales Tax"
+    },
+    "suggested_name": "Northwind_Traders_Inv-88213_2026-06-15.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "13af7e84-cc68-4014-84ea-61e73aadeeb5",
+    "source_id": "downloads",
+    "original_name": "Invoice_Sparse_Draft.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Invoice_Sparse_Draft.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Invoice_Sparse_Draft.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1570,
+    "created_at": "2026-07-11T16:10:52.423001+00:00",
+    "modified_at": "2026-07-11T16:10:52.423001+00:00",
+    "content_hash": "899bf30a44753bf8c9dbdf0c261ff6484e4afb6842431a497571427832e252ad",
+    "discovered_at": "2026-07-11T16:16:49.159453+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": null,
+      "invoice_date": "2026-05-02",
+      "invoice_number": null,
+      "amount": null,
+      "currency": null,
+      "tax_type": null
+    },
+    "suggested_name": "Unknown_Vendor_2026-05-02.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "vendor"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 74,
+    "confidence_breakdown": {
+      "missing_required_field:vendor": -8,
+      "missing_optional_field:invoice_number": -2,
+      "missing_optional_field:amount": -2,
+      "missing_optional_field:currency": -2,
+      "missing_optional_field:tax_type": -2,
+      "naming_fallback:vendor": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "084313d3-3228-4c8b-9505-15b8f144e1d7",
+    "source_id": "downloads",
+    "original_name": "Product_Shot_Angle.jpg",
+    "original_path": "/tmp/uat_m06_downloads/Product_Shot_Angle.jpg",
+    "current_path": "/tmp/uat_m06_downloads/Product_Shot_Angle.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 9064,
+    "created_at": "2026-07-11T16:10:52.456001+00:00",
+    "modified_at": "2026-07-11T16:10:52.456001+00:00",
+    "content_hash": "efbdf808a8e2de8ad0f736ab5508ff803b7b85aea38b2c19fb6f1283b92de34a",
+    "discovered_at": "2026-07-11T16:16:49.667465+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": "Product photo of an orange/tan rectangular box next to a blue circular item on a neutral background, shown from a slightly different angle",
+      "capture_date": null
+    },
+    "suggested_name": "Photo_Of_An_Box_Next_To_A_Blue_Item_On_A_Neutral_Shown_From_A_Angle_Unknown_Date.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "08ab2e73-2949-4598-b6ec-30cd183005ef",
+    "source_id": "downloads",
+    "original_name": "Product_Shot_Front.jpg",
+    "original_path": "/tmp/uat_m06_downloads/Product_Shot_Front.jpg",
+    "current_path": "/tmp/uat_m06_downloads/Product_Shot_Front.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 9222,
+    "created_at": "2026-07-11T16:10:52.456001+00:00",
+    "modified_at": "2026-07-11T16:10:52.456001+00:00",
+    "content_hash": "5b52f5dd7ffe6cc13fbdf5d1b73957d7dbddf4b8998051bc0dde260cc4b701b3",
+    "discovered_at": "2026-07-11T16:16:50.176641+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": "Product photo of an orange/tan rectangular box next to a blue circular item on a neutral background",
+      "capture_date": null
+    },
+    "suggested_name": "Product_Photo_Of_An_O_Box_Next_To_A_Blue_Circular_Item_On_A_Neutral_Unknown_Date.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": true,
+      "phash_distance": 4,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:capture_date": -10,
+      "fuzzy_duplicate": -20
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "8ceb6d37-1e4e-497e-972a-c4e018b6dc11",
+    "source_id": "downloads",
+    "original_name": "Project_Archive_2026.zip",
+    "original_path": "/tmp/uat_m06_downloads/Project_Archive_2026.zip",
+    "current_path": "/tmp/uat_m06_downloads/Project_Archive_2026.zip",
+    "extension": ".zip",
+    "mime_type": "application/zip",
+    "size_bytes": 301,
+    "created_at": "2026-07-11T16:10:52.479001+00:00",
+    "modified_at": "2026-07-11T16:10:52.479001+00:00",
+    "content_hash": "411f760547634872029437affd150747d29b2836fc1850e396e93479816e0df8",
+    "discovered_at": "2026-07-11T16:16:50.687780+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Archive",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "contents_summary": "notes.txt, budget.csv"
+    },
+    "suggested_name": "Notestxt_Budgetcsv_2026-07-11.zip",
+    "suggested_destination": "Archives/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "2b0c907c-945d-4a78-b8d2-3e4edb7b8043",
+    "source_id": "downloads",
+    "original_name": "Receipt_Or_Invoice_Ambiguous.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Receipt_Or_Invoice_Ambiguous.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Receipt_Or_Invoice_Ambiguous.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1716,
+    "created_at": "2026-07-11T16:10:52.424001+00:00",
+    "modified_at": "2026-07-11T16:10:52.424001+00:00",
+    "content_hash": "4efe2f80dd2451337a7ac5afd8962c380fac98a482950f1cbf3e1709a5bfe3b5",
+    "discovered_at": "2026-07-11T16:16:51.192959+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": true,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "Riverside Cafe & Goods",
+      "invoice_date": "2026-06-20",
+      "invoice_number": null,
+      "amount": "$612.50",
+      "currency": "USD",
+      "tax_type": null
+    },
+    "suggested_name": "Riverside_Cafe_Goods_2026-06-20.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 81,
+    "confidence_breakdown": {
+      "ambiguous_classification": -15,
+      "missing_optional_field:invoice_number": -2,
+      "missing_optional_field:tax_type": -2
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "ba97740f-c78e-4037-80cf-0e60f1e31870",
+    "source_id": "downloads",
+    "original_name": "Resume_Morgan_Ellis_v1.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Resume_Morgan_Ellis_v1.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Resume_Morgan_Ellis_v1.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1566,
+    "created_at": "2026-07-11T16:10:52.430001+00:00",
+    "modified_at": "2026-07-11T16:10:52.430001+00:00",
+    "content_hash": "33772ff450c51f54db972044948f914a693bf99e77080fc8dd0da262544554e0",
+    "discovered_at": "2026-07-11T16:16:51.704000+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Resume",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "candidate_name": "Morgan Ellis",
+      "version_indicator": null,
+      "last_modified_date": null
+    },
+    "suggested_name": "Resume_Morgan_Ellis_Unknown.pdf",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "version_indicator",
+        "last_modified_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "f0ed1963-7dc4-4534-92b4-6ebeed9a20c7",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 76,
+    "confidence_breakdown": {
+      "missing_optional_field:version_indicator": -2,
+      "missing_optional_field:last_modified_date": -2,
+      "naming_fallback:version_indicator": -10,
+      "naming_fallback:last_modified_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "a2670140-4bb5-403f-a8b4-7597e9f3ad74",
+    "source_id": "downloads",
+    "original_name": "Resume_Morgan_Ellis_v2.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Resume_Morgan_Ellis_v2.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Resume_Morgan_Ellis_v2.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1673,
+    "created_at": "2026-07-11T16:10:52.431001+00:00",
+    "modified_at": "2026-07-11T16:10:52.431001+00:00",
+    "content_hash": "a03f05a2ac8b35a28d70fc37723905a3f80895786e9a31f198d4d5222d5ba1d4",
+    "discovered_at": "2026-07-11T16:16:52.214787+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Resume",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "candidate_name": "Morgan Ellis",
+      "version_indicator": null,
+      "last_modified_date": "2026-05-10"
+    },
+    "suggested_name": "Resume_Morgan_Ellis_2026-05-10.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": "f0ed1963-7dc4-4534-92b4-6ebeed9a20c7",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": true
+    },
+    "confidence_score": 73,
+    "confidence_breakdown": {
+      "missing_optional_field:version_indicator": -2,
+      "version_conflict": -25
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "029c8c63-e3cf-4c68-a49c-007f38a474e6",
+    "source_id": "downloads",
+    "original_name": "Scan_Blank_Page.pdf",
+    "original_path": "/tmp/uat_m06_downloads/Scan_Blank_Page.pdf",
+    "current_path": "/tmp/uat_m06_downloads/Scan_Blank_Page.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1298,
+    "created_at": "2026-07-11T16:10:52.430001+00:00",
+    "modified_at": "2026-07-11T16:10:52.430001+00:00",
+    "content_hash": "704e187c1b8c0c2e8a528a52f26327583f71766ee9381437fcb9cf5296b64241",
+    "discovered_at": "2026-07-11T16:16:52.724851+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Unknown",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": true,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {},
+    "suggested_name": "Unsorted_Scan_Blank_Page.pdf",
+    "suggested_destination": "Unknown/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "no_extractable_text": -30
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "8299040a-7cb0-4dd3-8b8b-7f830ac0ac91",
+    "source_id": "downloads",
+    "original_name": "Screenshot_Login_Error.png",
+    "original_path": "/tmp/uat_m06_downloads/Screenshot_Login_Error.png",
+    "current_path": "/tmp/uat_m06_downloads/Screenshot_Login_Error.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 8654,
+    "created_at": "2026-07-11T16:10:52.479001+00:00",
+    "modified_at": "2026-07-11T16:10:52.479001+00:00",
+    "content_hash": "e90740a828fb7c992795b08be72837e80e0cdb78a7df3d1122331ca425796ed4",
+    "discovered_at": "2026-07-11T16:16:53.238927+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": "Login screen showing an authentication error dialog ('Invalid username or password') with a Try Again button",
+      "capture_date": null
+    },
+    "suggested_name": "Login_Screen_Sho_An_Error_Dialog_Invalid_Or_With_A_Try_Again_Button_Unknown_Date.png",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "b2f60b33-0404-428d-9b60-9f8acbdc8624",
+    "source_id": "downloads",
+    "original_name": "Voice_Memo_070826.mp3",
+    "original_path": "/tmp/uat_m06_downloads/Voice_Memo_070826.mp3",
+    "current_path": "/tmp/uat_m06_downloads/Voice_Memo_070826.mp3",
+    "extension": ".mp3",
+    "mime_type": "audio/mpeg",
+    "size_bytes": 49007,
+    "created_at": "2026-07-11T16:11:03.800001+00:00",
+    "modified_at": "2026-07-11T16:11:03.800001+00:00",
+    "content_hash": "739890e517603544edf2711be8f1eaa80f10565b041f6a931e7a629c9d9a9c7d",
+    "discovered_at": "2026-07-11T16:16:53.747637+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Audio",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "track_title": "Client Call Notes",
+      "artist": "Vicky",
+      "duration": 3,
+      "recording_date": "2026"
+    },
+    "suggested_name": "Client_Call_Notes_Vicky.mp3",
+    "suggested_destination": "Audio/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "5268804c-4aaf-4d5a-a973-feed6c5798cf",
+    "source_id": "downloads",
+    "original_name": "Zoom_Installer_6.1.2.dmg",
+    "original_path": "/tmp/uat_m06_downloads/Zoom_Installer_6.1.2.dmg",
+    "current_path": "/tmp/uat_m06_downloads/Zoom_Installer_6.1.2.dmg",
+    "extension": ".dmg",
+    "mime_type": "application/x-apple-diskimage",
+    "size_bytes": 470,
+    "created_at": "2026-07-11T16:10:52.479001+00:00",
+    "modified_at": "2026-07-11T16:10:52.479001+00:00",
+    "content_hash": "05f220c76eedccc1a7916c9951ca93352663a007a073ecc9bd4325a961afd6dc",
+    "discovered_at": "2026-07-11T16:16:54.257229+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Application",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "app_name": "Zoom Installer",
+      "version": "6.1.2",
+      "platform": null
+    },
+    "suggested_name": "Zoom_Installer_612_Unknown_Platform.dmg",
+    "suggested_destination": "Applications/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "platform"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:platform": -2,
+      "naming_fallback:platform": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "aab024b3-68f0-46bd-995d-33f159d490a5",
+    "source_id": "downloads",
+    "original_name": "invoice_\ud83e\uddfe_northstar_\u2014_v2.pdf",
+    "original_path": "/tmp/uat_m06_downloads/invoice_\ud83e\uddfe_northstar_\u2014_v2.pdf",
+    "current_path": "/tmp/uat_m06_downloads/invoice_\ud83e\uddfe_northstar_\u2014_v2.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1511,
+    "created_at": "2026-07-11T16:10:52.480001+00:00",
+    "modified_at": "2026-07-11T16:10:52.480001+00:00",
+    "content_hash": "00793e375cf493588005466680404e628276cb37989daff3cc46a9fc4a473440",
+    "discovered_at": "2026-07-11T16:16:54.765909+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "North Star Freight Co.",
+      "invoice_date": "2026-06-28",
+      "invoice_number": "NS-3390",
+      "amount": "$980.00",
+      "currency": "USD",
+      "tax_type": null
+    },
+    "suggested_name": "North_Star_Freight_Co_Ns-3390_2026-06-28.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 98,
+    "confidence_breakdown": {
+      "missing_optional_field:tax_type": -2
+    },
+    "tier": "auto",
+    "batch_id": "2026-07-11_161643",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  }
+]

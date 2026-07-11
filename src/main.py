@@ -5,9 +5,10 @@ Usage: `python -m src.main` (run from the project root, so the `src.` package
 imports resolve correctly).
 
 Module 01 (Watch & Ingest), Module 02 (Classification), Module 03 (Metadata
-Extraction), Module 04 (Duplicate & Version Detection), and Module 05 (Naming &
-Destination) are implemented and wired in below. Everything past naming/destination
-(confidence/review onward) is still scaffold.
+Extraction), Module 04 (Duplicate & Version Detection), Module 05 (Naming &
+Destination), and Module 06 (Confidence & Review) are implemented and wired in
+below. Everything past confidence/review (the actual move/file step onward) is
+still scaffold.
 """
 
 import json
@@ -15,6 +16,7 @@ from collections import Counter
 from pathlib import Path
 
 from src.pipeline.classification import classify_batch
+from src.pipeline.confidence import score_confidence_batch
 from src.pipeline.duplicate_detector import detect_duplicates_batch, needs_duplicate_detection
 from src.pipeline.metadata import extract_metadata_batch
 from src.pipeline.naming import suggest_naming_and_destination_batch
@@ -348,6 +350,59 @@ def suggest_naming() -> None:
     print("\nModule 05 complete.")
 
 
+def score_confidence() -> None:
+    """Run Module 06 on every `status == "discovered"` record that has a real
+    category and a suggested name but hasn't been scored yet, persist the
+    results, and print a summary. Mirrors `suggest_naming()`'s exact shape.
+
+    Unlike `classify()`/`extract()`, this takes no `provider` parameter — Module
+    06 is fully deterministic, with no Provider layer at all (Module 06
+    Design.md §2, confirmed). The eligibility filter below is the per-record
+    filter defined in Design.md §11 step 1 (status/category/suggested_name);
+    `confidence_score is None` is this function's own CLI-level idempotency
+    check — mirroring `suggest_naming()`'s `suggested_name is None` precedent —
+    so a second run doesn't re-score a record already scored (§11, §24).
+    """
+    records = [
+        record for record in load_metadata_store()
+        if record.status == "discovered"
+        and record.category is not None
+        and record.suggested_name is not None
+        and record.confidence_score is None
+    ]
+    if not records:
+        print("Nothing to score — no discovered, named records still awaiting a confidence score.")
+        return
+
+    file_ids = {record.file_id for record in records}
+    score_confidence_batch(records)
+
+    log_details_by_file_id = _read_action_log_details(file_ids, action="score_confidence")
+
+    tier_counts = Counter(record.tier for record in records if record.tier)
+    hard_floor_count = sum(
+        1 for details in log_details_by_file_id.values() if details.get("hard_floors_applied")
+    )
+
+    print(f"Scored {len(records)} file(s):")
+    for record in records:
+        details = log_details_by_file_id.get(record.file_id, {})
+        floors = details.get("hard_floors_applied") or []
+        note = f" [hard floor: {', '.join(floors)}]" if floors else ""
+        print(f"  - {record.original_name}: {record.confidence_score} ({record.tier}){note}")
+
+    print("\nBy tier:")
+    for tier, count in sorted(tier_counts.items()):
+        print(f"  - {tier}: {count}")
+
+    if hard_floor_count:
+        print(f"\n{hard_floor_count} file(s) had at least one hard floor applied.")
+
+    print(f"\nMetadata written to: {metadata_store_path()}")
+    print(f"Action log written to: {action_log_path()}")
+    print("\nModule 06 complete.")
+
+
 def _read_classify_log_details(file_ids: set) -> dict:
     """Read back this run's `classify` action-log entries for `file_ids`, keyed by
     file_id — used only to build the CLI summary from the authoritative log rather
@@ -377,3 +432,4 @@ if __name__ == "__main__":
     extract()
     detect_duplicates()
     suggest_naming()
+    score_confidence()

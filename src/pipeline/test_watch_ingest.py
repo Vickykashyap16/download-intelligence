@@ -9,8 +9,13 @@ src/README.md about hardcoded project-relative paths being a known testability
 limitation of the current storage/*.py modules.
 """
 
+import dataclasses
+
 import src.storage.database as database_module
 import src.storage.runtime_io as runtime_io_module
+from src.models.classification import Category, ClassificationSignals
+from src.models.duplicate import DuplicateSignals
+from src.models.naming import NamingSignals
 from src.pipeline.watch_ingest import (
     build_file_record,
     classify_ignored_name,
@@ -156,6 +161,117 @@ def test_build_file_record_flags_content_change_at_same_path(tmp_path, monkeypat
     assert content_changed is True
     assert second_record.file_id == first_record.file_id  # still the same tracked file
     assert second_record.content_hash != first_record.content_hash
+
+
+def _populate_downstream_fields(record) -> None:
+    """Test helper (post-freeze correction #1 regression coverage): stamp every
+    downstream-owned field (Modules 02-07's, per Release/Module01/MODULE_CONTRACT.md's
+    DOES NOT MODIFY list) with a real, non-default value, simulating a record that has
+    already been through the full Module 01->06 pipeline (and, hypothetically,
+    Module 07). Kept as one shared helper so the two regression tests below and any
+    future one all stamp the exact same 17 fields, deliberately mirroring
+    _reset_downstream_owned_fields()'s own field list in watch_ingest.py so a drift
+    between the two would show up as a real test failure, not a silent gap."""
+    record.category = Category.INVOICE
+    record.classification_signals = ClassificationSignals(ambiguous=True)
+    record.extracted_metadata = {"vendor": "Acme Corp"}
+    record.suggested_name = "Acme_Corp_2026-01-01.pdf"
+    record.suggested_destination = "Finance/"
+    record.naming_signals = NamingSignals(fields_fell_back=["invoice_number"])
+    record.duplicate_of = "some-other-file-id"
+    record.version_group_id = "some-version-group-id"
+    record.version_rank = "latest"
+    record.duplicate_signals = DuplicateSignals(fuzzy_duplicate=True, phash_distance=3)
+    record.confidence_score = 82
+    record.confidence_breakdown = {"missing_required_field:invoice_number": -8, "naming_fallback:vendor": -10}
+    record.tier = "approval_required"
+    record.processed_at = "2026-01-02T00:00:00+00:00"
+    record.approved_by = "user"
+    record.approved_at = "2026-01-02T00:00:01+00:00"
+    record.reversible = False
+
+
+def test_build_file_record_preserves_downstream_fields_on_unchanged_rescan(tmp_path, monkeypatch):
+    """Post-freeze correction #1 (2026-07-11), Finding UAT-1 (Module 06 UAT): a
+    re-scan of an unmoved, content-unchanged file must not disturb any
+    downstream-owned field, even though build_file_record() constructs an entirely
+    new object on first discovery. Every downstream field is asserted byte-for-byte
+    identical (via dataclasses.asdict(), mirroring Module 02-06's own established
+    Module Contract immutability test pattern) before and after the re-scan — not
+    merely spot-checked."""
+    _isolate_storage(tmp_path, monkeypatch)
+    path = tmp_path / "invoice.pdf"
+    path.write_text("invoice content — unchanged across both scans")
+
+    first_record, _ = build_file_record(path, source_id="downloads", batch_id="batch-1")
+    _populate_downstream_fields(first_record)
+    database_module.save_file_record(first_record)
+    before = dataclasses.asdict(first_record)
+
+    second_record, content_changed = build_file_record(path, source_id="downloads", batch_id="batch-2")
+    after = dataclasses.asdict(second_record)
+
+    assert content_changed is False
+    downstream_fields = [
+        "category", "classification_signals", "extracted_metadata",
+        "suggested_name", "suggested_destination", "naming_signals",
+        "duplicate_of", "version_group_id", "version_rank", "duplicate_signals",
+        "confidence_score", "confidence_breakdown", "tier",
+        "processed_at", "approved_by", "approved_at", "reversible",
+    ]
+    for field_name in downstream_fields:
+        assert after[field_name] == before[field_name], f"{field_name} changed on an unchanged re-scan"
+    # Module 01's own fields still correctly refresh (batch_id in particular).
+    assert second_record.batch_id == "batch-2"
+    assert second_record.file_id == first_record.file_id
+
+
+def test_build_file_record_clears_downstream_fields_on_content_change(tmp_path, monkeypatch):
+    """Post-freeze correction #1 (2026-07-11), Finding UAT-1 (Module 06 UAT): a
+    re-scan where content_hash has genuinely changed must reset every
+    downstream-owned field to its FileRecord default — the same shape as a
+    first-discovery record — so it re-enters Modules 02-06's existing null-based
+    reprocessing path. Module 01's own fields (content_hash in particular) must
+    still correctly reflect the NEW content, and identity fields must be preserved."""
+    _isolate_storage(tmp_path, monkeypatch)
+    path = tmp_path / "invoice.pdf"
+    path.write_text("invoice content — version one")
+
+    first_record, _ = build_file_record(path, source_id="downloads", batch_id="batch-1")
+    _populate_downstream_fields(first_record)
+    database_module.save_file_record(first_record)
+    old_content_hash = first_record.content_hash
+
+    path.write_text("invoice content — version two, completely different")
+    second_record, content_changed = build_file_record(path, source_id="downloads", batch_id="batch-2")
+
+    assert content_changed is True
+    # Identity preserved (still the same tracked file, per Module 01's own contract).
+    assert second_record.file_id == first_record.file_id
+    assert second_record.original_name == first_record.original_name
+    assert second_record.original_path == first_record.original_path
+    assert second_record.discovered_at == first_record.discovered_at
+    # Module 01's own fields correctly reflect the new content.
+    assert second_record.content_hash != old_content_hash
+    assert second_record.batch_id == "batch-2"
+    # Every downstream-owned field reset to its default.
+    assert second_record.category is None
+    assert second_record.classification_signals is None
+    assert second_record.extracted_metadata == {}
+    assert second_record.suggested_name is None
+    assert second_record.suggested_destination is None
+    assert second_record.naming_signals is None
+    assert second_record.duplicate_of is None
+    assert second_record.version_group_id is None
+    assert second_record.version_rank is None
+    assert second_record.duplicate_signals is None
+    assert second_record.confidence_score is None
+    assert second_record.confidence_breakdown == {}
+    assert second_record.tier is None
+    assert second_record.processed_at is None
+    assert second_record.approved_by is None
+    assert second_record.approved_at is None
+    assert second_record.reversible is True
 
 
 def test_scan_source_skips_ignored_and_unsupported(tmp_path, monkeypatch):

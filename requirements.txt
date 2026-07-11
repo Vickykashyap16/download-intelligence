@@ -1,0 +1,12 @@
+ImageHash==4.3.2
+langdetect==1.0.9
+mutagen==1.48.1
+pdfplumber==0.11.10
+Pillow==12.3.0
+pypdf==6.14.2
+pytest==9.1.1
+python_docx==1.2.0
+PyYAML==6.0.1
+PyYAML==6.0.3
+rapidfuzz==3.6.2
+reportlab==5.0.0

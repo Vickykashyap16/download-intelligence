@@ -237,11 +237,24 @@ def build_file_record(path: Path, source_id: str, batch_id: str) -> Tuple[FileRe
     this is what makes repeated manual scans idempotent instead of piling up
     duplicate Database entries for a file nobody's moved yet.
 
+    Post-freeze correction #1 (2026-07-11 — see "01 Watch & Ingest.md" and
+    Release/Module01/MODULE_CONTRACT.md for the full rationale): when an existing
+    record is found, it is updated IN PLACE for Module 01's own fields only — never
+    reconstructed from scratch — so every downstream-owned field (Modules 02–07's,
+    per MODULE_CONTRACT.md's DOES NOT MODIFY list) it may already carry survives a
+    re-scan untouched. The one disclosed exception: if content_hash has genuinely
+    changed, those same downstream-owned fields are explicitly reset to their
+    FileRecord defaults (_reset_downstream_owned_fields()) so the record re-enters
+    Modules 02–06's existing null-based reprocessing path exactly like a
+    first-discovery record — the only mechanism anywhere in this pipeline that ever
+    re-selects a record for processing.
+
     Attempts to read file contents for the SHA-256 content hash; if that fails
     (locked/unreadable), still returns a record — with status='unreadable' and the
     error recorded — rather than raising, per the "do not crash the pipeline"
-    requirement. Only populates the fields Module 01 owns; everything from
-    classification onward is left at its default (None/empty) for later modules.
+    requirement. Only ever sets the fields Module 01 owns; everything from
+    classification onward is either left exactly as it was (unchanged content) or
+    explicitly reset to its default (changed content) — never freshly computed here.
     """
     resolved_path = path.resolve()
     current_path = str(resolved_path)
@@ -266,25 +279,74 @@ def build_file_record(path: Path, source_id: str, batch_id: str) -> Tuple[FileRe
         and existing_record.content_hash != content_hash
     )
 
-    record = FileRecord(
-        file_id=existing_record.file_id if existing_record else generate_new_file_id(),
-        source_id=source_id,
-        original_name=existing_record.original_name if existing_record else resolved_path.name,
-        original_path=existing_record.original_path if existing_record else current_path,
-        current_path=current_path,
-        extension=get_extension(resolved_path),
-        mime_type=get_mime_type(resolved_path),
-        size_bytes=stat_result.st_size,
-        created_at=get_created_at(stat_result),
-        modified_at=get_modified_at(stat_result),
-        content_hash=content_hash,
-        discovered_at=existing_record.discovered_at if existing_record else now,
-        status=status,
-        error=error,
-        batch_id=batch_id,
-    )
+    if existing_record is not None:
+        record = existing_record
+        record.current_path = current_path
+        record.extension = get_extension(resolved_path)
+        record.mime_type = get_mime_type(resolved_path)
+        record.size_bytes = stat_result.st_size
+        record.created_at = get_created_at(stat_result)
+        record.modified_at = get_modified_at(stat_result)
+        record.content_hash = content_hash
+        record.status = status
+        record.error = error
+        record.batch_id = batch_id
+        # file_id, source_id, original_name, original_path, discovered_at are
+        # intentionally left untouched — already correct on the existing object.
+
+        if content_changed:
+            _reset_downstream_owned_fields(record)
+    else:
+        record = FileRecord(
+            file_id=generate_new_file_id(),
+            source_id=source_id,
+            original_name=resolved_path.name,
+            original_path=current_path,
+            current_path=current_path,
+            extension=get_extension(resolved_path),
+            mime_type=get_mime_type(resolved_path),
+            size_bytes=stat_result.st_size,
+            created_at=get_created_at(stat_result),
+            modified_at=get_modified_at(stat_result),
+            content_hash=content_hash,
+            discovered_at=now,
+            status=status,
+            error=error,
+            batch_id=batch_id,
+        )
 
     return record, content_changed
+
+
+def _reset_downstream_owned_fields(record: FileRecord) -> None:
+    """Reset every downstream-owned field (Modules 02–07's, per MODULE_CONTRACT.md's
+    DOES NOT MODIFY list) to its FileRecord dataclass default, in place, on `record`.
+
+    Post-freeze correction #1 (2026-07-11). Only ever called from
+    build_file_record()'s content_changed branch — deliberately not a
+    general-purpose helper, so a future caller doesn't reach for this outside the
+    one condition it was designed for. Named explicitly, field by field, rather
+    than re-constructing a fresh FileRecord and copying the identity fields across,
+    so the exact set of fields this resets is visible in one place and trivially
+    diffable against MODULE_CONTRACT.md's own DOES NOT MODIFY list.
+    """
+    record.category = None
+    record.classification_signals = None
+    record.extracted_metadata = {}
+    record.suggested_name = None
+    record.suggested_destination = None
+    record.naming_signals = None
+    record.duplicate_of = None
+    record.version_group_id = None
+    record.version_rank = None
+    record.duplicate_signals = None
+    record.confidence_score = None
+    record.confidence_breakdown = {}
+    record.tier = None
+    record.processed_at = None
+    record.approved_by = None
+    record.approved_at = None
+    record.reversible = True
 
 
 def scan_source(source_path: str, source_id: str = "downloads",

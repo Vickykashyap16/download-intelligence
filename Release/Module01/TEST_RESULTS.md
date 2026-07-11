@@ -4,7 +4,7 @@ Full detail lives in `Tests/Module 01 Validation & Test Plan.md` and `Runtime/UA
 
 ## Unit tests
 
-`src/pipeline/test_watch_ingest.py` — **13 of 13 passing** (pytest, isolated `tmp_path`/`monkeypatch` fixtures, no real Database/Runtime files touched):
+`src/pipeline/test_watch_ingest.py` — **15 of 15 passing** (pytest, isolated `tmp_path`/`monkeypatch` fixtures, no real Database/Runtime files touched):
 
 - `test_is_ignored_name_matches_known_junk`
 - `test_classify_ignored_name_returns_specific_reason` *(added for the UAT-driven skip-reason change)*
@@ -19,8 +19,10 @@ Full detail lives in `Tests/Module 01 Validation & Test Plan.md` and `Runtime/UA
 - `test_scan_source_skips_ignored_and_unsupported` *(updated to assert `system_file`/`temporary_download`)*
 - `test_scan_source_skips_symlinks_without_following_them` *(regression test for the symlink defect)*
 - `test_scan_source_raises_on_missing_directory`
+- `test_build_file_record_preserves_downstream_fields_on_unchanged_rescan` *(added for post-freeze correction #1 — Module 06 UAT Finding UAT-1)*
+- `test_build_file_record_clears_downstream_fields_on_content_change` *(added for post-freeze correction #1 — Module 06 UAT Finding UAT-1)*
 
-Last confirmed run: 2026-07-06, `13 passed in 1.07s`.
+Last confirmed run: 2026-07-06, `13 passed in 1.07s`. **Updated 2026-07-11 (post-freeze correction #1):** `15 passed`, full run — see "Regression tests" below for the complete-suite result.
 
 ## Integration tests
 
@@ -56,6 +58,8 @@ Each run's `metadata_store.json`, `action_log.jsonl`, `terminal_output.txt`, and
 ## Regression tests
 
 Full unit suite (13 tests) re-run after every code change made during this release cycle — the symlink fix, the file_id redesign, and the CLI/skip-reason UAT fixes — with 100% pass rate confirmed each time, most recently 2026-07-06.
+
+**2026-07-11 (post-freeze correction #1, Module 06 UAT Finding UAT-1):** `build_file_record()`'s re-scan handling corrected (mutate existing `FileRecord` in place for unchanged content; reset downstream-owned fields to default for changed content — see `RELEASE_NOTES.md`). Two new regression tests added, both confirmed genuinely load-bearing via mutation testing against the reconstructed pre-fix code. Full project regression suite: **352 passed**. Of those, 337 tests outside `test_watch_ingest.py` confirmed to match the pre-fix baseline exactly — zero impact on Modules 02–06.
 
 ## Performance observations
 
