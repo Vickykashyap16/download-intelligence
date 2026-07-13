@@ -7,17 +7,37 @@ imports resolve correctly).
 Module 01 (Watch & Ingest), Module 02 (Classification), Module 03 (Metadata
 Extraction), Module 04 (Duplicate & Version Detection), Module 05 (Naming &
 Destination), and Module 06 (Confidence & Review) are implemented and wired in
-below. Everything past confidence/review (the actual move/file step onward) is
-still scaffold.
+below. Module 07 (Preview, Approval & Execution)'s core batch functions
+(preview_batch()/execute_batch()/undo_batch()) are also wired in below as
+CLI-facing functions (preview()/execute()/undo() — WP-12, Module 07
+Implementation Plan.md). The actual human-approval interaction mechanism (Open
+Decision OD-3, Module 07 Design.md §2/§26) remains unresolved: execute() accepts
+an externally-supplied ApprovalDecision set as a parameter rather than collecting
+one itself, mirroring classify(provider=...)/extract(provider=...)'s own
+"supplied by the live session, not hardcoded" precedent. Unlike scan() through
+score_confidence(), execute() and undo() are deliberately NOT part of the
+automatic `python -m src.main` chain at the bottom of this file — execute()
+causes real filesystem moves, and undo() requires a batch_id — invoking either
+is left as an explicit, separate operator action.
 """
 
 import json
 from collections import Counter
 from pathlib import Path
+from typing import Dict, Optional
 
+import yaml
+
+from src.models.execution import ApprovalDecision, ApprovalDecisionType
 from src.pipeline.classification import classify_batch
 from src.pipeline.confidence import score_confidence_batch
 from src.pipeline.duplicate_detector import detect_duplicates_batch, needs_duplicate_detection
+from src.pipeline.execution import (
+    capture_user_correction,
+    execute_batch,
+    preview_batch,
+    undo_batch,
+)
 from src.pipeline.metadata import extract_metadata_batch
 from src.pipeline.naming import suggest_naming_and_destination_batch
 from src.pipeline.watch_ingest import load_source_config, scan_source
@@ -27,6 +47,28 @@ from src.storage.database import (
     save_file_record,
 )
 from src.storage.runtime_io import action_log_path
+
+# Module 07's destination library root config file (Open Decision OD-1, resolved
+# as Governance/ARCHITECTURE_DECISIONS.md decision 20). No Module 07 work
+# package's own "Owned components" list ever named the actual config key/reader
+# as its own scope — resolve_destination_path() (WP-2) and execute_batch()
+# (WP-9) both take `library_root` as a caller-supplied parameter, neither reads
+# config itself. Disclosed as WP-12's own small addition below
+# (_load_destination_root()): CLI startup is the one place that must turn "a
+# library root exists somewhere" into a concrete value, mirroring this same
+# file's load_source_config() import above for the source side.
+_SOURCES_CONFIG_PATH = Path(__file__).resolve().parent / "config" / "sources.yaml"
+
+# Mirrors src/pipeline/execution.py's own _MOVE_LOG_ACTIONS action-value set
+# ({"move_rename", "archive_duplicate", "archive_superseded_version"}) — not
+# imported directly since that name is a private (underscore-prefixed) module
+# constant; redeclared here as this file's own disclosed copy for CLI summary
+# purposes only (execute()'s log read-back), never used to make any execution
+# decision.
+_EXECUTION_MOVE_ACTIONS = frozenset(
+    {"move_rename", "archive_duplicate", "archive_superseded_version"}
+)
+_EXECUTION_OUTCOME_ACTIONS = _EXECUTION_MOVE_ACTIONS | {"reject", "error"}
 
 # Human-readable label for each SkippedEntry.reason value (see watch_ingest.py's
 # SkippedEntry docstring for the canonical list). Falls back to the raw reason string
@@ -401,6 +443,272 @@ def score_confidence() -> None:
     print(f"\nMetadata written to: {metadata_store_path()}")
     print(f"Action log written to: {action_log_path()}")
     print("\nModule 06 complete.")
+
+
+def _eligible_for_execution_records() -> list:
+    """The §5 CLI-level eligibility filter for Module 07 (Module 07 Design.md §5):
+    every `status == "discovered"` record with `category`/`suggested_name`/
+    `confidence_score` all populated (i.e. `tier` populated — confirming the full
+    Module 01→06 chain already ran) AND `processed_at is None` — mirroring every
+    earlier module's own CLI-level idempotency check (e.g. `score_confidence()`'s
+    `confidence_score is None`), so a record already successfully executed in a
+    prior run is never re-selected (§13A).
+
+    Shared by `preview()` and `execute()` so both apply the exact same filter —
+    `execute()` still reloads fresh from the metadata store itself rather than
+    reusing any list `preview()` built, since time may have passed between the
+    two calls (see `execute()`'s own docstring).
+    """
+    return [
+        record for record in load_metadata_store()
+        if record.status == "discovered"
+        and record.category is not None
+        and record.suggested_name is not None
+        and record.confidence_score is not None
+        and record.processed_at is None
+    ]
+
+
+def _load_destination_root() -> Optional[Path]:
+    """Reads `destination_root` from `src/config/sources.yaml` (Open Decision
+    OD-1, resolved as `Governance/ARCHITECTURE_DECISIONS.md` decision 20) — see
+    this file's own module docstring / the `_SOURCES_CONFIG_PATH` comment above
+    for why this reader lives here rather than in an already-approved Module 07
+    work package or in Module 01's `watch_ingest.py`.
+
+    Deliberately returns `None` (never raises) when `destination_root` is
+    missing or still `null` — unlike `load_source_config()`'s own "raise a
+    clear error if unset" style for the *source* side. This is a disclosed,
+    intentional difference, not an inconsistency: `execute_batch()`'s own
+    already-approved `_validate_library_root()` (WP-9, §14's closing
+    paragraph) already treats `library_root is None` as exactly this batch's
+    precondition failure — it logs one `error` action-log entry per eligible
+    record explaining the whole batch was blocked, and returns cleanly, never
+    raising. Raising here instead would duplicate a decision WP-9 already owns
+    (an ownership-boundary concern the WP-12 architecture review flagged and
+    resolved by favoring "read config, pass it through" over "read config,
+    also decide what an invalid value means").
+    """
+    with open(_SOURCES_CONFIG_PATH, "r", encoding="utf-8") as config_file:
+        config = yaml.safe_load(config_file)
+
+    destination_root = config.get("destination_root")
+    if not destination_root:
+        return None
+    return Path(destination_root)
+
+
+def preview() -> None:
+    """Run Module 07's preview stage (WP-12, Module 07 Design.md §9/§10 step 1)
+    on every record `_eligible_for_execution_records()` selects. Read-only:
+    `preview_batch()` (WP-3) performs zero filesystem/log/Database writes, and
+    this CLI wrapper performs none either — printing only.
+
+    Groups rows by tier, mirroring §10 step 1's grouping exactly: `auto`
+    pre-checked (will execute without further input), `approval_required`
+    unchecked (needs a recorded `ApprovalDecision`), `review_required` shown
+    separately as "needs your attention" (never pre-filed, no dedicated folder,
+    `Rules/Folder Rules.md`).
+
+    Does not collect approval decisions itself — per Open Decision OD-3 (Module
+    07 Design.md §2/§26), that interaction mechanism is explicitly out of this
+    function's scope. Producing an `ApprovalDecision` set is the caller's job —
+    see `execute()`'s own docstring for the same "supplied by the live session,
+    not hardcoded" pattern already established by
+    `classify(provider=...)`/`extract(provider=...)`.
+    """
+    records = _eligible_for_execution_records()
+    if not records:
+        print("Nothing to preview — no discovered, scored records still awaiting execution.")
+        return
+
+    rows = preview_batch(records)
+    rows_by_tier = {"auto": [], "approval_required": [], "review_required": []}
+    for row in rows:
+        rows_by_tier.setdefault(row.tier, []).append(row)
+
+    print(f"Previewing {len(rows)} file(s):")
+
+    if rows_by_tier["auto"]:
+        print(f"\nAuto (will execute without further input) — {len(rows_by_tier['auto'])}:")
+        for row in rows_by_tier["auto"]:
+            print(f"  - {row.original_name} -> {row.suggested_destination}{row.suggested_name}")
+
+    if rows_by_tier["approval_required"]:
+        print(f"\nNeeds your decision — {len(rows_by_tier['approval_required'])}:")
+        for row in rows_by_tier["approval_required"]:
+            note = f" [{row.override}]" if row.override else ""
+            print(
+                f"  - {row.file_id}: {row.original_name} -> "
+                f"{row.suggested_destination}{row.suggested_name}{note}"
+            )
+
+    if rows_by_tier["review_required"]:
+        print(f"\nNeeds attention (never auto-filed) — {len(rows_by_tier['review_required'])}:")
+        for row in rows_by_tier["review_required"]:
+            print(
+                f"  - {row.file_id}: {row.original_name} "
+                f"(suggested: {row.suggested_destination}{row.suggested_name})"
+            )
+
+    print(f"\nMetadata store: {metadata_store_path()}")
+    print("\nModule 07 preview complete — no files have been moved.")
+
+
+def execute(decisions: Optional[Dict[str, ApprovalDecision]] = None) -> None:
+    """Run Module 07's execution stage (WP-12, Module 07 Design.md §9/§10 step 3)
+    on every record `_eligible_for_execution_records()` selects, reloaded fresh
+    here — never trusting an earlier `preview()` call's snapshot, since time may
+    have passed and another run may have changed eligibility.
+
+    `decisions` defaults to `{}` (no `ApprovalDecision` for any
+    `approval_required` record — every such record, and every `review_required`
+    record, is safely left unchanged by `evaluate_gate()`'s own "absent decision
+    is never treated as consent" rule, WP-4/§13). A real (interactive) run
+    supplies an externally-built decisions set — e.g.
+    `execute(decisions=my_live_decisions)` — the same "supplied by the live
+    session, not hardcoded" pattern `classify(provider=...)`/
+    `extract(provider=...)` already established; producing that set (the actual
+    Open Decision OD-3 interaction) is explicitly out of this function's scope
+    (Module 07 Design.md §2/§26) — this parameter is the only change this CLI
+    wiring needed to support that documented pattern, mirroring the `provider`
+    parameter precedent exactly.
+
+    For every decision that is `APPROVE_WITH_EDIT` or `REJECT`, captures the
+    correction to `Database/Learning/User Corrections.json` via
+    `capture_user_correction()` (WP-10, §19/G7) — before `execute_batch()` runs,
+    per §10 step 2's explicit "at this step, before execution" ordering.
+    `capture_user_correction()` itself decides whether an edit is a no-op
+    resubmission (its own established WP-10 logic); this function does not
+    duplicate that judgment, it only decides *which* decisions to hand it
+    (anything other than `APPROVE_AS_SUGGESTED` — a mechanical presence/type
+    check on an already-made decision, not a business decision about the file).
+
+    Resolves `library_root` from `destination_root` in `src/config/sources.yaml`
+    via `_load_destination_root()` — a disclosed WP-12 addition (see that
+    function's own docstring).
+
+    Prints a batch-level summary (§10 step 4): counts by tier, then
+    executed/declined/failed/skipped, read back from the action log — the same
+    "reconstruct from the authoritative log" pattern
+    `classify()`/`extract()`/`detect_duplicates()`/`suggest_naming()`/
+    `score_confidence()` already use, rather than re-deriving an outcome from
+    `FileRecord` fields alone (which don't distinguish "declined" from "still
+    awaiting a decision," for example).
+    """
+    if decisions is None:
+        decisions = {}
+
+    records = _eligible_for_execution_records()
+    if not records:
+        print("Nothing to execute — no discovered, scored records still awaiting execution.")
+        return
+
+    library_root = _load_destination_root()
+
+    for record in records:
+        decision = decisions.get(record.file_id)
+        if decision is not None and decision.decision != ApprovalDecisionType.APPROVE_AS_SUGGESTED:
+            capture_user_correction(record, decision)
+
+    batch_id = records[0].batch_id
+    file_ids = {record.file_id for record in records}
+    tier_by_file_id = {record.file_id: record.tier for record in records}
+
+    records = execute_batch(records, decisions, library_root)
+
+    log_action_by_file_id = _read_execution_log_actions(file_ids, batch_id)
+
+    executed_count = sum(
+        1 for action in log_action_by_file_id.values() if action in _EXECUTION_MOVE_ACTIONS
+    )
+    declined_count = sum(1 for action in log_action_by_file_id.values() if action == "reject")
+    failed_count = sum(1 for action in log_action_by_file_id.values() if action == "error")
+    skipped_count = len(file_ids) - executed_count - declined_count - failed_count
+
+    tier_counts = Counter(tier_by_file_id.values())
+
+    print(f"Executed batch {batch_id} ({len(records)} eligible file(s)):")
+
+    print("\nBy tier:")
+    for tier, count in sorted(tier_counts.items()):
+        print(f"  - {tier}: {count}")
+
+    print(f"\nExecuted: {executed_count}")
+    if declined_count:
+        print(f"Declined:  {declined_count}")
+    if failed_count:
+        print(f"Failed:    {failed_count}")
+    if skipped_count:
+        print(f"Skipped (review_required or no decision yet): {skipped_count}")
+
+    print(f"\nMetadata written to: {metadata_store_path()}")
+    print(f"Action log written to: {action_log_path()}")
+    print("\nModule 07 execution complete.")
+
+
+def undo(batch_id: str) -> None:
+    """Manually reverses every undoable action-log entry for `batch_id`
+    (WP-11's `undo_batch()`, Module 07 Design.md §15) — a separate, explicitly
+    -invoked CLI command, never called automatically from `execute()` or
+    anywhere else in this module (§15: undo is a manual operation only, never
+    an automatic on-failure recovery step).
+
+    Prints a per-file outcome summary (`UNDONE` / `SKIPPED_IRREVERSIBLE` /
+    `SKIPPED_MISSING` / `SKIPPED_COLLISION` / `SKIPPED_NO_RECORD` / `FAILED`,
+    WP-11's own `UndoOutcome` vocabulary) — this function does not decide any
+    of these outcomes itself, only reports what `undo_batch()` already decided.
+    """
+    report = undo_batch(batch_id)
+
+    if not report.outcomes:
+        print(f"Nothing to undo for batch {batch_id} — no move-type action-log entries found.")
+        return
+
+    print(f"Undo results for batch {batch_id} ({len(report.outcomes)} entrie(s)):")
+    for file_id, outcome in report.outcomes.items():
+        print(f"  - {file_id}: {outcome.value}")
+
+    outcome_counts = Counter(outcome.value for outcome in report.outcomes.values())
+    print("\nBy outcome:")
+    for outcome_value, count in sorted(outcome_counts.items()):
+        print(f"  - {outcome_value}: {count}")
+
+    print(f"\nMetadata written to: {metadata_store_path()}")
+    print(f"Action log written to: {action_log_path()}")
+    print("\nUndo complete.")
+
+
+def _read_execution_log_actions(file_ids: set, batch_id: str) -> dict:
+    """Read back this batch's own move/reject/error action-log entries, keyed
+    by `file_id` — used only to build `execute()`'s CLI summary from the
+    authoritative log, mirroring `extract()`/`detect_duplicates()`/
+    `suggest_naming()`/`score_confidence()`'s own established "read back from
+    the log" pattern (`_read_action_log_details()` below). A separate helper
+    rather than a call to `_read_action_log_details()` itself because this one
+    matches against a *set* of action values, not a single one, and additionally
+    filters by `batch_id` (multiple of Module 07's action values can legally
+    appear for the same `file_id` across different batches after an undo +
+    re-execute cycle, so filtering by this run's own `batch_id` avoids
+    attributing a stale, earlier batch's outcome to this summary).
+
+    A `file_id` with no matching entry here was left unchanged by the tier gate
+    (`review_required`, or `approval_required` with no decision yet, WP-4/§13)
+    — not an error, the correct and expected outcome for those records.
+    """
+    action_by_file_id = {}
+    log_path = action_log_path()
+    if not log_path.exists():
+        return action_by_file_id
+    for line in log_path.read_text(encoding="utf-8").strip().splitlines():
+        entry = json.loads(line)
+        if (
+            entry.get("batch_id") == batch_id
+            and entry.get("file_id") in file_ids
+            and entry.get("action") in _EXECUTION_OUTCOME_ACTIONS
+        ):
+            action_by_file_id[entry["file_id"]] = entry["action"]
+    return action_by_file_id
 
 
 def _read_classify_log_details(file_ids: set) -> dict:

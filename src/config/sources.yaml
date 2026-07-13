@@ -10,3 +10,10 @@ sources:
     recursive: false   # v1 only scans the top level — see Rules/Ignore Rules.md "Source scope"
 
 execution_mode: manual   # manual | scheduled | watch_folder — see README.md "Execution modes"
+
+# Module 07 (Preview, Approval & Execution)'s destination library root — Open
+# Decision OD-1, resolved as Governance/ARCHITECTURE_DECISIONS.md decision 20.
+# Sibling to `sources:`, null until the user configures it (the design's own
+# proposed shape, Module 07 Design.md §11/§26). Read by src/main.py's execute()
+# (WP-12) before any file is moved.
+destination_root: null

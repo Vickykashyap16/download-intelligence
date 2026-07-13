@@ -31,6 +31,7 @@ _HASH_INDEX_PATH = _PROJECT_ROOT / "Database" / "FileIndex" / "hash_index.json"
 _PHASH_INDEX_PATH = _PROJECT_ROOT / "Database" / "FileIndex" / "phash_index.json"
 _NAME_INDEX_PATH = _PROJECT_ROOT / "Database" / "FileIndex" / "name_index.json"
 _VERSION_HISTORY_PATH = _PROJECT_ROOT / "Database" / "History" / "version_history.json"
+_USER_CORRECTIONS_PATH = _PROJECT_ROOT / "Database" / "Learning" / "User Corrections.json"
 
 # Module 04 Design.md §10/§15: a configurable implementation parameter, not an
 # architectural constant — lives here (not Rules/) until a future governance
@@ -305,9 +306,46 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-# --- Database/Learning/ — Module 07 (Preview, Approval & Execution) territory ---
+# --- Database/Learning/ — Module 07 (Preview, Approval & Execution) territory.
+# Implemented at WP-10 (Module 07 Implementation Plan.md, §19/G7). A leaf
+# addition: no other function in this file was touched to add it, and this
+# function itself calls nothing from `pipeline/execution.py` — the reverse
+# dependency (WP-10's own call site deciding *when* to call this) lives there,
+# not here, matching the established storage/`*.py` vs pipeline/`*.py` split
+# every earlier module already follows (storage/ is raw, dumb I/O; deciding
+# *what* to write is always the pipeline/ layer's job). ---
 
-def log_user_correction(file_id: str, field_name: str, suggested_value: str,
-                         corrected_value: str, category: str) -> None:
-    """Append a correction entry to Database/Learning/User Corrections.json."""
-    raise NotImplementedError("Module 07 (Preview, Approval & Execution) territory")
+def log_user_correction(file_id: str, field_name: str, suggested_value: Optional[str],
+                         corrected_value: Optional[str], category: Optional[str]) -> None:
+    """Append a correction entry to Database/Learning/User Corrections.json (Module 07
+    Design.md §19, matching `Database/Learning/README.md`'s own schema exactly:
+    `file_id`/`field`/`suggested_value`/`corrected_value`/`category`/`timestamp`).
+
+    Append-only — an existing entry is never edited or removed by this function,
+    the same "never rewrite history" documentation convention this project already
+    applies to docs, applied here to data. Passive capture only (G7/NG6): nothing
+    in this file, or anywhere else in the codebase, ever reads `User Corrections.json`
+    back to auto-apply a correction — this function's only effect is the append
+    itself.
+
+    `suggested_value`/`corrected_value`/`category` are typed `Optional[str]` — one
+    widening beyond the original stub's `str` typing, needed to represent a `reject`
+    decision honestly (§10 step 2's "or reject/skip"): a rejection proposes no
+    specific corrected value, so `corrected_value=None` (serializing to JSON `null`)
+    is the accurate representation, not an invented placeholder string. This widens
+    the type, it does not narrow or change the meaning of any existing valid call.
+    Reuses `_load_index()`/`_write_index()` (Module 04's own generic JSON read/write
+    helpers, `_HASH_INDEX_PATH` etc. above) rather than adding a third bespoke
+    load/write pair — both already handle an arbitrary JSON-serializable structure,
+    not just the `dict`-shaped indexes they were first written for.
+    """
+    corrections = _load_index(_USER_CORRECTIONS_PATH, [])
+    corrections.append({
+        "file_id": file_id,
+        "field": field_name,
+        "suggested_value": suggested_value,
+        "corrected_value": corrected_value,
+        "category": category,
+        "timestamp": _now_iso(),
+    })
+    _write_index(_USER_CORRECTIONS_PATH, corrections)

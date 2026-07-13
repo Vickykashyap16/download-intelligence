@@ -419,3 +419,69 @@ def test_record_version_history_creates_and_updates_group(tmp_path, monkeypatch)
     assert len(history["group-1"]["files"]) == 1
     assert history["group-1"]["files"][0]["rank_at_time"] == "superseded"
     assert history["group-1"]["files"][0]["superseded_at"] is not None
+
+
+# --- WP-10: log_user_correction() (§19/G7, Module 07 Implementation Plan.md) ---
+
+def _isolate_learning(tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        database_module, "_USER_CORRECTIONS_PATH", tmp_path / "User Corrections.json"
+    )
+
+
+def test_log_user_correction_creates_file_and_matches_readme_schema(tmp_path, monkeypatch):
+    """Schema shape matches Database/Learning/README.md's own worked example
+    exactly: file_id, field, suggested_value, corrected_value, category,
+    timestamp — no more, no fewer keys."""
+    _isolate_learning(tmp_path, monkeypatch)
+
+    database_module.log_user_correction(
+        file_id="f1", field_name="filename",
+        suggested_value="invoice.pdf", corrected_value="Amazon_Invoice.pdf",
+        category="Invoice",
+    )
+
+    corrections = database_module._load_index(database_module._USER_CORRECTIONS_PATH, [])
+    assert len(corrections) == 1
+    entry = corrections[0]
+    assert set(entry.keys()) == {
+        "file_id", "field", "suggested_value", "corrected_value", "category", "timestamp",
+    }
+    assert entry["file_id"] == "f1"
+    assert entry["field"] == "filename"
+    assert entry["suggested_value"] == "invoice.pdf"
+    assert entry["corrected_value"] == "Amazon_Invoice.pdf"
+    assert entry["category"] == "Invoice"
+    assert entry["timestamp"]  # non-empty, real ISO timestamp
+
+
+def test_log_user_correction_is_append_only_across_multiple_calls(tmp_path, monkeypatch):
+    _isolate_learning(tmp_path, monkeypatch)
+
+    database_module.log_user_correction(
+        file_id="f1", field_name="filename",
+        suggested_value="a.pdf", corrected_value="b.pdf", category="Invoice",
+    )
+    database_module.log_user_correction(
+        file_id="f2", field_name="destination",
+        suggested_value="Finance/", corrected_value="Finance/2026/", category="Invoice",
+    )
+
+    corrections = database_module._load_index(database_module._USER_CORRECTIONS_PATH, [])
+    assert len(corrections) == 2  # both entries present, neither overwritten
+    assert corrections[0]["file_id"] == "f1"
+    assert corrections[1]["file_id"] == "f2"
+
+
+def test_log_user_correction_supports_none_corrected_value_for_rejection(tmp_path, monkeypatch):
+    """A rejection proposes no specific corrected value — None must round-trip
+    as JSON null, not be coerced into a placeholder string."""
+    _isolate_learning(tmp_path, monkeypatch)
+
+    database_module.log_user_correction(
+        file_id="f1", field_name="category",
+        suggested_value="Invoice", corrected_value=None, category="Invoice",
+    )
+
+    corrections = database_module._load_index(database_module._USER_CORRECTIONS_PATH, [])
+    assert corrections[0]["corrected_value"] is None

@@ -1,0 +1,668 @@
+[
+  {
+    "file_id": "0ade89fa-e639-4ec4-944c-49768175d886",
+    "source_id": "downloads",
+    "original_name": "CrashTest_Alpha.txt",
+    "original_path": "/tmp/uat_m07_downloads/CrashTest_Alpha.txt",
+    "current_path": "/tmp/uat_m07_downloads/CrashTest_Alpha.txt",
+    "extension": ".txt",
+    "mime_type": "text/plain",
+    "size_bytes": 124,
+    "created_at": "2026-07-13T11:26:43.359002+00:00",
+    "modified_at": "2026-07-13T11:26:43.359002+00:00",
+    "content_hash": "365ae081447933df3f3f62636760761a8260bdf50d37d3e9f0a161f41f8d3e36",
+    "discovered_at": "2026-07-13T11:27:32.600978+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Reconciliation Test Note Alpha",
+      "document_date": "2026-07-13",
+      "description": "Fixture used to simulate a crash before any move is attempted."
+    },
+    "suggested_name": "Reconciliation_Test_Note_Alpha_2026-07-13.txt",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "0d6caf88-e3e4-4ce0-abcb-191f60b0ae6f",
+    "source_id": "downloads",
+    "original_name": "CrashTest_Beta.txt",
+    "original_path": "/tmp/uat_m07_downloads/CrashTest_Beta.txt",
+    "current_path": "/tmp/uat_m07_downloads/CrashTest_Beta.txt",
+    "extension": ".txt",
+    "mime_type": "text/plain",
+    "size_bytes": 136,
+    "created_at": "2026-07-13T11:26:43.359002+00:00",
+    "modified_at": "2026-07-13T11:26:43.359002+00:00",
+    "content_hash": "e81a505be780f042a11fb5eaf022221828aa44b8c0ce8b8eaa26957810018f91",
+    "discovered_at": "2026-07-13T11:27:33.117377+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Reconciliation Test Note Beta",
+      "document_date": "2026-07-13",
+      "description": "Fixture used to simulate a crash between the log write and the record save."
+    },
+    "suggested_name": "Reconciliation_Test_Note_Beta_2026-07-13.txt",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "1a52afbe-9e85-4500-a344-fcad4d91aaae",
+    "source_id": "downloads",
+    "original_name": "Invoice_Clean_Acme.pdf",
+    "original_path": "/tmp/uat_m07_downloads/Invoice_Clean_Acme.pdf",
+    "current_path": "/tmp/uat_m07_library/Finance/Acme_Robotics_Inc_Inv-9001_2026-07-01_2.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1498,
+    "created_at": "2026-07-13T11:22:34.078002+00:00",
+    "modified_at": "2026-07-13T11:22:34.078002+00:00",
+    "content_hash": "019e8264d2bba30df9f896727ea067b3cfd55d86653fea1ac5233ede8e6dda6f",
+    "discovered_at": "2026-07-13T11:27:33.628632+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "Acme Robotics Inc.",
+      "invoice_date": "2026-07-01",
+      "invoice_number": "INV-9001",
+      "amount": "1250.00",
+      "currency": "USD",
+      "tax_type": "none"
+    },
+    "suggested_name": "Acme_Robotics_Inc_Inv-9001_2026-07-01.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": "2026-07-13T11:29:15.599031+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-13T11:29:15.599031+00:00",
+    "reversible": false
+  },
+  {
+    "file_id": "0293d047-3c96-4938-b14b-f6a0a37ee145",
+    "source_id": "downloads",
+    "original_name": "Invoice_Sparse_Draft.pdf",
+    "original_path": "/tmp/uat_m07_downloads/Invoice_Sparse_Draft.pdf",
+    "current_path": "/tmp/uat_m07_downloads/Invoice_Sparse_Draft.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1492,
+    "created_at": "2026-07-13T11:26:43.358002+00:00",
+    "modified_at": "2026-07-13T11:26:43.358002+00:00",
+    "content_hash": "0bd51a67f22f66f1c724a4adf719529e437be310b3b87df61a3345e1d7dca30f",
+    "discovered_at": "2026-07-13T11:27:34.137856+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "Northstar Supplies",
+      "invoice_date": "2026-07-02",
+      "invoice_number": null,
+      "amount": null,
+      "currency": null,
+      "tax_type": null
+    },
+    "suggested_name": "Northstar_Supplies_2026-07-02.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 92,
+    "confidence_breakdown": {
+      "missing_optional_field:invoice_number": -2,
+      "missing_optional_field:amount": -2,
+      "missing_optional_field:currency": -2,
+      "missing_optional_field:tax_type": -2
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "61f63885-d8ca-4377-9409-73d9f66c8369",
+    "source_id": "downloads",
+    "original_name": "Locked_Contract_Vendor.pdf",
+    "original_path": "/tmp/uat_m07_downloads/Locked_Contract_Vendor.pdf",
+    "current_path": "/tmp/uat_m07_downloads/Locked_Contract_Vendor.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1433,
+    "created_at": "2026-07-13T11:22:34.082002+00:00",
+    "modified_at": "2026-07-13T11:22:34.082002+00:00",
+    "content_hash": "c405c32849d08acbbf87892969e4e7e2bdcb16fd70ed791e5f9067a1b2152951",
+    "discovered_at": "2026-07-13T11:27:34.646407+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Unknown",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": true
+    },
+    "extracted_metadata": {},
+    "suggested_name": "Unsorted_Locked_Contract_Vendor.pdf",
+    "suggested_destination": "Unknown/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 60,
+    "confidence_breakdown": {
+      "locked_file": -40
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "fdfdb87e-e3da-44b4-bc39-b08087fc1eed",
+    "source_id": "downloads",
+    "original_name": "Photo_Sunset_v1.jpg",
+    "original_path": "/tmp/uat_m07_downloads/Photo_Sunset_v1.jpg",
+    "current_path": "/tmp/uat_m07_downloads/Photo_Sunset_v1.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 4722,
+    "created_at": "2026-07-13T11:23:34.007002+00:00",
+    "modified_at": "2026-07-13T11:23:34.007002+00:00",
+    "content_hash": "6ff4ecf85a2941fc6459a899ca2e1037d69630eab04ad8c302d06ef93696351f",
+    "discovered_at": "2026-07-13T11:27:35.155310+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": "Product photo, warm orange background with a circular highlighted subject",
+      "capture_date": null
+    },
+    "suggested_name": "Screen_Product_Photo_Warm_Orange_Background_With_A_Circular_Subject_Unknown_Date.jpg",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "f88c4c5c-e687-4c71-ad70-be9875ecda00",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "25d0c95d-1115-4093-9453-6d1175809f6a",
+    "source_id": "downloads",
+    "original_name": "Photo_Sunset_v2.jpg",
+    "original_path": "/tmp/uat_m07_downloads/Photo_Sunset_v2.jpg",
+    "current_path": "/tmp/uat_m07_downloads/Photo_Sunset_v2.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 4722,
+    "created_at": "2026-07-13T11:23:34.010002+00:00",
+    "modified_at": "2026-07-13T11:23:34.010002+00:00",
+    "content_hash": "7e37a48067df22ceffd98f4ab06dabc56365a301fabb381eb23079259201aea1",
+    "discovered_at": "2026-07-13T11:27:35.666664+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": "Product photo, warm orange background with a circular highlighted subject",
+      "capture_date": null
+    },
+    "suggested_name": "Screen_Product_Photo_Warm_Orange_Background_With_A_Circular_Subject_Unknown_Date.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "f88c4c5c-e687-4c71-ad70-be9875ecda00",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": true,
+      "phash_distance": 0,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:capture_date": -10,
+      "fuzzy_duplicate": -20
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "29a6b08b-65b4-4fc8-8113-7a43ecfd0663",
+    "source_id": "downloads",
+    "original_name": "Resume_Alex_v1.pdf",
+    "original_path": "/tmp/uat_m07_downloads/Resume_Alex_v1.pdf",
+    "current_path": "/tmp/uat_m07_library/~ARCHIVE~/Old Versions/Resume_Alex_Rivera_2026-05-01.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1451,
+    "created_at": "2026-07-13T11:22:34.083002+00:00",
+    "modified_at": "2026-07-13T11:22:34.083002+00:00",
+    "content_hash": "aeaab9e0a889ab0da522f4c5002ebe9eae274ba805e6a13cfcc8916faedb2e93",
+    "discovered_at": "2026-07-13T11:27:36.176878+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Resume",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "candidate_name": "Alex Rivera",
+      "version_indicator": null,
+      "last_modified_date": "2026-05-01"
+    },
+    "suggested_name": "Resume_Alex_Rivera_2026-05-01.pdf",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": "74926951-6cfd-4a6b-9a28-fd5f51fe2bd0",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 98,
+    "confidence_breakdown": {
+      "missing_optional_field:version_indicator": -2
+    },
+    "tier": "auto",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": "2026-07-13T11:29:15.604291+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-13T11:29:15.604291+00:00",
+    "reversible": false
+  },
+  {
+    "file_id": "6088e434-e598-499a-ac90-f52590bddb3e",
+    "source_id": "downloads",
+    "original_name": "Resume_Alex_v2.pdf",
+    "original_path": "/tmp/uat_m07_downloads/Resume_Alex_v2.pdf",
+    "current_path": "/tmp/uat_m07_downloads/Resume_Alex_v2.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1486,
+    "created_at": "2026-07-13T11:22:34.085002+00:00",
+    "modified_at": "2026-07-13T11:22:34.085002+00:00",
+    "content_hash": "79c68dc0b0cdec8c7a76e294872e41c0338b64310b123413b67756cef7bd552f",
+    "discovered_at": "2026-07-13T11:27:36.688154+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Resume",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "candidate_name": "Alex Rivera",
+      "version_indicator": null,
+      "last_modified_date": "2026-06-15"
+    },
+    "suggested_name": "Resume_Alex_Rivera_2026-06-15.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": "74926951-6cfd-4a6b-9a28-fd5f51fe2bd0",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 98,
+    "confidence_breakdown": {
+      "missing_optional_field:version_indicator": -2
+    },
+    "tier": "auto",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "39f832e6-3304-453e-bae9-bf3741729730",
+    "source_id": "downloads",
+    "original_name": "Screenshot_Dashboard.png",
+    "original_path": "/tmp/uat_m07_downloads/Screenshot_Dashboard.png",
+    "current_path": "/tmp/uat_m07_downloads/Screenshot_Dashboard.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 3135,
+    "created_at": "2026-07-13T11:22:34.111002+00:00",
+    "modified_at": "2026-07-13T11:22:34.111002+00:00",
+    "content_hash": "2e390fc67bd6f393289c6b7dc86e2546c37335eb581f20dac399b82d81ce13d2",
+    "discovered_at": "2026-07-13T11:27:37.199900+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": "Dashboard login error screen, dark header bar, error message about an invalid session token",
+      "capture_date": null
+    },
+    "suggested_name": "Login_Error_Screen_Dark_Header_Bar_Error_About_An_Inv_Session_Token_Unknown_Date.png",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "98959fbb-fbc7-4567-99e2-0834725cd156",
+    "source_id": "downloads",
+    "original_name": "Utility_Bill_Download.txt",
+    "original_path": "/tmp/uat_m07_downloads/Utility_Bill_Download.txt",
+    "current_path": "/tmp/uat_m07_downloads/Utility_Bill_Download.txt",
+    "extension": ".txt",
+    "mime_type": "text/plain",
+    "size_bytes": 65,
+    "created_at": "2026-07-13T11:26:43.359002+00:00",
+    "modified_at": "2026-07-13T11:26:43.359002+00:00",
+    "content_hash": "71cde84a274367ff8bfd2a4f00fd91914f1e2846ad12d63e26200d1b5e5c92cd",
+    "discovered_at": "2026-07-13T11:27:37.712033+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "CityPower Utilities Co.",
+      "invoice_date": "2026-06-15",
+      "invoice_number": null,
+      "amount": null,
+      "currency": null,
+      "tax_type": null
+    },
+    "suggested_name": "Citypower_Utilities_Co_2026-06-15.txt",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 92,
+    "confidence_breakdown": {
+      "missing_optional_field:invoice_number": -2,
+      "missing_optional_field:amount": -2,
+      "missing_optional_field:currency": -2,
+      "missing_optional_field:tax_type": -2
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "4b856a87-d990-4322-a005-fb63da535f08",
+    "source_id": "downloads",
+    "original_name": "Utility_Bill_Download_copy.txt",
+    "original_path": "/tmp/uat_m07_downloads/Utility_Bill_Download_copy.txt",
+    "current_path": "/tmp/uat_m07_downloads/Utility_Bill_Download_copy.txt",
+    "extension": ".txt",
+    "mime_type": "text/plain",
+    "size_bytes": 65,
+    "created_at": "2026-07-13T11:26:43.359002+00:00",
+    "modified_at": "2026-07-13T11:26:43.359002+00:00",
+    "content_hash": "71cde84a274367ff8bfd2a4f00fd91914f1e2846ad12d63e26200d1b5e5c92cd",
+    "discovered_at": "2026-07-13T11:27:38.222404+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "CityPower Utilities Co.",
+      "invoice_date": "2026-06-15",
+      "invoice_number": null,
+      "amount": null,
+      "currency": null,
+      "tax_type": null
+    },
+    "suggested_name": "Citypower_Utilities_Co_2026-06-15.txt",
+    "suggested_destination": "~ARCHIVE~/Duplicates/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": "98959fbb-fbc7-4567-99e2-0834725cd156",
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": true,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 92,
+    "confidence_breakdown": {
+      "missing_optional_field:invoice_number": -2,
+      "missing_optional_field:amount": -2,
+      "missing_optional_field:currency": -2,
+      "missing_optional_field:tax_type": -2
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-13_112732",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  }
+]
