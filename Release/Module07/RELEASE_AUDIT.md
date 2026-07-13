@@ -194,4 +194,8 @@ Module 07 has completed implementation, work-package audits, a composed-system a
 
 No implementation code in `src/pipeline/execution.py` was modified at any point across Integration Testing, UAT, or this Release Audit update — every check, every measurement, and every finding resolution left the module's actual behavior exactly as WP-13's own implementation completed it.
 
-Per explicit instruction: **Module 08 is not begun. No commit is made. No release tag is created.** This document's certification conclusion is presented as the final output of this turn; final release-package preparation (version bump, `Release/VERSIONS.md`, `RELEASE_NOTES.md`/`RELEASE_SUMMARY.md`/`MODULE_STATUS.md` updates) awaits its own separate, explicit approval.
+Per explicit instruction: **Module 08 is not begun. No commit is made. No release tag is created.**
+
+## Release package finalized (2026-07-13, second update)
+
+Following this certification, the project owner approved the Module 07 release package. `Release/VERSIONS.md` now records Module 07 at **v1.0.0, Released**, and **Pipeline Version 0.7.0**. This supersedes PCV check 8's and Architecture Decisions 13–14's own text above, both of which correctly stated `Pipeline Version: 0.6.0 (unchanged)`/`Module Version: — (not yet released)` as of the moment this audit's certification pass was performed, before the version bump — left as originally written, per this project's convention of not rewriting an audit's own point-in-time findings, with this addendum recording what changed afterward. `Release/Module07/MODULE_STATUS.md`, `RELEASE_NOTES.md`, `RELEASE_SUMMARY.md`, and `TEST_RESULTS.md` were all generated/updated to reflect the final released state, and a Release Certification report was produced (`Release/Module07/RELEASE_CERTIFICATION.md`). This document's own Disposition (certified release-ready) is unchanged by the version bump — the version bump is a consequence of that certification, not a new finding.

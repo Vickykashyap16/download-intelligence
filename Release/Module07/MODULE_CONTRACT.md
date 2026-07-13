@@ -2,7 +2,7 @@
 
 The authoritative, tested statement of Module 07's INPUT/OUTPUT/guarantees/DOES NOT MODIFY (`ARCHITECTURE_DECISIONS.md` decision 15) — the only part of this module's design later modules (Module 08) may depend on. Internal architecture (`ExecutionEngine`'s private helpers, `execute_batch()`'s staging mechanics) is not part of this contract and may change freely as long as the behavior below holds. Traces to `Build-out/07 Preview, Approval & Execution/Module 07 Design.md` (frozen 2026-07-12) and its full WP-1–13 implementation record (`Module 07 Implementation Plan.md`). See `Release/DEPENDENCY_DIAGRAM.md` and `Release/VERSIONS.md` for this module's position in the pipeline and its current version.
 
-**Status note:** this contract describes Module 07's implemented, tested behavior as of WP-13 (release engineering). It is written and verified before Integration Testing and UAT have been performed against the real Module 01→07 chain — see `RELEASE_AUDIT.md` for why that gap blocks this module's own release certification, distinct from whether this contract accurately describes the code that exists today (it does).
+**Status note:** this contract describes Module 07's implemented, tested behavior as of WP-13 (release engineering), and has since been validated against the real Module 01→07 chain through both Integration Testing (`Tests/Module 07 Integration Test Plan.md`, 71/71 checks, zero findings) and UAT (`Tests/Module 07 UAT Plan.md`, zero findings). Module 07 is released at v1.0.0 — see `RELEASE_AUDIT.md` for the full certification record.
 
 ## INPUT
 
