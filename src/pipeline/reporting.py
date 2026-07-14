@@ -34,12 +34,17 @@ malformed-line-safe action-log reader (§12 Layer 1), a data-derived "as of"
 recency marker (§7), and calendar-day/action-type action-log filters — leaving
 all four generate_*() functions as signature-only stubs. WP-2 implemented
 `generate_daily_summary()`'s real aggregation/rendering logic against those
-primitives plus `storage.database.load_metadata_store()` (§5). WP-3 has since
-implemented `generate_duplicate_report()`'s real aggregation/rendering logic —
-a single, continuously-updated current-state file per decision 25, using
+primitives plus `storage.database.load_metadata_store()` (§5). WP-3 implemented
+`generate_duplicate_report()`'s real aggregation/rendering logic — a single,
+continuously-updated current-state file per decision 25, using
 `compute_as_of_marker()` (unlike WP-2, which doesn't need it) since this report
-type has no period concept of its own. `generate_weekly_summary()` (WP-4) and
-`generate_storage_report()` (WP-5) remain stubs — not implemented here.
+type has no period concept of its own. WP-4 has since implemented
+`generate_weekly_summary()`'s real roll-up logic — reads already-written Daily
+Summary files (never the metadata store), with a narrow action-log exception
+solely to disambiguate a missing day; inherits closed-period (G6/I6) protection
+transitively from Daily Summary's own per-day guarantee rather than
+implementing an independent week-boundary mechanism. `generate_storage_report()`
+(WP-5) remains a stub — not implemented here.
 
 This file replaces the pre-existing `write_daily_summary()`/`write_weekly_summary()`/
 `write_duplicate_report()`/`write_storage_report()`-named stubs that used to live
@@ -50,7 +55,7 @@ whole-store-scoped aggregation the frozen design actually specifies (§5). See
 """
 
 import json
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
 
@@ -287,12 +292,208 @@ def _render_daily_summary(
     return "\n".join(lines)
 
 
+_DAILY_SUMMARY_FIELD_LABELS = {
+    "Files scanned": "files_scanned",
+    "Auto-filed": "auto_filed",
+    "Approval required": "approval_required",
+    "Review required": "review_required",
+    "Duplicates found": "duplicates_found",
+    "Versions archived": "versions_archived",
+    "Errors": "errors",
+}
+
+
 def generate_weekly_summary(report_week: date) -> str:
     """Roll up the ISO week containing `report_week` from already-written Daily
-    Summary files into Runtime/Reports/Weekly Summary/summary_YYYY-Www.md (§3, §9)
-    and return the path written. Not implemented here — WP-4's own scope
-    (`Module 08 Implementation Plan.md`)."""
-    raise NotImplementedError("Module 08 Implementation Plan.md WP-4 territory")
+    Summary files into Runtime/Reports/Weekly Summary/summary_YYYY-Www.md (§3,
+    §9) and return the path written. Module 08 Implementation Plan.md WP-4's
+    own scope.
+
+    Reads already-rendered Daily Summary Markdown files (§9: "reads already-
+    written Daily Summary files rather than re-deriving a week's aggregation
+    from the raw action log directly... keeps Weekly Summary consistent with
+    whatever Daily Summary already reported for each day") — never the
+    metadata store at all (§5's own precise Weekly Summary source statement
+    names only Daily Summary files, plus the one narrow action-log exception
+    below; unlike Daily Summary/Duplicate Report, Weekly Summary never calls
+    `storage.database.load_metadata_store()`).
+
+    Per-day handling, for each of the requested ISO week's 7 calendar days:
+    - **Not yet closed** (`day >= today`, UTC): excluded entirely from the
+      roll-up — never read, never included in totals (§11: "never generated
+      from a still-open, current day's partial data"). Still listed in the
+      "## Days" table (with "-" placeholders) so the week's full 7-day shape
+      is always visible, never silently truncated — a disclosed extension of
+      G3's "never fabricate, always disclose" principle to this case, which
+      §12 Layer 1 doesn't separately name (it only names the closed-but-
+      missing-file case below).
+    - **Closed, Daily Summary file exists:** parsed and included in the
+      week's totals, per-day counts shown in the table ("Reported").
+    - **Closed, no Daily Summary file, day has action-log entries** (§12
+      Layer 1's L1 fix): "Report unavailable for this date" — a reporting
+      gap, never silently treated as zero. Excluded from totals (the real
+      figures are genuinely unknown, not zero — G3).
+    - **Closed, no Daily Summary file, day has zero action-log entries**
+      (§12 Layer 1's L1 fix): "No activity" — a real, known zero, shown as
+      such in the table and included in totals (contributing 0, which is
+      the honest, traceable figure, not a placeholder).
+
+    The action log (via WP-1's `read_action_log_entries_safe()`/
+    `filter_entries_by_day()`) is consulted *solely* for this missing-day
+    disambiguation — never to recompute or re-derive a day's actual figures,
+    which always come from that day's own already-rendered Daily Summary
+    file when one exists (§5's own "narrow, disclosed exception... a
+    read-scope exception, not a write-ownership one").
+
+    No closed-period (G6/I6) protection of any kind is implemented here, by
+    design, not omission: a fully-closed week's only inputs (7 individually
+    G6-protected Daily Summary files, per WP-2's own already-audited closed-
+    day check) can never change again, so re-generating that week's file is
+    guaranteed to reproduce byte-identical content — G5/G6/I6 compliance for
+    a closed week is inherited transitively from Daily Summary's own
+    protection, not something this function separately implements or
+    decides. A still-open week (spanning today) legitimately produces
+    different content as more days close, exactly mirroring Daily Summary's
+    own "still open, not a G6 violation" carve-out (§11). Confirmed during
+    the WP-4 pre-implementation architecture audit — no new Architecture
+    Decision introduced, no independent week-boundary mechanism built.
+    """
+    today = datetime.now(timezone.utc).date()
+    iso_year, iso_week, _ = report_week.isocalendar()
+    week_start = date.fromisocalendar(iso_year, iso_week, 1)
+    week_days = [week_start + timedelta(days=offset) for offset in range(7)]
+
+    all_entries, malformed_count = read_action_log_entries_safe()
+
+    totals = {field: 0 for field in _DAILY_SUMMARY_FIELD_LABELS.values()}
+    day_rows: List[Tuple[date, str, Optional[Dict[str, int]]]] = []
+    for day in week_days:
+        if day >= today:
+            day_rows.append((day, "Not yet closed", None))
+            continue
+
+        summary_path = _daily_summary_file_path(day)
+        if summary_path.exists():
+            counts = _parse_daily_summary_counts(summary_path.read_text(encoding="utf-8"))
+            for field, value in counts.items():
+                totals[field] += value
+            day_rows.append((day, "Reported", counts))
+        else:
+            day_entries = filter_entries_by_day(all_entries, day)
+            if day_entries:
+                day_rows.append((day, "Report unavailable for this date", None))
+            else:
+                zero_counts = {field: 0 for field in _DAILY_SUMMARY_FIELD_LABELS.values()}
+                day_rows.append((day, "No activity", zero_counts))
+
+    content = _render_weekly_summary(
+        iso_year=iso_year,
+        iso_week=iso_week,
+        week_start=week_days[0],
+        week_end=week_days[-1],
+        totals=totals,
+        day_rows=day_rows,
+        malformed_count=malformed_count,
+    )
+    return runtime_io.write_weekly_summary(report_week, content)
+
+
+# --- generate_weekly_summary() helpers (WP-4) ---
+
+def _daily_summary_file_path(day: date) -> Path:
+    """Read-only path reconstruction for checking whether `day`'s Daily
+    Summary file exists — WP-4's own lookup, mirroring
+    `generate_daily_summary()`'s own `_daily_summary_path()` helper (WP-2),
+    deliberately not shared, to keep this package's diff isolated from
+    already-audited WP-2 code (the same disclosed precedent WP-3's
+    `_find_latest_sibling_name()` already established over WP-2's own
+    `_render_version_archived_detail()`). Read-only — this file is only ever
+    opened for reading here, never written; the actual Weekly Summary write
+    still goes exclusively through `runtime_io.write_weekly_summary()`."""
+    return runtime_io._RUNTIME_REPORTS_PATH / "Daily Summary" / f"summary_{day.isoformat()}.md"
+
+
+def _parse_daily_summary_counts(content: str) -> Dict[str, int]:
+    """Parse a Daily Summary file's own already-committed bullet format
+    (`- <Label>: <N>...`, WP-2's `_render_daily_summary()`) back into a
+    `{field_name: count}` dict, reading only the leading integer of each
+    value and ignoring any parenthetical disposition detail (e.g. "1
+    (archived)", "1 (Resume_v8.pdf → superseded by Resume_v9.pdf)") — this
+    function only needs the count, never the detail. A label this function
+    doesn't recognize (e.g. an optional "Malformed log lines skipped" line)
+    is silently skipped, not an error. A recognized label with no parseable
+    leading digit defaults to 0 for that field alone, matching §12 Layer 1's
+    general "handled defensively rather than assumed impossible" philosophy
+    for a file this module itself always renders correctly under normal
+    operation."""
+    counts = {field: 0 for field in _DAILY_SUMMARY_FIELD_LABELS.values()}
+    for line in content.splitlines():
+        if not line.startswith("- ") or ": " not in line:
+            continue
+        label, _, value = line[2:].partition(": ")
+        field = _DAILY_SUMMARY_FIELD_LABELS.get(label)
+        if field is None:
+            continue
+        leading_digits = ""
+        for character in value:
+            if character.isdigit():
+                leading_digits += character
+            else:
+                break
+        counts[field] = int(leading_digits) if leading_digits else 0
+    return counts
+
+
+def _render_weekly_summary(
+    iso_year: int,
+    iso_week: int,
+    week_start: date,
+    week_end: date,
+    totals: Dict[str, int],
+    day_rows: List[Tuple[date, str, Optional[Dict[str, int]]]],
+    malformed_count: int,
+) -> str:
+    """Render the Weekly Summary Markdown body. No committed worked example
+    exists for this report type (unlike Daily Summary) — this format is a
+    disclosed, reasonable design choice, matching the project's established
+    header/bullets/table style and `Runtime/Reports/README.md`'s own
+    "totals, trends... any recurring error" framing (the per-day breakdown
+    columns, not just a status column, are what make a trend actually
+    visible)."""
+    lines = [f"# Weekly Summary — {iso_year}-W{iso_week:02d}", ""]
+    lines.append(f"- Week range: {week_start.isoformat()} to {week_end.isoformat()}")
+    lines.append(f"- Files scanned: {totals['files_scanned']}")
+    lines.append(f"- Auto-filed: {totals['auto_filed']}")
+    lines.append(f"- Approval required: {totals['approval_required']}")
+    lines.append(f"- Review required: {totals['review_required']}")
+    lines.append(f"- Duplicates found: {totals['duplicates_found']}")
+    lines.append(f"- Versions archived: {totals['versions_archived']}")
+    lines.append(f"- Errors: {totals['errors']}")
+
+    if malformed_count > 0:
+        lines.append(f"- Malformed log lines skipped: {malformed_count}")
+
+    lines.append("")
+    lines.append("## Days")
+    lines.append(
+        "| Date | Status | Files scanned | Auto-filed | Approval required "
+        "| Review required | Duplicates found | Versions archived | Errors |"
+    )
+    lines.append("|---|---|---|---|---|---|---|---|---|")
+    for day, status, counts in day_rows:
+        if counts is None:
+            lines.append(f"| {day.isoformat()} | {status} | - | - | - | - | - | - | - |")
+        else:
+            lines.append(
+                "| {} | {} | {} | {} | {} | {} | {} | {} | {} |".format(
+                    day.isoformat(), status,
+                    counts["files_scanned"], counts["auto_filed"], counts["approval_required"],
+                    counts["review_required"], counts["duplicates_found"], counts["versions_archived"],
+                    counts["errors"],
+                )
+            )
+    lines.append("")
+    return "\n".join(lines)
 
 
 _DISPOSITION_ACTIONS = {"move_rename", "archive_duplicate", "archive_superseded_version", "reject", "undo"}

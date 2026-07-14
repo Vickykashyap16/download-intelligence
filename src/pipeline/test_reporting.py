@@ -10,11 +10,16 @@ tested below against `Metadata & Log Schema.md`'s own worked example.
 
 WP-3 scope: `generate_duplicate_report()` — a single, continuously-updated
 current-state file over every duplicate/superseded-version record (decision 25),
-categorized into archived/kept/overridden-by-user. `generate_weekly_summary()`/
-`generate_storage_report()` remain NotImplementedError stubs, out of every work
-package's scope so far (WP-4/WP-5), and are not tested here — the same convention
-`pipeline/test_execution.py` already established for its own untouched
-pre-existing stubs.
+categorized into archived/kept/overridden-by-user.
+
+WP-4 scope: `generate_weekly_summary()` — rolls up already-written Daily Summary
+files (never the metadata store) for the requested ISO week, with a narrow
+action-log exception solely to disambiguate a missing day (§12 Layer 1's L1
+fix). Inherits closed-period (G6/I6) protection transitively from Daily
+Summary's own per-day guarantee — no independent week-boundary mechanism.
+`generate_storage_report()` remains a NotImplementedError stub, WP-5's own
+scope, and is not tested here — the same convention `pipeline/test_execution.py`
+already established for its own untouched pre-existing stubs.
 
 Isolated from the project's real `Runtime/Logs/action_log.jsonl` via the same
 `monkeypatch.setattr(runtime_io_module, "_ACTION_LOG_PATH", tmp_path / ...)`
@@ -30,7 +35,7 @@ Run with: pytest src/pipeline/test_reporting.py -v
 """
 
 import json
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -45,6 +50,7 @@ from src.pipeline.reporting import (
     filter_entries_by_day,
     generate_daily_summary,
     generate_duplicate_report,
+    generate_weekly_summary,
     read_action_log_entries_safe,
 )
 
@@ -1008,3 +1014,237 @@ class TestGenerateDuplicateReportZeroWrite:
         generate_duplicate_report()
 
         assert (tmp_path / "Database" / "sentinel.json").read_text(encoding="utf-8") == "[]"
+
+
+# --- generate_weekly_summary() (WP-4) ---
+
+def _iso_week_monday(iso_year, iso_week):
+    return date.fromisocalendar(iso_year, iso_week, 1)
+
+
+class TestGenerateWeeklySummaryRollup:
+    def test_multi_day_rollup_against_real_generate_daily_summary_output(self, tmp_path, monkeypatch):
+        """Seeds real action-log activity for two days within a fully-past,
+        fully-closed ISO week, generates their Daily Summary files via the
+        real generate_daily_summary() (never hand-crafted Markdown), then
+        confirms generate_weekly_summary() correctly parses and sums both."""
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 2)  # 2020-01-06, fully closed
+        tuesday = monday + timedelta(days=1)
+
+        database_module.save_file_record(_record(
+            "f1", "a.pdf", category=Category.DOCUMENT, tier="auto",
+            confidence_score=95, suggested_name="A.pdf", suggested_destination="Docs/",
+        ))
+        database_module.save_file_record(_record(
+            "f2", "b.pdf", category=Category.IMAGE, tier="approval_required",
+            confidence_score=70, suggested_name="B.jpg", suggested_destination="Images/",
+        ))
+        lines = [
+            json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{monday.isoformat()}T08:00:00+00:00")),
+            json.dumps(_score_confidence("f1", "auto", timestamp=f"{monday.isoformat()}T08:05:00+00:00")),
+            json.dumps(_move_rename("f1", timestamp=f"{monday.isoformat()}T08:10:00+00:00")),
+            json.dumps(_entry(file_id="f2", action="discover", timestamp=f"{tuesday.isoformat()}T09:00:00+00:00")),
+            json.dumps(_score_confidence("f2", "approval_required", timestamp=f"{tuesday.isoformat()}T09:05:00+00:00")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+
+        generate_daily_summary(monday)
+        generate_daily_summary(tuesday)
+
+        content = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        assert "- Files scanned: 2" in content
+        assert "- Auto-filed: 1" in content
+        assert "- Approval required: 1" in content
+        assert f"| {monday.isoformat()} | Reported | 1 | 1 | 0 | 0 | 0 | 0 | 0 |" in content
+        assert f"| {tuesday.isoformat()} | Reported | 1 | 0 | 1 | 0 | 0 | 0 | 0 |" in content
+
+    def test_ignores_the_parenthetical_disposition_detail_when_parsing(self, tmp_path, monkeypatch):
+        """Daily Summary's own "Duplicates found: 1 (archived)"/"Versions
+        archived: 1 (X → superseded by Y)" parenthetical detail must not
+        break parsing — only the leading integer is read."""
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 3)
+        database_module.save_file_record(_record("d1", "copy.pdf", duplicate_of="orig1"))
+        database_module.save_file_record(_record("orig1", "invoice.pdf"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1", timestamp=f"{monday.isoformat()}T09:00:00+00:00")),
+            json.dumps(_archive_duplicate("d1", timestamp=f"{monday.isoformat()}T09:05:00+00:00")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        generate_daily_summary(monday)
+
+        content = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        assert "- Duplicates found: 1" in content
+        assert f"| {monday.isoformat()} | Reported | 0 | 0 | 0 | 0 | 1 | 0 | 0 |" in content
+
+    def test_days_with_no_daily_summary_and_no_activity_are_no_activity(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 5)  # fully closed, no data at all
+        content = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        assert "- Files scanned: 0" in content
+        for offset in range(7):
+            day = monday + timedelta(days=offset)
+            assert f"| {day.isoformat()} | No activity | 0 | 0 | 0 | 0 | 0 | 0 | 0 |" in content
+
+
+class TestGenerateWeeklySummaryDisambiguation:
+    """§12 Layer 1's L1 fix: "no activity" and "generation previously failed"
+    must never be conflated."""
+
+    def test_closed_day_with_no_file_and_no_activity_is_no_activity(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 6)
+        content = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        assert f"| {monday.isoformat()} | No activity | 0 | 0 | 0 | 0 | 0 | 0 | 0 |" in content
+
+    def test_closed_day_with_activity_but_no_file_is_report_unavailable(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 7)
+        lines = [json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{monday.isoformat()}T08:00:00+00:00"))]
+        _write_raw_lines(tmp_path, lines)
+        # Deliberately never call generate_daily_summary(monday) — simulates
+        # a day whose own Daily Summary generation never ran/failed.
+
+        content = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        assert f"| {monday.isoformat()} | Report unavailable for this date | - | - | - | - | - | - | - |" in content
+
+    def test_report_unavailable_day_is_excluded_from_totals_not_zeroed(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 8)
+        tuesday = monday + timedelta(days=1)
+        database_module.save_file_record(_record("f2", "b.pdf", tier="auto"))
+        lines = [
+            # Monday: activity happened, but no Daily Summary was generated.
+            json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{monday.isoformat()}T08:00:00+00:00")),
+            # Tuesday: properly reported.
+            json.dumps(_entry(file_id="f2", action="discover", timestamp=f"{tuesday.isoformat()}T08:00:00+00:00")),
+            json.dumps(_score_confidence("f2", "auto", timestamp=f"{tuesday.isoformat()}T08:05:00+00:00")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        generate_daily_summary(tuesday)
+
+        content = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        # Only Tuesday's real, known count — Monday's real figures are
+        # unknown and must never be silently folded in as zero.
+        assert "- Files scanned: 1" in content
+        assert "- Auto-filed: 1" in content
+
+
+class TestGenerateWeeklySummaryIsoYearBoundary:
+    def test_year_boundary_week_matches_write_weekly_summarys_own_precedent(self, tmp_path, monkeypatch):
+        """2027-01-01 is ISO week 53 of 2026 — matches
+        storage/test_runtime_io.py's own already-established precedent for
+        write_weekly_summary()'s identical filename computation."""
+        _isolate_all(tmp_path, monkeypatch)
+        result_path = generate_weekly_summary(date(2027, 1, 1))
+        expected_path = tmp_path / "Reports" / "Weekly Summary" / "summary_2026-W53.md"
+        assert result_path == str(expected_path)
+        content = expected_path.read_text(encoding="utf-8")
+        assert content.startswith("# Weekly Summary — 2026-W53\n")
+
+
+class TestGenerateWeeklySummaryNotYetClosed:
+    def test_current_week_excludes_todays_still_open_day(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        today = datetime.now(timezone.utc).date()
+        content = Path(generate_weekly_summary(today)).read_text(encoding="utf-8")
+        assert f"| {today.isoformat()} | Not yet closed | - | - | - | - | - | - | - |" in content
+
+    def test_a_future_day_within_the_requested_week_is_also_not_yet_closed(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        today = datetime.now(timezone.utc).date()
+        iso_year, iso_week, _ = today.isocalendar()
+        sunday = date.fromisocalendar(iso_year, iso_week, 7)
+        assert sunday >= today  # guards this test's own premise
+        content = Path(generate_weekly_summary(today)).read_text(encoding="utf-8")
+        assert f"| {sunday.isoformat()} | Not yet closed | - | - | - | - | - | - | - |" in content
+
+    def test_not_yet_closed_days_are_excluded_from_totals(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        today = datetime.now(timezone.utc).date()
+        lines = [json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{today.isoformat()}T08:00:00+00:00"))]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_weekly_summary(today)).read_text(encoding="utf-8")
+        assert "- Files scanned: 0" in content  # today's activity not yet closed, excluded
+
+
+class TestGenerateWeeklySummaryDeterminism:
+    def test_closed_week_reproduces_byte_identical_content(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 10)
+        lines = [json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{monday.isoformat()}T08:00:00+00:00"))]
+        _write_raw_lines(tmp_path, lines)
+        generate_daily_summary(monday)
+
+        first = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        second = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        assert first == second
+
+
+class TestGenerateWeeklySummaryMalformedLineDisclosure:
+    def test_malformed_lines_disclosed_and_do_not_crash_generation(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 15)
+        lines = [
+            json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{monday.isoformat()}T08:00:00+00:00")),
+            "{not valid json",
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_weekly_summary(monday)).read_text(encoding="utf-8")
+        assert "- Malformed log lines skipped: 1" in content
+
+    def test_no_disclosure_line_when_nothing_malformed(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        content = Path(generate_weekly_summary(_iso_week_monday(2020, 16))).read_text(encoding="utf-8")
+        assert "Malformed" not in content
+
+
+class TestGenerateWeeklySummaryZeroWrite:
+    def test_touches_nothing_in_the_action_log(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 11)
+        lines = [json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{monday.isoformat()}T08:00:00+00:00"))]
+        _write_raw_lines(tmp_path, lines)
+        before = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+
+        generate_weekly_summary(monday)
+
+        after = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+        assert before == after
+
+    def test_never_touches_the_metadata_store_at_all(self, tmp_path, monkeypatch):
+        """Unlike WP-2/WP-3, WP-4 never calls load_metadata_store() at all
+        (§5: Weekly Summary's own source is Daily Summary files, not the
+        metadata store) — confirmed structurally: metadata_store.json isn't
+        even created as a side effect."""
+        _isolate_all(tmp_path, monkeypatch)
+        metadata_path = tmp_path / "metadata_store.json"
+        assert not metadata_path.exists()
+
+        generate_weekly_summary(_iso_week_monday(2020, 12))
+
+        assert not metadata_path.exists()
+
+    def test_writes_only_within_reports_weekly_summary(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        (tmp_path / "Database").mkdir()
+        (tmp_path / "Database" / "sentinel.json").write_text("[]", encoding="utf-8")
+
+        generate_weekly_summary(_iso_week_monday(2020, 13))
+
+        assert (tmp_path / "Database" / "sentinel.json").read_text(encoding="utf-8") == "[]"
+
+    def test_never_writes_to_the_daily_summary_folder(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        monday = _iso_week_monday(2020, 14)
+        lines = [json.dumps(_entry(file_id="f1", action="discover", timestamp=f"{monday.isoformat()}T08:00:00+00:00"))]
+        _write_raw_lines(tmp_path, lines)
+        generate_daily_summary(monday)
+        daily_path = tmp_path / "Reports" / "Daily Summary" / f"summary_{monday.isoformat()}.md"
+        before = daily_path.read_text(encoding="utf-8")
+
+        generate_weekly_summary(monday)
+
+        after = daily_path.read_text(encoding="utf-8")
+        assert before == after
