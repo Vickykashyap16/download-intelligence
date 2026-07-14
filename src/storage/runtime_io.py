@@ -19,16 +19,14 @@ alongside them (raw Runtime/Temp/ and Runtime/Logs/ I/O primitives only; the act
 
 import json
 import shutil
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
-
-from src.models.batch import Batch
-from src.models.file_record import FileRecord
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _ACTION_LOG_PATH = _PROJECT_ROOT / "Runtime" / "Logs" / "action_log.jsonl"
 _RUNTIME_TEMP_PATH = _PROJECT_ROOT / "Runtime" / "Temp"
+_RUNTIME_REPORTS_PATH = _PROJECT_ROOT / "Runtime" / "Reports"
 
 
 def action_log_path() -> Path:
@@ -188,23 +186,74 @@ def read_batch_plan(batch_id: str) -> Optional[List[Dict[str, str]]]:
     return json.loads(plan_path.read_text(encoding="utf-8"))
 
 
-# --- Module 08 (Logging & Reporting) territory ---
+# --- Module 08 (Logging & Reporting) territory.
+# Implemented at Module 08 Implementation Plan.md WP-1 (scaffold reconciliation),
+# per Module 08 Design.md §6/§9 and Governance/ARCHITECTURE_DECISIONS.md decision 25.
+# Raw I/O only: each function receives already-rendered Markdown content from its
+# `generate_*()` caller (pipeline/reporting.py) and writes it to a fixed path,
+# exactly mirroring append_action_log()'s own "raw I/O primitive, business logic
+# lives one layer up" role above. The four pre-existing stubs this replaces took a
+# `batch`/`records` pair each — a shape from the superseded, per-batch-triggered
+# architecture (Module 08 Design.md §0.6) that cannot represent the real, date/week/
+# whole-store-scoped aggregation the frozen design actually specifies (§5); WP-1's
+# own scope is correcting that signature mismatch, per
+# `Module 08 Implementation Plan.md Review.md` finding F1. ---
 
-def write_daily_summary(batch: Batch, records: List[FileRecord]) -> str:
-    """Generate/append today's Runtime/Reports/Daily Summary/ entry."""
-    raise NotImplementedError("Module 08 (Logging & Reporting) territory")
+def write_daily_summary(report_date: date, content: str) -> str:
+    """Write `content` to Runtime/Reports/Daily Summary/summary_YYYY-MM-DD.md
+    (Module 08 Design.md §6) and return the path written. Makes no aggregation or
+    rendering decision of its own — `report_date` and `content` are already fully
+    computed by `generate_daily_summary()` (`pipeline/reporting.py`, WP-2's own
+    scope, not implemented here)."""
+    target_dir = _RUNTIME_REPORTS_PATH / "Daily Summary"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    target_path = target_dir / f"summary_{report_date.isoformat()}.md"
+    target_path.write_text(content, encoding="utf-8")
+    return str(target_path)
 
 
-def write_weekly_summary() -> str:
-    """Roll up the week's Daily Summaries into Runtime/Reports/Weekly Summary/."""
-    raise NotImplementedError("Module 08 (Logging & Reporting) territory")
+def write_weekly_summary(report_week: date, content: str) -> str:
+    """Write `content` to Runtime/Reports/Weekly Summary/summary_YYYY-Www.md, ISO
+    week numbering (Module 08 Design.md §6), and return the path written.
+    `report_week` is any date within the target ISO week — the ISO year/week
+    number are derived from it via `date.isocalendar()` (stdlib only, no new
+    dependency). Deciding *which* week a given run belongs to, and every rollup
+    decision, is `generate_weekly_summary()`'s own scope (`pipeline/reporting.py`,
+    WP-4, not implemented here) — this function only persists already-rendered
+    content to the correct path, mirroring `write_daily_summary()`'s identical
+    division of labor."""
+    target_dir = _RUNTIME_REPORTS_PATH / "Weekly Summary"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    iso_year, iso_week, _ = report_week.isocalendar()
+    target_path = target_dir / f"summary_{iso_year}-W{iso_week:02d}.md"
+    target_path.write_text(content, encoding="utf-8")
+    return str(target_path)
 
 
-def write_duplicate_report() -> str:
-    """Update the running Runtime/Reports/Duplicate Report/ view."""
-    raise NotImplementedError("Module 08 (Logging & Reporting) territory")
+def write_duplicate_report(content: str) -> str:
+    """Module 08 (Logging & Reporting) territory — `generate_duplicate_report()`'s
+    own raw-I/O counterpart (WP-3, not implemented here).
+
+    Signature corrected to the smallest OD-1-agnostic shape (content in, path out)
+    at WP-1 per `Module 08 Implementation Plan.md Review.md` finding F5. Open
+    Decision OD-1 has since been resolved (`Governance/ARCHITECTURE_DECISIONS.md`
+    decision 25: a single, continuously-updated current-state file,
+    `Runtime/Reports/Duplicate Report/duplicate_report.md`, no scoping parameter
+    needed) — but finalizing this function's real body against that resolution is
+    explicitly WP-3's own scope, per the certified Implementation Plan and the
+    project owner's explicit instruction that WP-1 implement only scaffold
+    reconciliation, never Duplicate Report logic. Left unimplemented here by
+    design, not by omission."""
+    raise NotImplementedError("Module 08 Implementation Plan.md WP-3 territory")
 
 
-def write_storage_report() -> str:
-    """Update the running Runtime/Reports/Storage Report/ view."""
-    raise NotImplementedError("Module 08 (Logging & Reporting) territory")
+def write_storage_report(content: str) -> str:
+    """Module 08 (Logging & Reporting) territory — `generate_storage_report()`'s
+    own raw-I/O counterpart (WP-5, not implemented here).
+
+    Signature corrected to the smallest OD-1-agnostic shape (content in, path out)
+    at WP-1, mirroring `write_duplicate_report()`'s identical treatment and the
+    same finding F5 resolution. Finalizing this function's real body against
+    OD-1's resolved shape (decision 25) is explicitly WP-5's own scope, not WP-1's
+    — left unimplemented here by design."""
+    raise NotImplementedError("Module 08 Implementation Plan.md WP-5 territory")
