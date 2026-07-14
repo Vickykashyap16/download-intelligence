@@ -6,11 +6,15 @@ Module 08 Implementation Plan.md WP-1 scope: the shared aggregation primitives
 and `filter_entries_by_action()` (Module 08 Design.md §7, §12 Layer 1).
 
 WP-2 scope: `generate_daily_summary()` — the real aggregation/rendering logic,
-tested below against `Metadata & Log Schema.md`'s own worked example. `generate_weekly_
-summary()`/`generate_duplicate_report()`/`generate_storage_report()` remain
-NotImplementedError stubs, out of every work package's scope so far (WP-3/WP-4/WP-5),
-and are not tested here — the same convention `pipeline/test_execution.py` already
-established for its own untouched pre-existing stubs.
+tested below against `Metadata & Log Schema.md`'s own worked example.
+
+WP-3 scope: `generate_duplicate_report()` — a single, continuously-updated
+current-state file over every duplicate/superseded-version record (decision 25),
+categorized into archived/kept/overridden-by-user. `generate_weekly_summary()`/
+`generate_storage_report()` remain NotImplementedError stubs, out of every work
+package's scope so far (WP-4/WP-5), and are not tested here — the same convention
+`pipeline/test_execution.py` already established for its own untouched
+pre-existing stubs.
 
 Isolated from the project's real `Runtime/Logs/action_log.jsonl` via the same
 `monkeypatch.setattr(runtime_io_module, "_ACTION_LOG_PATH", tmp_path / ...)`
@@ -40,6 +44,7 @@ from src.pipeline.reporting import (
     filter_entries_by_action,
     filter_entries_by_day,
     generate_daily_summary,
+    generate_duplicate_report,
     read_action_log_entries_safe,
 )
 
@@ -690,3 +695,316 @@ class TestGenerateDailySummaryZeroWrite:
 
         assert metadata_path.exists()
         assert json.loads(metadata_path.read_text(encoding="utf-8")) == []
+
+
+# --- generate_duplicate_report() (WP-3) ---
+
+def _reject(file_id, timestamp="2026-07-14T10:00:00+00:00", **kwargs):
+    return _entry(file_id=file_id, action="reject", timestamp=timestamp, approved_by="user", **kwargs)
+
+
+def _undo(file_id, reversed_action, timestamp="2026-07-14T11:00:00+00:00", **kwargs):
+    return _entry(file_id=file_id, action="undo", timestamp=timestamp, approved_by="user",
+                  details={"reversed_action": reversed_action}, **kwargs)
+
+
+class TestGenerateDuplicateReportCategorization:
+    def test_archived_duplicate(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "invoice_copy.pdf", duplicate_of="orig1"))
+        database_module.save_file_record(_record("orig1", "invoice.pdf"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1")),
+            json.dumps(_archive_duplicate("d1")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Archived: 1" in content
+        assert "- Kept: 0" in content
+        assert "- Overridden by user: 0" in content
+        assert "| invoice_copy.pdf | Duplicate | invoice.pdf | Archived |" in content
+
+    def test_archived_superseded_version(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record(
+            "v8", "Resume_v8.pdf", version_group_id="g1", version_rank="superseded",
+        ))
+        database_module.save_file_record(_record(
+            "v9", "Resume_v9.pdf", version_group_id="g1", version_rank="latest",
+        ))
+        lines = [json.dumps(_archive_superseded_version("v8"))]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Archived: 1" in content
+        assert "| Resume_v8.pdf | Superseded Version | Resume_v9.pdf | Archived |" in content
+
+    def test_kept_no_execution_action_yet(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "invoice_copy.pdf", duplicate_of="orig1"))
+        database_module.save_file_record(_record("orig1", "invoice.pdf"))
+        lines = [json.dumps(_detect_duplicates("d1", duplicate_of="orig1"))]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Kept: 1" in content
+        assert "| invoice_copy.pdf | Duplicate | invoice.pdf | Kept |" in content
+
+    def test_kept_rejected(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "invoice_copy.pdf", duplicate_of="orig1"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1")),
+            json.dumps(_reject("d1")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Kept: 1" in content
+        assert "- Archived: 0" in content
+
+    def test_kept_after_undo_reverses_a_prior_archive(self, tmp_path, monkeypatch):
+        """An archive later undone must not still read as Archived — the LAST
+        chronological disposition action wins (decision 25's "always-current
+        view" philosophy)."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "invoice_copy.pdf", duplicate_of="orig1"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1")),
+            json.dumps(_archive_duplicate("d1", timestamp="2026-07-14T10:00:00+00:00")),
+            json.dumps(_undo("d1", "archive_duplicate", timestamp="2026-07-14T11:00:00+00:00")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Archived: 0" in content
+        assert "- Kept: 1" in content
+
+    def test_overridden_by_user_duplicate_filed_via_ordinary_move(self, tmp_path, monkeypatch):
+        """Decision 23: an edited destination can route a genuine duplicate
+        through the ordinary move_rename path instead of the archive
+        override — that is the "Overridden by user" case."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "invoice_copy.pdf", duplicate_of="orig1"))
+        database_module.save_file_record(_record("orig1", "invoice.pdf"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1")),
+            json.dumps(_move_rename("d1")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Overridden by user: 1" in content
+        assert "| invoice_copy.pdf | Duplicate | invoice.pdf | Overridden by user |" in content
+
+    def test_overridden_by_user_superseded_version_filed_via_ordinary_move(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record(
+            "v8", "Resume_v8.pdf", version_group_id="g1", version_rank="superseded",
+        ))
+        database_module.save_file_record(_record(
+            "v9", "Resume_v9.pdf", version_group_id="g1", version_rank="latest",
+        ))
+        lines = [json.dumps(_move_rename("v8"))]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Overridden by user: 1" in content
+
+    def test_last_disposition_action_wins_over_an_earlier_one(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "invoice_copy.pdf", duplicate_of="orig1"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1")),
+            json.dumps(_reject("d1", timestamp="2026-07-14T09:00:00+00:00")),
+            json.dumps(_archive_duplicate("d1", timestamp="2026-07-14T10:00:00+00:00")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Archived: 1" in content
+        assert "- Kept: 0" in content
+
+
+class TestGenerateDuplicateReportExclusion:
+    def test_ordinary_records_never_appear(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("f1", "resume.pdf"))
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Records tracked: 0" in content
+        assert "resume.pdf" not in content
+
+    def test_latest_ranked_version_record_is_not_a_first_class_row(self, tmp_path, monkeypatch):
+        """A "latest" record carries a non-null version_group_id but is the
+        surviving file, not itself a duplicate/superseded item — it must not
+        get its own row, even though it shares a group with a superseded
+        sibling."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record(
+            "v8", "Resume_v8.pdf", version_group_id="g1", version_rank="superseded",
+        ))
+        database_module.save_file_record(_record(
+            "v9", "Resume_v9.pdf", version_group_id="g1", version_rank="latest",
+        ))
+        lines = [json.dumps(_move_rename("v9"))]  # the survivor gets filed normally
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        # Only the superseded sibling is a row; the survivor is referenced
+        # only as "Related To", never given its own row (if it had one, its
+        # own "Original" cell would make "Resume_v9.pdf" appear a second
+        # time — it appears exactly once, as v8's "Related To" value only).
+        assert "- Records tracked: 1 (0 duplicates, 1 superseded versions)" in content
+        assert content.count("Resume_v9.pdf") == 1
+        assert "| Resume_v8.pdf | Superseded Version | Resume_v9.pdf | Kept |" in content
+
+
+class TestGenerateDuplicateReportTraceability:
+    def test_related_to_shows_the_duplicate_of_targets_original_name(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "copy.pdf", duplicate_of="orig1"))
+        database_module.save_file_record(_record("orig1", "original.pdf"))
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "| copy.pdf | Duplicate | original.pdf | Kept |" in content
+
+    def test_related_to_is_unknown_when_duplicate_of_target_missing(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "copy.pdf", duplicate_of="ghost"))
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "| copy.pdf | Duplicate | Unknown | Kept |" in content
+
+    def test_related_to_is_unknown_when_no_latest_sibling_found(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record(
+            "v8", "Resume_v8.pdf", version_group_id="g1", version_rank="superseded",
+        ))
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "| Resume_v8.pdf | Superseded Version | Unknown | Kept |" in content
+
+    def test_every_count_traces_to_a_real_action_log_entry_or_field(self, tmp_path, monkeypatch):
+        """Hand-computable cross-check across a mixed scenario."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "a.pdf", duplicate_of="orig1"))
+        database_module.save_file_record(_record("orig1", "original.pdf"))
+        database_module.save_file_record(_record("d2", "b.pdf", duplicate_of="orig1"))
+        database_module.save_file_record(_record(
+            "v8", "Resume_v8.pdf", version_group_id="g1", version_rank="superseded",
+        ))
+        database_module.save_file_record(_record(
+            "v9", "Resume_v9.pdf", version_group_id="g1", version_rank="latest",
+        ))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1")),
+            json.dumps(_archive_duplicate("d1")),
+            json.dumps(_detect_duplicates("d2", duplicate_of="orig1")),
+            json.dumps(_move_rename("d2")),
+            json.dumps(_archive_superseded_version("v8")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Records tracked: 3 (2 duplicates, 1 superseded versions)" in content
+        assert "- Archived: 2" in content
+        assert "- Kept: 0" in content
+        assert "- Overridden by user: 1" in content
+
+
+class TestGenerateDuplicateReportAlwaysOverwritten:
+    """Decision 25: no period concept, no G6/closed-period protection at all
+    — every call is a full, unconditional recomputation and overwrite."""
+
+    def test_second_call_reflects_new_data_unconditionally(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "a.pdf", duplicate_of="orig1"))
+        first = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Records tracked: 1" in first
+
+        database_module.save_file_record(_record("d2", "b.pdf", duplicate_of="orig1"))
+        second_path = generate_duplicate_report()
+        second = Path(second_path).read_text(encoding="utf-8")
+        assert "- Records tracked: 2" in second
+        assert second != first
+
+    def test_writes_to_the_single_fixed_path_every_time(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        path1 = generate_duplicate_report()
+        database_module.save_file_record(_record("d1", "a.pdf", duplicate_of="orig1"))
+        path2 = generate_duplicate_report()
+        assert path1 == path2
+
+
+class TestGenerateDuplicateReportEmptyState:
+    def test_no_signal_bearing_records_renders_honest_zeroed_shape(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert content == (
+            "# Duplicate Report\n"
+            "\n"
+            "- As of: no activity recorded yet\n"
+            "- Records tracked: 0 (0 duplicates, 0 superseded versions)\n"
+            "- Archived: 0\n"
+            "- Kept: 0\n"
+            "- Overridden by user: 0\n"
+            "\n"
+            "## Records\n"
+            "| Original | Type | Related To | Disposition |\n"
+            "|---|---|---|---|\n"
+        )
+
+
+class TestGenerateDuplicateReportAsOfMarker:
+    def test_as_of_reflects_the_latest_relevant_entry_only(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "a.pdf", duplicate_of="orig1"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1", timestamp="2026-07-14T09:00:00+00:00")),
+            json.dumps(_archive_duplicate("d1", timestamp="2026-07-14T10:00:00+00:00")),
+            # Unrelated entry, for a non-signal-bearing file, with a later timestamp —
+            # must NOT affect the marker.
+            json.dumps(_entry(file_id="unrelated", action="discover", timestamp="2026-07-14T23:00:00+00:00")),
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- As of: 2026-07-14T10:00:00+00:00" in content
+
+
+class TestGenerateDuplicateReportMalformedLineDisclosure:
+    def test_malformed_lines_disclosed_and_do_not_crash_generation(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "a.pdf", duplicate_of="orig1"))
+        lines = [
+            json.dumps(_detect_duplicates("d1", duplicate_of="orig1")),
+            "{not valid json",
+        ]
+        _write_raw_lines(tmp_path, lines)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "- Records tracked: 1" in content
+        assert "- Malformed log lines skipped: 1" in content
+
+    def test_no_disclosure_line_when_nothing_malformed(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        content = Path(generate_duplicate_report()).read_text(encoding="utf-8")
+        assert "Malformed" not in content
+
+
+class TestGenerateDuplicateReportZeroWrite:
+    def test_touches_nothing_in_the_action_log(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        lines = [json.dumps(_entry(file_id="f1", action="discover"))]
+        _write_raw_lines(tmp_path, lines)
+        before = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+
+        generate_duplicate_report()
+
+        after = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+        assert before == after
+
+    def test_metadata_store_record_count_is_unchanged_end_to_end(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_record("d1", "a.pdf", duplicate_of="orig1"))
+        records_before = database_module.load_metadata_store()
+
+        generate_duplicate_report()
+
+        records_after = database_module.load_metadata_store()
+        assert len(records_before) == len(records_after) == 1
+
+    def test_writes_only_within_reports_duplicate_report(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        (tmp_path / "Database").mkdir()
+        (tmp_path / "Database" / "sentinel.json").write_text("[]", encoding="utf-8")
+
+        generate_duplicate_report()
+
+        assert (tmp_path / "Database" / "sentinel.json").read_text(encoding="utf-8") == "[]"

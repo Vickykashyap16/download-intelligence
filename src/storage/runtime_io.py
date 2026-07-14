@@ -231,20 +231,25 @@ def write_weekly_summary(report_week: date, content: str) -> str:
 
 
 def write_duplicate_report(content: str) -> str:
-    """Module 08 (Logging & Reporting) territory — `generate_duplicate_report()`'s
-    own raw-I/O counterpart (WP-3, not implemented here).
+    """Write `content` to Runtime/Reports/Duplicate Report/duplicate_report.md
+    and return the path written — a single, continuously-updated current-state
+    file, unconditionally overwritten in place on every call, never a dated
+    snapshot (`ARCHITECTURE_DECISIONS.md` decision 25). Makes no aggregation or
+    rendering decision of its own — `content` is already fully computed by
+    `generate_duplicate_report()` (`pipeline/reporting.py`, WP-3's own scope).
 
-    Signature corrected to the smallest OD-1-agnostic shape (content in, path out)
-    at WP-1 per `Module 08 Implementation Plan.md Review.md` finding F5. Open
-    Decision OD-1 has since been resolved (`Governance/ARCHITECTURE_DECISIONS.md`
-    decision 25: a single, continuously-updated current-state file,
-    `Runtime/Reports/Duplicate Report/duplicate_report.md`, no scoping parameter
-    needed) — but finalizing this function's real body against that resolution is
-    explicitly WP-3's own scope, per the certified Implementation Plan and the
-    project owner's explicit instruction that WP-1 implement only scaffold
-    reconciliation, never Duplicate Report logic. Left unimplemented here by
-    design, not by omission."""
-    raise NotImplementedError("Module 08 Implementation Plan.md WP-3 territory")
+    Signature corrected to the smallest OD-1-agnostic shape (content in, path
+    out) at WP-1 per `Module 08 Implementation Plan.md Review.md` finding F5;
+    decision 25's own resolution confirms no scoping parameter is needed after
+    all (a single current-state file, not dated snapshots), so WP-3 finalizes
+    only this function's body, not its signature — the signature WP-1 left in
+    place unmodified is exactly the one OD-1's resolution turned out to
+    require."""
+    target_dir = _RUNTIME_REPORTS_PATH / "Duplicate Report"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    target_path = target_dir / "duplicate_report.md"
+    target_path.write_text(content, encoding="utf-8")
+    return str(target_path)
 
 
 def write_storage_report(content: str) -> str:

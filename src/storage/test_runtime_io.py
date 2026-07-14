@@ -2,15 +2,19 @@
 Unit tests for storage/runtime_io.py's Module 08 (Logging & Reporting) territory —
 the four `write_*()` functions.
 
-Module 08 Implementation Plan.md WP-1 scope only (scaffold reconciliation):
-`write_daily_summary()`/`write_weekly_summary()` are fully implemented (Module 08
-Design.md §6, `Governance/ARCHITECTURE_DECISIONS.md` decision 25/26/27) and tested
-here directly, called with an already-rendered `content` string, never via a
-`generate_*()` caller (that wiring is WP-2/WP-4's own scope). `write_duplicate_report()`/
-`write_storage_report()` received only a minimal, OD-1-agnostic signature
-correction at WP-1 — their body remains `NotImplementedError` by design (WP-3/WP-5's
-own scope, per `Module 08 Implementation Plan.md Review.md` finding F5), and that
-placeholder behavior is itself the thing under test below.
+Module 08 Implementation Plan.md status: WP-1 (scaffold reconciliation) fully
+implemented `write_daily_summary()`/`write_weekly_summary()` (Module 08 Design.md
+§6, `Governance/ARCHITECTURE_DECISIONS.md` decision 25/26/27), tested here directly,
+called with an already-rendered `content` string, never via a `generate_*()` caller
+(that wiring is WP-2/WP-4's own scope). WP-1 left `write_duplicate_report()`/
+`write_storage_report()` with only a minimal, OD-1-agnostic signature — their body
+was `NotImplementedError` by design (per `Module 08 Implementation Plan.md
+Review.md` finding F5). WP-3 has since finalized `write_duplicate_report()`'s body
+(decision 25: no scoping parameter needed, a single continuously-updated
+current-state file, unconditionally overwritten in place) — tested here directly
+below, same convention as `write_daily_summary()`/`write_weekly_summary()`.
+`write_storage_report()` remains `NotImplementedError` — WP-5's own scope, not yet
+performed.
 
 This project's other `storage/*.py` functions are conventionally tested via the
 `pipeline/*.py` module that calls them (e.g. `append_action_log()`/
@@ -132,20 +136,49 @@ class TestWriteWeeklySummary:
         assert expected.read_text(encoding="utf-8") == "sunday"
 
 
-# --- write_duplicate_report() / write_storage_report() — deliberately
-# unimplemented placeholders (Module 08 Implementation Plan.md Review.md F5) ---
+# --- write_duplicate_report() (WP-3) ---
 
-class TestWriteDuplicateReportPlaceholder:
-    def test_raises_not_implemented_error(self, tmp_path, monkeypatch):
+class TestWriteDuplicateReport:
+    def test_writes_content_verbatim_and_returns_the_path(self, tmp_path, monkeypatch):
         _isolate_reports(tmp_path, monkeypatch)
-        with pytest.raises(NotImplementedError):
-            write_duplicate_report("some rendered content")
+        result = write_duplicate_report("# Duplicate Report\n\nhello")
 
-    def test_raises_without_writing_any_file(self, tmp_path, monkeypatch):
+        expected_path = tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md"
+        assert result == str(expected_path)
+        assert expected_path.read_text(encoding="utf-8") == "# Duplicate Report\n\nhello"
+
+    def test_creates_the_duplicate_report_subfolder_if_missing(self, tmp_path, monkeypatch):
         _isolate_reports(tmp_path, monkeypatch)
-        with pytest.raises(NotImplementedError):
-            write_duplicate_report("content")
         assert not (tmp_path / "Reports").exists()
+        write_duplicate_report("content")
+        assert (tmp_path / "Reports" / "Duplicate Report").is_dir()
+
+    def test_filename_is_fixed_not_dated(self, tmp_path, monkeypatch):
+        _isolate_reports(tmp_path, monkeypatch)
+        write_duplicate_report("content")
+        expected = tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md"
+        assert expected.exists()
+
+    def test_a_second_call_always_overwrites_in_place_no_scoping_parameter(self, tmp_path, monkeypatch):
+        """Decision 25: a single, continuously-updated current-state file —
+        unlike `write_daily_summary()`, there is no closed-period concept at
+        all here, so every call unconditionally overwrites."""
+        _isolate_reports(tmp_path, monkeypatch)
+        write_duplicate_report("first version")
+        result = write_duplicate_report("second version")
+
+        expected_path = tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md"
+        assert result == str(expected_path)
+        assert expected_path.read_text(encoding="utf-8") == "second version"
+
+    def test_signature_takes_no_scoping_parameter(self, tmp_path, monkeypatch):
+        """Structural check that WP-1's OD-1-agnostic signature (`content: str
+        -> str`) was preserved, not expanded — decision 25 confirmed no
+        scoping parameter is needed."""
+        import inspect
+
+        signature = inspect.signature(write_duplicate_report)
+        assert list(signature.parameters) == ["content"]
 
 
 class TestWriteStorageReportPlaceholder:

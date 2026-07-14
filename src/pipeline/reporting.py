@@ -32,10 +32,13 @@ Module 08 Implementation Plan.md status: WP-1 (scaffold reconciliation) implemen
 the shared, pure aggregation primitives every generate_*() function needs — a
 malformed-line-safe action-log reader (§12 Layer 1), a data-derived "as of"
 recency marker (§7), and calendar-day/action-type action-log filters — leaving
-all four generate_*() functions as signature-only stubs. WP-2 has since
-implemented `generate_daily_summary()`'s real aggregation/rendering logic
-against those primitives plus `storage.database.load_metadata_store()` (§5).
-`generate_weekly_summary()` (WP-4), `generate_duplicate_report()` (WP-3), and
+all four generate_*() functions as signature-only stubs. WP-2 implemented
+`generate_daily_summary()`'s real aggregation/rendering logic against those
+primitives plus `storage.database.load_metadata_store()` (§5). WP-3 has since
+implemented `generate_duplicate_report()`'s real aggregation/rendering logic —
+a single, continuously-updated current-state file per decision 25, using
+`compute_as_of_marker()` (unlike WP-2, which doesn't need it) since this report
+type has no period concept of its own. `generate_weekly_summary()` (WP-4) and
 `generate_storage_report()` (WP-5) remain stubs — not implemented here.
 
 This file replaces the pre-existing `write_daily_summary()`/`write_weekly_summary()`/
@@ -292,14 +295,196 @@ def generate_weekly_summary(report_week: date) -> str:
     raise NotImplementedError("Module 08 Implementation Plan.md WP-4 territory")
 
 
+_DISPOSITION_ACTIONS = {"move_rename", "archive_duplicate", "archive_superseded_version", "reject", "undo"}
+_RELEVANT_DUPLICATE_REPORT_ACTIONS = _DISPOSITION_ACTIONS | {"detect_duplicates_and_versions"}
+
+
 def generate_duplicate_report() -> str:
-    """Aggregate every duplicate/version-signal-bearing record in the metadata
-    store into Runtime/Reports/Duplicate Report/duplicate_report.md (§3, single
-    continuously-updated current-state file per
-    `Governance/ARCHITECTURE_DECISIONS.md` decision 25) and return the path
-    written. Not implemented here — WP-3's own scope
-    (`Module 08 Implementation Plan.md`)."""
-    raise NotImplementedError("Module 08 Implementation Plan.md WP-3 territory")
+    """Aggregate every duplicate/superseded-version record in the metadata
+    store into Runtime/Reports/Duplicate Report/duplicate_report.md — a
+    single, continuously-updated current-state file, always overwritten in
+    place (§3/§6, `ARCHITECTURE_DECISIONS.md` decision 25) — and return the
+    path written. Module 08 Implementation Plan.md WP-3's own scope.
+
+    Signal-bearing record definition (§3: "every duplicate_of/
+    version_group_id/version_rank-bearing record"): a record is included if
+    `duplicate_of is not None` (a genuine duplicate) or `version_rank ==
+    "superseded"` (a superseded version). Disclosed interpretation: a
+    "latest"-ranked version record, despite carrying a non-null
+    `version_group_id`, is the surviving file in its group, not itself a
+    duplicate or superseded item needing its own disposition row — it is
+    referenced only as the "Related To" value of its superseded sibling's own
+    row, never included as a first-class row itself. A literal reading of
+    "version_group_id-bearing" would wrongly include it and miscategorize a
+    perfectly ordinary `move_rename` of the surviving file as "Overridden by
+    user", which is not what happened.
+
+    Disposition categorization — three categories per `Runtime/Reports/
+    README.md`/§6 ("archived, kept, overridden by the user"), determined by
+    the LAST chronological execution-type action-log entry for that file_id
+    (mirrors decision 25's own "always-current view" philosophy — an earlier
+    archive later undone is correctly re-classified as Kept, not Archived,
+    rather than reporting a stale disposition):
+    - `archive_duplicate` / `archive_superseded_version` → "Archived" — the
+      system's default duplicate/superseded-version override actually ran.
+    - `move_rename` → "Overridden by user" — the record was duplicate/
+      version-flagged, yet filed through the *ordinary* path instead of the
+      archive override; per `ARCHITECTURE_DECISIONS.md` decision 23, this can
+      only happen when a human's edited destination intentionally overrode
+      the automatic archive placement (`move_rename`'s own `details.
+      override_applied` is `null`, unlike `archive_duplicate`/
+      `archive_superseded_version`, confirming no override branch fired).
+    - `reject`, `undo`, or no execution-type entry at all → "Kept" — the
+      record was never filed anywhere (still awaiting a decision, explicitly
+      declined, or an executed disposition was since reversed), so it is
+      still sitting wherever it already was.
+
+    "As of" marker (§7, option D — chosen specifically because this report
+    type has no period concept of its own, unlike Daily Summary, §7's own
+    "relevant chiefly to... a continuously-updated Duplicate/Storage Report"
+    reasoning): the latest timestamp among only the entries this report
+    actually consulted (`detect_duplicates_and_versions` plus the five
+    disposition action types, scoped to signal-bearing file_ids) — never the
+    whole, possibly-unrelated action log.
+
+    Every count and row traces to a real action-log entry or metadata-store
+    field (G3/I5); reads only `duplicate_of`/`version_group_id`/
+    `version_rank` off each FileRecord, never `Database/FileIndex/*` or
+    `Database/History/*` directly (§8). No closed-period protection of any
+    kind — this report type is always fully recomputed and overwritten
+    (decision 25's own explicit consequence: "no G6/closed-period test case
+    for these two report types").
+    """
+    all_entries, malformed_count = read_action_log_entries_safe()
+
+    records = database.load_metadata_store()
+    records_by_id: Dict[str, "database.FileRecord"] = {record.file_id: record for record in records}
+    signal_bearing_records = [
+        record for record in records
+        if record.duplicate_of is not None or record.version_rank == "superseded"
+    ]
+    signal_bearing_ids = {record.file_id for record in signal_bearing_records}
+
+    last_disposition_action: Dict[str, str] = {}
+    relevant_entries: List[dict] = []
+    for entry in all_entries:
+        action = entry.get("action")
+        file_id = entry.get("file_id")
+        if action in _DISPOSITION_ACTIONS:
+            last_disposition_action[file_id] = action
+        if file_id in signal_bearing_ids and action in _RELEVANT_DUPLICATE_REPORT_ACTIONS:
+            relevant_entries.append(entry)
+
+    as_of = compute_as_of_marker(relevant_entries)
+
+    duplicates_count = sum(1 for record in signal_bearing_records if record.duplicate_of is not None)
+    versions_count = sum(1 for record in signal_bearing_records if record.version_rank == "superseded")
+
+    archived_count = 0
+    kept_count = 0
+    overridden_count = 0
+    table_rows: List[str] = []
+    for record in signal_bearing_records:
+        disposition = _categorize_disposition(last_disposition_action.get(record.file_id))
+        if disposition == "Archived":
+            archived_count += 1
+        elif disposition == "Overridden by user":
+            overridden_count += 1
+        else:
+            kept_count += 1
+        table_rows.append(_render_duplicate_report_row(record, records_by_id, disposition))
+
+    content = _render_duplicate_report(
+        as_of=as_of,
+        total=len(signal_bearing_records),
+        duplicates_count=duplicates_count,
+        versions_count=versions_count,
+        archived_count=archived_count,
+        kept_count=kept_count,
+        overridden_count=overridden_count,
+        malformed_count=malformed_count,
+        table_rows=table_rows,
+    )
+    return runtime_io.write_duplicate_report(content)
+
+
+# --- generate_duplicate_report() helpers (WP-3) ---
+
+def _categorize_disposition(last_action: Optional[str]) -> str:
+    """Map a signal-bearing record's own LAST chronological execution-type
+    action-log entry (or `None`) to one of the three disposition categories
+    `Runtime/Reports/README.md` names."""
+    if last_action in ("archive_duplicate", "archive_superseded_version"):
+        return "Archived"
+    if last_action == "move_rename":
+        return "Overridden by user"
+    return "Kept"
+
+
+def _find_latest_sibling_name(record, records_by_id: Dict[str, "database.FileRecord"]) -> Optional[str]:
+    """For a superseded-version record, find its version-group sibling with
+    `version_rank == "latest"` and return that sibling's `original_name`, or
+    `None` if no such sibling is found (WP-3's own lookup — deliberately not
+    shared with WP-2's identically-shaped `_render_version_archived_detail()`
+    helper, to keep this package's diff isolated from already-audited WP-2
+    code)."""
+    if not record.version_group_id:
+        return None
+    for other in records_by_id.values():
+        if other.version_group_id == record.version_group_id and other.version_rank == "latest":
+            return other.original_name
+    return None
+
+
+def _render_duplicate_report_row(record, records_by_id: Dict[str, "database.FileRecord"], disposition: str) -> str:
+    """Render one "## Records" table row — Original, Type (Duplicate /
+    Superseded Version), Related To (the other file this record relates to),
+    Disposition."""
+    if record.duplicate_of is not None:
+        record_type = "Duplicate"
+        related_record = records_by_id.get(record.duplicate_of)
+        related_name = _field_or_unknown(related_record.original_name if related_record else None)
+    else:
+        record_type = "Superseded Version"
+        related_name = _field_or_unknown(_find_latest_sibling_name(record, records_by_id))
+    return "| {} | {} | {} | {} |".format(
+        _field_or_unknown(record.original_name), record_type, related_name, disposition,
+    )
+
+
+def _render_duplicate_report(
+    as_of: Optional[str],
+    total: int,
+    duplicates_count: int,
+    versions_count: int,
+    archived_count: int,
+    kept_count: int,
+    overridden_count: int,
+    malformed_count: int,
+    table_rows: List[str],
+) -> str:
+    """Render the Duplicate Report Markdown body. No committed worked example
+    exists for this report type (unlike Daily Summary) — this format is a
+    disclosed, reasonable design choice, matching the project's established
+    header/bullets/table style and the exact vocabulary §6/`Runtime/Reports/
+    README.md` already fix (archived/kept/overridden by the user)."""
+    lines = ["# Duplicate Report", ""]
+    lines.append(f"- As of: {as_of if as_of is not None else 'no activity recorded yet'}")
+    lines.append(f"- Records tracked: {total} ({duplicates_count} duplicates, {versions_count} superseded versions)")
+    lines.append(f"- Archived: {archived_count}")
+    lines.append(f"- Kept: {kept_count}")
+    lines.append(f"- Overridden by user: {overridden_count}")
+
+    if malformed_count > 0:
+        lines.append(f"- Malformed log lines skipped: {malformed_count}")
+
+    lines.append("")
+    lines.append("## Records")
+    lines.append("| Original | Type | Related To | Disposition |")
+    lines.append("|---|---|---|---|")
+    lines.extend(table_rows)
+    lines.append("")
+    return "\n".join(lines)
 
 
 def generate_storage_report() -> str:
