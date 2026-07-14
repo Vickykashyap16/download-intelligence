@@ -11,6 +11,15 @@ already writes its own action-log entries via storage/runtime_io.append_action_l
 as it goes (Module 08 Design.md §0.6); this module only reads that log and the
 metadata store back, and its only write surface is Runtime/Reports/*.
 
+Disclosed, pre-existing exception: `storage.database.load_metadata_store()`
+(WP-2's own call, `generate_daily_summary()`) inherits that function's
+already-established `_ensure_metadata_store_exists()` convenience — a fresh
+install with no `Database/Metadata/metadata_store.json` yet gets one created
+holding `[]`. This is identical, byte-for-byte, to "no records recorded yet"
+and creates/mutates zero FileRecord data; it is the same precedent every
+earlier module's own read of the metadata store already relies on, not
+something WP-2 introduces.
+
 Single-layer batch-function architecture, no Engine/Provider split (§2/§9): four
 report-generation functions, each following load -> filter -> aggregate -> render
 -> write, calling storage/runtime_io.py's correspondingly-named write_*() function
@@ -19,14 +28,15 @@ report-generation functions, each following load -> filter -> aggregate -> rende
 Named `reporting.py` instead of `logging.py` to avoid shadowing Python's stdlib
 `logging` module.
 
-Module 08 Implementation Plan.md WP-1 scope only (scaffold reconciliation): the
-four generate_*() functions below are stubs — signatures fixed, no aggregation/
-rendering logic yet. That logic is WP-2 (Daily Summary), WP-3 (Duplicate Report),
-WP-4 (Weekly Summary), and WP-5 (Storage Report)'s own scope, not implemented
-here. What IS implemented here are the shared, pure aggregation primitives every
-one of those four functions will need: a malformed-line-safe action-log reader
-(§12 Layer 1), a data-derived "as of" recency marker (§7), and calendar-day/
-action-type action-log filters.
+Module 08 Implementation Plan.md status: WP-1 (scaffold reconciliation) implemented
+the shared, pure aggregation primitives every generate_*() function needs — a
+malformed-line-safe action-log reader (§12 Layer 1), a data-derived "as of"
+recency marker (§7), and calendar-day/action-type action-log filters — leaving
+all four generate_*() functions as signature-only stubs. WP-2 has since
+implemented `generate_daily_summary()`'s real aggregation/rendering logic
+against those primitives plus `storage.database.load_metadata_store()` (§5).
+`generate_weekly_summary()` (WP-4), `generate_duplicate_report()` (WP-3), and
+`generate_storage_report()` (WP-5) remain stubs — not implemented here.
 
 This file replaces the pre-existing `write_daily_summary()`/`write_weekly_summary()`/
 `write_duplicate_report()`/`write_storage_report()`-named stubs that used to live
@@ -37,20 +47,241 @@ whole-store-scoped aggregation the frozen design actually specifies (§5). See
 """
 
 import json
-from datetime import date
-from typing import Iterable, List, Optional, Tuple
+from datetime import date, datetime, timezone
+from pathlib import Path
+from typing import Dict, Iterable, List, Optional, Tuple
 
-from src.storage import runtime_io
+from src.storage import database, runtime_io
 
 
 # --- Report generation (stubs — WP-2 through WP-5's own implementation scope) ---
 
 def generate_daily_summary(report_date: date) -> str:
-    """Aggregate `report_date`'s action-log entries and resulting FileRecord
-    states into Runtime/Reports/Daily Summary/summary_YYYY-MM-DD.md (§3, §6) and
-    return the path written. Not implemented here — WP-2's own scope
-    (`Module 08 Implementation Plan.md`)."""
-    raise NotImplementedError("Module 08 Implementation Plan.md WP-2 territory")
+    """Aggregate `report_date`'s action-log entries and the current metadata
+    store into Runtime/Reports/Daily Summary/summary_YYYY-MM-DD.md, matching
+    `Metadata & Log Schema.md`'s worked example field-for-field (§3, §6), and
+    return the path written. Module 08 Implementation Plan.md WP-2's own scope.
+
+    Field derivation (each traces to a real, cited source — G3/I5):
+    - "Files scanned": count of `discover` entries that day (Module 01).
+    - "Auto-filed" / "Approval required" / "Review required": counts of
+      `score_confidence` entries that day by `details.tier` — Module 08
+      Design.md §13's own explicit statement that Module 06's score_confidence
+      entries are "the primary source for auto/approval-required/
+      review-required breakdowns in the Daily Summary."
+    - "Duplicates found": count of `detect_duplicates_and_versions` entries
+      that day with a non-null `details.duplicate_of` (excludes pure version
+      relationships, which carry `version_group_id`/`version_rank` instead).
+      Parenthetical disposition counts same-day `archive_duplicate` entries.
+    - "Versions archived": count of `archive_superseded_version` entries that
+      day; each one's detail cross-references the metadata store for the
+      archived file's `original_name` and its version-group sibling with
+      `version_rank == "latest"`. Disclosed interpretation: the worked
+      example's abbreviated "superseded by v9" is rendered here as the
+      sibling's full `original_name` (e.g. "superseded by Resume_v9.pdf")
+      rather than an inferred short label, since no field anywhere stores a
+      short version label, and inventing one would violate G3.
+    - "Errors": count of `error` entries that day.
+    - "## Files" table: one row per distinct file_id with a `move_rename` /
+      `archive_duplicate` / `archive_superseded_version` entry that day (i.e.
+      every file actually filed today), in first-seen action-log order for
+      determinism (G5). Columns are read from that file_id's current
+      FileRecord (`storage.database.load_metadata_store()`, per §5's explicit
+      dual-source statement: Daily Summary receives both the action log and
+      the metadata store). "New Name"/"Destination" are read from
+      `suggested_name`/`suggested_destination` — Module 05's own fields,
+      already relative-path-shaped — rather than reconstructed from
+      `current_path`, which would require destination-root-resolution logic
+      that is not part of WP-2's certified, single-file scope. A missing
+      field on a referenced FileRecord renders as "Unknown", never a
+      fabricated value (§12 Layer 1's third bullet).
+
+    No "as of" marker is included — the worked example has none; a calendar
+    day is already its own unambiguous scope, unlike the Duplicate/Storage
+    Report's continuously-updated current-state shape (decision 25) that
+    `compute_as_of_marker()` exists for.
+
+    Closed-day protection (§11, `ARCHITECTURE_DECISIONS.md` decision 27, G6):
+    if `report_date` is before today (UTC) and that day's file already
+    exists, it is never recomputed or rewritten — the existing path is
+    returned unchanged. A closed day with no file yet (a legitimate
+    first-time-late generation) still computes and writes normally. Today's
+    file (still "open", §11) is always recomputed and overwritten in place —
+    this is `write_daily_summary()`'s own already-tested WP-1 behavior, not a
+    new mechanism.
+    """
+    today = datetime.now(timezone.utc).date()
+    existing_path = _daily_summary_path(report_date)
+    if report_date < today and existing_path.exists():
+        return str(existing_path)
+
+    all_entries, malformed_count = read_action_log_entries_safe()
+    day_entries = filter_entries_by_day(all_entries, report_date)
+
+    records_by_id: Dict[str, "database.FileRecord"] = {
+        record.file_id: record for record in database.load_metadata_store()
+    }
+
+    files_scanned = len(filter_entries_by_action(day_entries, {"discover"}))
+
+    score_entries = filter_entries_by_action(day_entries, {"score_confidence"})
+    auto_filed = _count_by_tier(score_entries, "auto")
+    approval_required = _count_by_tier(score_entries, "approval_required")
+    review_required = _count_by_tier(score_entries, "review_required")
+
+    errors = len(filter_entries_by_action(day_entries, {"error"}))
+
+    duplicate_entries = filter_entries_by_action(day_entries, {"detect_duplicates_and_versions"})
+    duplicates_found = sum(
+        1 for entry in duplicate_entries if entry.get("details", {}).get("duplicate_of") is not None
+    )
+    duplicates_archived = len(filter_entries_by_action(day_entries, {"archive_duplicate"}))
+
+    archived_version_entries = filter_entries_by_action(day_entries, {"archive_superseded_version"})
+    versions_archived = len(archived_version_entries)
+    version_detail_parts = [
+        _render_version_archived_detail(records_by_id.get(entry.get("file_id")), records_by_id)
+        for entry in archived_version_entries
+    ]
+
+    filed_entries = filter_entries_by_action(
+        day_entries, {"move_rename", "archive_duplicate", "archive_superseded_version"}
+    )
+    seen_file_ids: List[str] = []
+    for entry in filed_entries:
+        file_id = entry.get("file_id")
+        if file_id not in seen_file_ids:
+            seen_file_ids.append(file_id)
+    table_rows = [_render_file_row(records_by_id.get(file_id)) for file_id in seen_file_ids]
+
+    content = _render_daily_summary(
+        report_date=report_date,
+        files_scanned=files_scanned,
+        auto_filed=auto_filed,
+        approval_required=approval_required,
+        review_required=review_required,
+        duplicates_found=duplicates_found,
+        duplicates_archived=duplicates_archived,
+        versions_archived=versions_archived,
+        version_detail_parts=version_detail_parts,
+        errors=errors,
+        malformed_count=malformed_count,
+        table_rows=table_rows,
+    )
+    return runtime_io.write_daily_summary(report_date, content)
+
+
+# --- generate_daily_summary() helpers (WP-2) ---
+
+def _daily_summary_path(report_date: date) -> Path:
+    """Read-only path reconstruction, used only for the closed-day existence
+    check above — never to open or write the file directly (the actual write
+    still goes exclusively through `runtime_io.write_daily_summary()`).
+    Mirrors that function's own path formula (Module 08 Design.md §6) via its
+    already-existing `_RUNTIME_REPORTS_PATH` constant, rather than adding a
+    new public path-accessor function to `storage/runtime_io.py` — WP-2's
+    certified scope is "Files expected to change: reporting.py... only"."""
+    return runtime_io._RUNTIME_REPORTS_PATH / "Daily Summary" / f"summary_{report_date.isoformat()}.md"
+
+
+def _count_by_tier(score_confidence_entries: List[dict], tier: str) -> int:
+    """Count `score_confidence` entries whose `details.tier` matches `tier`."""
+    return sum(1 for entry in score_confidence_entries if entry.get("details", {}).get("tier") == tier)
+
+
+def _field_or_unknown(value) -> str:
+    """§12 Layer 1's third bullet: a missing/empty field on a referenced
+    FileRecord renders as an explicit "Unknown", never a fabricated value."""
+    if value is None or value == "":
+        return "Unknown"
+    return str(value)
+
+
+def _render_version_archived_detail(record, records_by_id: Dict[str, "database.FileRecord"]) -> str:
+    """Render one "<original name> → superseded by <latest sibling's original
+    name>" detail for the "Versions archived" line. `record` is the archived
+    file's own current FileRecord; its version-group sibling with
+    `version_rank == "latest"` is looked up by shared `version_group_id`."""
+    if record is None:
+        return "Unknown"
+    original_name = _field_or_unknown(record.original_name)
+    latest_sibling = None
+    if record.version_group_id:
+        for other in records_by_id.values():
+            if other.version_group_id == record.version_group_id and other.version_rank == "latest":
+                latest_sibling = other
+                break
+    latest_name = _field_or_unknown(latest_sibling.original_name) if latest_sibling else "Unknown"
+    return f"{original_name} → superseded by {latest_name}"
+
+
+def _render_file_row(record) -> str:
+    """Render one "## Files" table row from a FileRecord — Original, New Name
+    (`suggested_name`), Destination (`suggested_destination`), Category,
+    Confidence, Tier. A wholly-missing record (referenced by the action log
+    but absent from the metadata store) renders every cell as "Unknown"."""
+    if record is None:
+        return "| Unknown | Unknown | Unknown | Unknown | Unknown | Unknown |"
+    category = record.category.value if record.category else "Unknown"
+    return "| {} | {} | {} | {} | {} | {} |".format(
+        _field_or_unknown(record.original_name),
+        _field_or_unknown(record.suggested_name),
+        _field_or_unknown(record.suggested_destination),
+        category,
+        _field_or_unknown(record.confidence_score),
+        _field_or_unknown(record.tier),
+    )
+
+
+def _render_daily_summary(
+    report_date: date,
+    files_scanned: int,
+    auto_filed: int,
+    approval_required: int,
+    review_required: int,
+    duplicates_found: int,
+    duplicates_archived: int,
+    versions_archived: int,
+    version_detail_parts: List[str],
+    errors: int,
+    malformed_count: int,
+    table_rows: List[str],
+) -> str:
+    """Render the Daily Summary Markdown body, matching
+    `Metadata & Log Schema.md`'s worked example field-for-field."""
+    lines = [f"# Daily Summary — {report_date.isoformat()}", ""]
+    lines.append(f"- Files scanned: {files_scanned}")
+    lines.append(f"- Auto-filed: {auto_filed}")
+    lines.append(f"- Approval required: {approval_required}")
+    lines.append(f"- Review required: {review_required}")
+
+    if duplicates_found == 0:
+        lines.append("- Duplicates found: 0")
+    elif duplicates_archived == duplicates_found:
+        lines.append(f"- Duplicates found: {duplicates_found} (archived)")
+    else:
+        lines.append(f"- Duplicates found: {duplicates_found} ({duplicates_archived} archived)")
+
+    if versions_archived == 0:
+        lines.append("- Versions archived: 0")
+    else:
+        lines.append(f"- Versions archived: {versions_archived} ({'; '.join(version_detail_parts)})")
+
+    lines.append(f"- Errors: {errors}")
+
+    # G3: a malformed line is never silently absorbed into a lower count —
+    # disclosed only when it actually occurs, so a normal day's output still
+    # matches the worked example exactly (which has no such line).
+    if malformed_count > 0:
+        lines.append(f"- Malformed log lines skipped: {malformed_count}")
+
+    lines.append("")
+    lines.append("## Files")
+    lines.append("| Original | New Name | Destination | Category | Confidence | Tier |")
+    lines.append("|---|---|---|---|---|---|")
+    lines.extend(table_rows)
+    lines.append("")
+    return "\n".join(lines)
 
 
 def generate_weekly_summary(report_week: date) -> str:
