@@ -151,5 +151,7 @@ Module 01's `SkippedEntry.reason` / the corresponding action-log `details.reason
 
 **Weekly Summary**, **Duplicate Report**, **Storage Report** — same idea, different rollup window/focus; see `Runtime/Reports/README.md`.
 
+**Correction counts are not included.** None of the four v1 report types include any statistic derived from `Database/Learning/User Corrections.json` — every `generate_*()` function (`src/pipeline/reporting.py`) reads only the action log and `Database/Metadata/metadata_store.json`; no report generator reads `Database/Learning/` at all. This documents the current implementation as of Module 08 WP-1 through WP-6 (`Module 08 Design.md` §8/§25 item 2).
+
 ## Learning (`Database/Learning/User Corrections.json`)
 Schema and purpose: see `Database/Learning/README.md`.
