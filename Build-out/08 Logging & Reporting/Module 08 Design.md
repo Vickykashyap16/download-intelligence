@@ -320,3 +320,13 @@ Per the project owner's explicit direction, following a dedicated design analysi
 - **Storage Report inclusion predicate — RESOLVED (newly surfaced, not a §22 Open Decision).** Full record: `Governance/ARCHITECTURE_DECISIONS.md` decision 30. Unlike the two items above, this question was not named anywhere in the frozen design — it was surfaced during WP-5's own pre-implementation engineering review. A record contributes to Storage Report's totals only if `record.processed_at is not None` (grouped by `suggested_destination`/`category`), excluding `review_required`, unreadable, not-yet-approved, and undone records. **Not yet implemented:** WP-5's own implementation is not performed by this addendum.
 
 No implementation code was written to produce this addendum. No frozen module (01–07) was touched. Module 08's design remains **Frozen** — this addendum records two decision-confirmation steps the design itself anticipated (§22, §24 Risks) as prerequisites to implementation, plus one additional scope clarification surfaced during WP-5's own pre-implementation review, not a design revision. WP-5 has not been started.
+
+---
+
+## Addendum — WP-6 `report()` CLI Invocation Placement (2026-07-20)
+
+**WP-5 status update (supersedes the line immediately above, per the "never rewrite history" convention — recorded here rather than editing that sentence in place):** WP-5 is complete — `generate_storage_report()`/`write_storage_report()` implemented, tested (706/706 passing), and independently audited (`Governance/ARCHITECTURE_DECISIONS.md` decisions 28/29/30).
+
+Per the project owner's explicit direction, following WP-6's own pre-implementation engineering review, a further scope question was surfaced and resolved: whether `report()` (§10's own explicit-CLI-step trigger, decision 26) should be appended to `main.py`'s automatic `if __name__ == "__main__":` chain or remain a separate, explicitly-invoked command. **RESOLVED.** Full record: `Governance/ARCHITECTURE_DECISIONS.md` decision 31. `report()` is a separate, explicitly-invoked CLI command, never part of the automatic chain — reports summarize completed execution results, and running `report()` before `execute()` would produce systematically premature output. This decision governs CLI orchestration only; no report-generation logic (decisions 25/28/29/30) is affected.
+
+No implementation code was written to produce this addendum. No frozen module (01–07) was touched. Module 08's design remains **Frozen**. WP-6 is architecturally frozen and implementation-ready pending explicit approval to begin coding; WP-6 has not been started.

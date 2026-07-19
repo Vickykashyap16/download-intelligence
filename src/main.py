@@ -19,10 +19,21 @@ score_confidence(), execute() and undo() are deliberately NOT part of the
 automatic `python -m src.main` chain at the bottom of this file — execute()
 causes real filesystem moves, and undo() requires a batch_id — invoking either
 is left as an explicit, separate operator action.
+
+Module 08 (Logging & Reporting)'s report() (WP-6, Module 08 Implementation
+Plan.md) is also wired in below, as the sole CLI entry point for all four
+report-generation functions (Governance/ARCHITECTURE_DECISIONS.md decision 26:
+"a single report() call invokes all four generate_*() functions in one pass").
+Like execute()/undo(), report() is deliberately NOT part of the automatic
+chain at the bottom of this file (decision 31) — reports summarize completed
+execution results, and running report() before execute() would produce
+technically correct but systematically premature output (an honest zero for
+every not-yet-executed file, misleadingly presented as "today's" activity).
 """
 
 import json
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -40,6 +51,12 @@ from src.pipeline.execution import (
 )
 from src.pipeline.metadata import extract_metadata_batch
 from src.pipeline.naming import suggest_naming_and_destination_batch
+from src.pipeline.reporting import (
+    generate_daily_summary,
+    generate_duplicate_report,
+    generate_storage_report,
+    generate_weekly_summary,
+)
 from src.pipeline.watch_ingest import load_source_config, scan_source
 from src.storage.database import (
     load_metadata_store,
@@ -677,6 +694,70 @@ def undo(batch_id: str) -> None:
     print(f"\nMetadata written to: {metadata_store_path()}")
     print(f"Action log written to: {action_log_path()}")
     print("\nUndo complete.")
+
+
+def report() -> None:
+    """Run Module 08's report generation (WP-6, Module 08 Design.md §10;
+    Governance/ARCHITECTURE_DECISIONS.md decisions 25/26/28/29/30/31): invoke
+    all four generate_*() functions in one pass and print a CLI summary.
+
+    A separate, explicitly-invoked command — deliberately NOT part of the
+    automatic chain at the bottom of this file (decision 31, mirroring
+    execute()/undo()'s own precedent): reports summarize completed execution
+    results, and running this before execute() would produce systematically
+    premature Daily Summary output.
+
+    Layer 2's outer safety net (Module 08 Design.md §12): each of the four
+    report types is generated independently, in its own try/except — one
+    report type's failure never prevents the other three from being
+    attempted, and never propagates to fail this command as a whole. This is
+    also, by construction, never able to affect anything Module 07 already
+    did (G4/I4): report() never touches Database/* or the action log, only
+    Runtime/Reports/*, so there is no shared state through which a report
+    failure could reach backward.
+
+    Daily Summary/Weekly Summary are scoped to UTC "today"/the ISO week
+    containing it — the same `datetime.now(timezone.utc).date()` convention
+    those two functions already use internally (decision 27). Duplicate
+    Report/Storage Report take no scoping parameter (decision 25) — both are
+    single, continuously-updated current-state files.
+    """
+    today = datetime.now(timezone.utc).date()
+
+    written: Dict[str, str] = {}
+    failed: Dict[str, str] = {}
+
+    try:
+        written["Daily Summary"] = generate_daily_summary(today)
+    except Exception as exc:  # Layer 2's own outer safety net, §12
+        failed["Daily Summary"] = str(exc)
+
+    try:
+        written["Weekly Summary"] = generate_weekly_summary(today)
+    except Exception as exc:  # Layer 2's own outer safety net, §12
+        failed["Weekly Summary"] = str(exc)
+
+    try:
+        written["Duplicate Report"] = generate_duplicate_report()
+    except Exception as exc:  # Layer 2's own outer safety net, §12
+        failed["Duplicate Report"] = str(exc)
+
+    try:
+        written["Storage Report"] = generate_storage_report()
+    except Exception as exc:  # Layer 2's own outer safety net, §12
+        failed["Storage Report"] = str(exc)
+
+    print("Report generation:")
+    for label in ("Daily Summary", "Weekly Summary", "Duplicate Report", "Storage Report"):
+        if label in written:
+            print(f"  - {label}: {written[label]}")
+        else:
+            print(f"  - {label}: FAILED — {failed[label]}")
+
+    if failed:
+        print(f"\n{len(failed)} report(s) failed to generate — see above; the rest were unaffected.")
+
+    print("\nModule 08 report generation complete.")
 
 
 def _read_execution_log_actions(file_ids: set, batch_id: str) -> dict:

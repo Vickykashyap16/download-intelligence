@@ -45,6 +45,15 @@ def _isolate_storage(tmp_path, monkeypatch):
     monkeypatch.setattr(runtime_io_module, "_ACTION_LOG_PATH", tmp_path / "action_log.jsonl")
 
 
+def _isolate_reports_storage(tmp_path, monkeypatch):
+    """Extends `_isolate_storage()` with `Runtime/Reports/` — the additional
+    real-storage location Module 08's `report()` touches, mirroring
+    `pipeline/test_reporting.py`'s own `_isolate_reports()` isolation
+    convention."""
+    _isolate_storage(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime_io_module, "_RUNTIME_REPORTS_PATH", tmp_path / "Reports")
+
+
 def _isolate_execution_storage(tmp_path, monkeypatch):
     """Extends `_isolate_storage()` with the two additional real-storage
     locations Module 07's execute()/undo() touch beyond metadata/the action
@@ -425,3 +434,170 @@ def test_execute_source_never_calls_undo_batch_directly(tmp_path):
 
     execute_source = inspect.getsource(main_module.execute)
     assert "undo_batch" not in execute_source
+
+
+# --- report() (Module 08, WP-6) ---
+#
+# Decision 26: a single report() call invokes all four generate_*() functions
+# in one pass. Decision 31: report() is a separate, explicitly-invoked command,
+# never part of the automatic `if __name__ == "__main__":` chain. §12 Layer 2:
+# each report type's failure is isolated from the other three.
+
+def test_report_generates_all_four_reports_and_prints_their_paths(tmp_path, monkeypatch, capsys):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+
+    main_module.report()
+
+    captured = capsys.readouterr()
+    assert "Report generation:" in captured.out
+    assert "Daily Summary" in captured.out
+    assert "Weekly Summary" in captured.out
+    assert "Duplicate Report" in captured.out
+    assert "Storage Report" in captured.out
+    assert "Module 08 report generation complete." in captured.out
+
+    assert (tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md").exists()
+    assert (tmp_path / "Reports" / "Storage Report" / "storage_report.md").exists()
+    assert list((tmp_path / "Reports" / "Daily Summary").glob("summary_*.md"))
+    assert list((tmp_path / "Reports" / "Weekly Summary").glob("summary_*.md"))
+
+
+def test_report_failure_in_daily_summary_does_not_block_the_other_three(tmp_path, monkeypatch, capsys):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+    monkeypatch.setattr(
+        main_module, "generate_daily_summary",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(RuntimeError("boom")),
+    )
+
+    main_module.report()
+
+    captured = capsys.readouterr()
+    assert "Daily Summary: FAILED" in captured.out
+    assert "boom" in captured.out
+    assert "1 report(s) failed to generate" in captured.out
+
+    assert (tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md").exists()
+    assert (tmp_path / "Reports" / "Storage Report" / "storage_report.md").exists()
+    assert list((tmp_path / "Reports" / "Weekly Summary").glob("summary_*.md"))
+    assert not (tmp_path / "Reports" / "Daily Summary").exists()
+
+
+def test_report_failure_in_weekly_summary_does_not_block_the_other_three(tmp_path, monkeypatch, capsys):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+    monkeypatch.setattr(
+        main_module, "generate_weekly_summary",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(RuntimeError("boom")),
+    )
+
+    main_module.report()
+
+    captured = capsys.readouterr()
+    assert "Weekly Summary: FAILED" in captured.out
+
+    assert (tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md").exists()
+    assert (tmp_path / "Reports" / "Storage Report" / "storage_report.md").exists()
+    assert list((tmp_path / "Reports" / "Daily Summary").glob("summary_*.md"))
+    assert not (tmp_path / "Reports" / "Weekly Summary").exists()
+
+
+def test_report_failure_in_duplicate_report_does_not_block_the_other_three(tmp_path, monkeypatch, capsys):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+    monkeypatch.setattr(
+        main_module, "generate_duplicate_report",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(RuntimeError("boom")),
+    )
+
+    main_module.report()
+
+    captured = capsys.readouterr()
+    assert "Duplicate Report: FAILED" in captured.out
+
+    assert (tmp_path / "Reports" / "Storage Report" / "storage_report.md").exists()
+    assert list((tmp_path / "Reports" / "Daily Summary").glob("summary_*.md"))
+    assert list((tmp_path / "Reports" / "Weekly Summary").glob("summary_*.md"))
+    assert not (tmp_path / "Reports" / "Duplicate Report").exists()
+
+
+def test_report_failure_in_storage_report_does_not_block_the_other_three(tmp_path, monkeypatch, capsys):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+    monkeypatch.setattr(
+        main_module, "generate_storage_report",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(RuntimeError("boom")),
+    )
+
+    main_module.report()
+
+    captured = capsys.readouterr()
+    assert "Storage Report: FAILED" in captured.out
+
+    assert (tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md").exists()
+    assert list((tmp_path / "Reports" / "Daily Summary").glob("summary_*.md"))
+    assert list((tmp_path / "Reports" / "Weekly Summary").glob("summary_*.md"))
+    assert not (tmp_path / "Reports" / "Storage Report").exists()
+
+
+def test_report_never_appends_to_the_action_log(tmp_path, monkeypatch):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+    (tmp_path / "action_log.jsonl").write_text('{"sentinel": true}\n', encoding="utf-8")
+    before = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+
+    main_module.report()
+
+    after = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+    assert before == after
+
+
+def test_report_never_writes_to_the_metadata_store(tmp_path, monkeypatch):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+    database_module.save_file_record(FileRecord(
+        file_id="f1", source_id="downloads", original_name="invoice.pdf",
+        original_path="/tmp/invoice.pdf", current_path="/tmp/invoice.pdf",
+        status="discovered", category=Category.INVOICE,
+        suggested_destination="Finance/", size_bytes=1000,
+        processed_at="2026-07-14T12:00:00+00:00",
+    ))
+    before = database_module.metadata_store_path().read_text(encoding="utf-8")
+
+    main_module.report()
+
+    after = database_module.metadata_store_path().read_text(encoding="utf-8")
+    assert before == after
+
+
+def test_report_writes_only_within_runtime_reports(tmp_path, monkeypatch):
+    _isolate_reports_storage(tmp_path, monkeypatch)
+    (tmp_path / "Database").mkdir()
+    (tmp_path / "Database" / "sentinel.json").write_text("[]", encoding="utf-8")
+
+    main_module.report()
+
+    assert (tmp_path / "Database" / "sentinel.json").read_text(encoding="utf-8") == "[]"
+
+
+def test_report_repeated_execution_is_idempotent_with_unchanged_data(tmp_path, monkeypatch):
+    """Decision 25/G5: Duplicate Report and Storage Report are single,
+    continuously-updated current-state files — re-running report() against
+    unchanged source data must reproduce byte-for-byte identical content."""
+    _isolate_reports_storage(tmp_path, monkeypatch)
+
+    main_module.report()
+    duplicate_first = (tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md").read_text(encoding="utf-8")
+    storage_first = (tmp_path / "Reports" / "Storage Report" / "storage_report.md").read_text(encoding="utf-8")
+
+    main_module.report()
+    duplicate_second = (tmp_path / "Reports" / "Duplicate Report" / "duplicate_report.md").read_text(encoding="utf-8")
+    storage_second = (tmp_path / "Reports" / "Storage Report" / "storage_report.md").read_text(encoding="utf-8")
+
+    assert duplicate_first == duplicate_second
+    assert storage_first == storage_second
+
+
+def test_report_not_part_of_the_automatic_main_chain():
+    """Decision 31: report() is a separate, explicitly-invoked command —
+    never added to the automatic chain at the bottom of main.py."""
+    import inspect
+
+    source = inspect.getsource(main_module)
+    chain_start = source.index('if __name__ == "__main__":')
+    chain_block = source[chain_start:]
+    assert "report()" not in chain_block
