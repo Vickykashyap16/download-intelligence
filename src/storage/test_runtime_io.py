@@ -36,8 +36,6 @@ Run with: pytest src/storage/test_runtime_io.py -v
 
 from datetime import date
 
-import pytest
-
 import src.storage.runtime_io as runtime_io_module
 from src.storage.runtime_io import (
     write_daily_summary,
@@ -181,17 +179,46 @@ class TestWriteDuplicateReport:
         assert list(signature.parameters) == ["content"]
 
 
-class TestWriteStorageReportPlaceholder:
-    def test_raises_not_implemented_error(self, tmp_path, monkeypatch):
+class TestWriteStorageReport:
+    def test_writes_content_verbatim_and_returns_the_path(self, tmp_path, monkeypatch):
         _isolate_reports(tmp_path, monkeypatch)
-        with pytest.raises(NotImplementedError):
-            write_storage_report("some rendered content")
+        result = write_storage_report("# Storage Report\n\nhello")
 
-    def test_raises_without_writing_any_file(self, tmp_path, monkeypatch):
+        expected_path = tmp_path / "Reports" / "Storage Report" / "storage_report.md"
+        assert result == str(expected_path)
+        assert expected_path.read_text(encoding="utf-8") == "# Storage Report\n\nhello"
+
+    def test_creates_the_storage_report_subfolder_if_missing(self, tmp_path, monkeypatch):
         _isolate_reports(tmp_path, monkeypatch)
-        with pytest.raises(NotImplementedError):
-            write_storage_report("content")
         assert not (tmp_path / "Reports").exists()
+        write_storage_report("content")
+        assert (tmp_path / "Reports" / "Storage Report").is_dir()
+
+    def test_filename_is_fixed_not_dated(self, tmp_path, monkeypatch):
+        _isolate_reports(tmp_path, monkeypatch)
+        write_storage_report("content")
+        expected = tmp_path / "Reports" / "Storage Report" / "storage_report.md"
+        assert expected.exists()
+
+    def test_a_second_call_always_overwrites_in_place_no_scoping_parameter(self, tmp_path, monkeypatch):
+        """Decision 25: a single, continuously-updated current-state file —
+        every call unconditionally overwrites, no scoping parameter."""
+        _isolate_reports(tmp_path, monkeypatch)
+        write_storage_report("first version")
+        result = write_storage_report("second version")
+
+        expected_path = tmp_path / "Reports" / "Storage Report" / "storage_report.md"
+        assert result == str(expected_path)
+        assert expected_path.read_text(encoding="utf-8") == "second version"
+
+    def test_signature_takes_no_scoping_parameter(self, tmp_path, monkeypatch):
+        """Structural check that WP-1's OD-1-agnostic signature (`content: str
+        -> str`) was preserved, not expanded — decision 25 confirmed no
+        scoping parameter is needed."""
+        import inspect
+
+        signature = inspect.signature(write_storage_report)
+        assert list(signature.parameters) == ["content"]
 
 
 # --- Zero-write immutability beyond Runtime/Reports/ itself (Module 08 Design.md

@@ -44,7 +44,12 @@ Summary files (never the metadata store), with a narrow action-log exception
 solely to disambiguate a missing day; inherits closed-period (G6/I6) protection
 transitively from Daily Summary's own per-day guarantee rather than
 implementing an independent week-boundary mechanism. `generate_storage_report()`
-(WP-5) remains a stub — not implemented here.
+(WP-5) has since been implemented — a single, continuously-updated
+current-state file (decision 25) derived entirely from
+`size_bytes`/`suggested_destination`/`category` already present in the
+metadata store (decision 29), scoped to only currently-filed records via
+`processed_at is not None` (decision 30). Reads no action-log entries at all
+— a first among the four report types.
 
 This file replaces the pre-existing `write_daily_summary()`/`write_weekly_summary()`/
 `write_duplicate_report()`/`write_storage_report()`-named stubs that used to live
@@ -57,7 +62,7 @@ whole-store-scoped aggregation the frozen design actually specifies (§5). See
 import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Callable, Dict, Iterable, List, Optional, Tuple
 
 from src.storage import database, runtime_io
 
@@ -689,13 +694,203 @@ def _render_duplicate_report(
 
 
 def generate_storage_report() -> str:
-    """Aggregate space-used-per-destination-folder/category into
-    Runtime/Reports/Storage Report/storage_report.md (§3, single
-    continuously-updated current-state file per
-    `Governance/ARCHITECTURE_DECISIONS.md` decision 25) and return the path
-    written. Not implemented here — WP-5's own scope
-    (`Module 08 Implementation Plan.md`)."""
-    raise NotImplementedError("Module 08 Implementation Plan.md WP-5 territory")
+    """Aggregate currently-filed space by destination folder and by category
+    into Runtime/Reports/Storage Report/storage_report.md — a single,
+    continuously-updated current-state file, always overwritten in place
+    (§3/§6, `ARCHITECTURE_DECISIONS.md` decision 25) — and return the path
+    written. Module 08 Implementation Plan.md WP-5's own scope.
+
+    Data source (decision 29): derived entirely from `size_bytes` values
+    already present in `Database/Metadata/metadata_store.json` — no
+    filesystem walk, no destination-library read of any kind, and no
+    action-log read at all (a first among the four report types — every
+    other report type reads the action log for at least one purpose).
+
+    Inclusion predicate (decision 30): a record contributes only if
+    `record.processed_at is not None` — confirmed in `pipeline/execution.py`
+    as the sole point (`ExecutionEngine.execute_file()` step 6) where a real,
+    successful move/archive sets this field, and the sole point
+    (`undo_single_action()`) where it is reset to `None`. This automatically
+    and correctly excludes `review_required` records (§0.1 I2: "left
+    completely unchanged"), unreadable records (never reach Module 05),
+    records still awaiting an approval decision, and records whose
+    disposition was later undone — with no special-casing for any of these,
+    since all four cases share the same underlying `processed_at is None`
+    state.
+
+    Grouping (decision 30): by `suggested_destination` (Module 05's own
+    field — already relative-path-shaped, requiring no `destination_root`
+    resolution, mirroring `generate_daily_summary()`'s own identical
+    precedent for its "Destination" column) and by `category`. Both
+    breakdowns include archive-override destinations
+    (`~ARCHIVE~/Duplicates/`, `~ARCHIVE~/Old Versions/`) as their own
+    buckets — real, currently-occupied space in the user's library, not
+    excluded (decision 30's own explicit "Trade-offs" note).
+
+    A record missing `size_bytes` (`Optional[int]` on `FileRecord`) is
+    excluded from every sum rather than fabricated as 0 (§12 Layer 1's
+    "never fabricate" rule) — its exclusion is counted and disclosed in the
+    rendered output, never silently absorbed into a lower total (G3).
+
+    "As of" marker (§7 option D): the latest `processed_at` among every
+    included (filed) record — a real, metadata-store-derived timestamp in
+    the same ISO-8601 UTC shape action-log `timestamp` values use
+    (`pipeline/execution.py`'s `_iso_now()`), reusing
+    `compute_as_of_marker()`'s own max-of-timestamps logic via a synthetic
+    entry list, since this report reads no action-log entries to pass it
+    directly (unlike every other report type's own use of that helper).
+
+    Every reported figure traces to a real metadata-store field (G3/I5); no
+    closed-period protection of any kind — this report type is always fully
+    recomputed and overwritten (decision 25's own explicit consequence).
+    Unconditionally idempotent (G5): both grouping keys and every sum are
+    pure functions of the unchanged metadata store, and both breakdown
+    tables are rendered in sorted key order so re-running against unchanged
+    source data reproduces byte-for-byte identical output regardless of
+    on-disk record order.
+    """
+    records = database.load_metadata_store()
+    filed_records = [record for record in records if record.processed_at is not None]
+
+    sized = _filed_with_known_size(filed_records)
+    missing_size_count = len(filed_records) - len(sized)
+
+    by_destination = _sum_size_by_key(sized, lambda record: record.suggested_destination)
+    by_category = _sum_size_by_key(
+        sized, lambda record: record.category.value if record.category else None
+    )
+    total_bytes = sum(size for _, size in sized)
+    as_of = _compute_storage_as_of_marker(filed_records)
+
+    content = _render_storage_report(
+        as_of=as_of,
+        total_filed=len(filed_records),
+        total_bytes=total_bytes,
+        by_destination=by_destination,
+        by_category=by_category,
+        missing_size_count=missing_size_count,
+    )
+    return runtime_io.write_storage_report(content)
+
+
+# --- generate_storage_report() helpers (WP-5) ---
+
+def _filed_with_known_size(
+    filed_records: List["database.FileRecord"],
+) -> List[Tuple["database.FileRecord", int]]:
+    """Split `filed_records` into (record, size) pairs for every record whose
+    `size_bytes` is populated — `size_bytes` is `Optional[int]` on
+    `FileRecord`; a missing value is excluded here (never fabricated as 0,
+    §12 Layer 1) rather than raising, and the caller counts the exclusion via
+    the length difference against `filed_records` for disclosure (G3)."""
+    result: List[Tuple["database.FileRecord", int]] = []
+    for record in filed_records:
+        if record.size_bytes is not None:
+            result.append((record, record.size_bytes))
+    return result
+
+
+def _sum_size_by_key(
+    sized_records: List[Tuple["database.FileRecord", int]],
+    key_fn: Callable[["database.FileRecord"], Optional[str]],
+) -> Dict[str, int]:
+    """Sum `size` across `sized_records`, grouped by `key_fn(record)`. A
+    record whose key is missing/empty groups under the explicit "Unknown"
+    bucket rather than being silently dropped (§12 Layer 1's third bullet) —
+    should not occur for a filed record given Module 05's own ownership
+    guarantee that every classified record receives a `suggested_destination`
+    before Module 07 can ever set `processed_at`, but handled defensively
+    rather than assumed impossible."""
+    totals: Dict[str, int] = {}
+    for record, size in sized_records:
+        bucket = key_fn(record) or "Unknown"
+        totals[bucket] = totals.get(bucket, 0) + size
+    return totals
+
+
+def _compute_storage_as_of_marker(filed_records: List["database.FileRecord"]) -> Optional[str]:
+    """Storage Report's own data-derived "as of" marker (§7, option D) —
+    unlike every other report type, this report never reads the action log
+    (decision 29), so it cannot be passed action-log entries directly.
+    `record.processed_at` is itself a real, ISO-8601 UTC metadata-store field
+    in the same format action-log `timestamp` values use, so the latest
+    `processed_at` among the records this report actually included is an
+    equally legitimate, non-fabricated recency marker — reuses
+    `compute_as_of_marker()`'s own max-of-timestamps logic via a synthetic
+    entry list, rather than duplicating its lexicographic-max reasoning
+    here."""
+    if not filed_records:
+        return None
+    return compute_as_of_marker(
+        [{"timestamp": record.processed_at} for record in filed_records]
+    )
+
+
+_BYTE_UNITS: Tuple[str, ...] = ("B", "KB", "MB", "GB", "TB")
+
+
+def _format_bytes(size: int) -> str:
+    """Deterministic, human-readable byte formatting (binary/1024-based
+    KB/MB/GB/TB) — a disclosed WP-5 rendering choice, matching every other
+    report type's own "no committed worked example exists for this report
+    type, so a reasonable format is chosen and disclosed" precedent
+    (`Metadata & Log Schema.md` has no Storage Report worked example, unlike
+    Daily Summary). Depends only on `size` — no locale, no wall-clock
+    content, no rounding-mode ambiguity — so identical input always
+    produces the identical output string (G5)."""
+    if size < 1024:
+        return f"{size} B"
+    value = float(size)
+    unit_index = 0
+    while value >= 1024.0 and unit_index < len(_BYTE_UNITS) - 1:
+        value /= 1024.0
+        unit_index += 1
+    return f"{value:.1f} {_BYTE_UNITS[unit_index]}"
+
+
+def _render_storage_report(
+    as_of: Optional[str],
+    total_filed: int,
+    total_bytes: int,
+    by_destination: Dict[str, int],
+    by_category: Dict[str, int],
+    missing_size_count: int,
+) -> str:
+    """Render the Storage Report Markdown body. No committed worked example
+    exists for this report type (unlike Daily Summary) — this format is a
+    disclosed, reasonable design choice, matching the project's established
+    header/bullets/table style, the same precedent WP-3/WP-4 already
+    established for their own report types. Both breakdown tables are
+    rendered in sorted key order (never raw dict/load order) so that
+    re-running against unchanged source data reproduces byte-for-byte
+    identical output regardless of the metadata store's own on-disk record
+    order (G5)."""
+    lines = ["# Storage Report", ""]
+    lines.append(f"- As of: {as_of if as_of is not None else 'no filed records yet'}")
+    lines.append(f"- Filed records: {total_filed}")
+    lines.append(f"- Total space used: {_format_bytes(total_bytes)}")
+
+    if missing_size_count > 0:
+        lines.append(
+            f"- Filed records with unknown size (excluded from totals): {missing_size_count}"
+        )
+
+    lines.append("")
+    lines.append("## By Destination")
+    lines.append("| Destination | Size |")
+    lines.append("|---|---|")
+    for destination in sorted(by_destination):
+        lines.append(f"| {destination} | {_format_bytes(by_destination[destination])} |")
+
+    lines.append("")
+    lines.append("## By Category")
+    lines.append("| Category | Size |")
+    lines.append("|---|---|")
+    for category in sorted(by_category):
+        lines.append(f"| {category} | {_format_bytes(by_category[category])} |")
+
+    lines.append("")
+    return "\n".join(lines)
 
 
 # --- Shared aggregation primitives (WP-1) ---

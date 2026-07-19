@@ -253,12 +253,20 @@ def write_duplicate_report(content: str) -> str:
 
 
 def write_storage_report(content: str) -> str:
-    """Module 08 (Logging & Reporting) territory — `generate_storage_report()`'s
-    own raw-I/O counterpart (WP-5, not implemented here).
+    """Write `content` to Runtime/Reports/Storage Report/storage_report.md
+    and return the path written — a single, continuously-updated current-state
+    file, unconditionally overwritten in place on every call, never a dated
+    snapshot (`ARCHITECTURE_DECISIONS.md` decision 25). Makes no aggregation or
+    rendering decision of its own — `content` is already fully computed by
+    `generate_storage_report()` (`pipeline/reporting.py`, WP-5's own scope).
 
-    Signature corrected to the smallest OD-1-agnostic shape (content in, path out)
-    at WP-1, mirroring `write_duplicate_report()`'s identical treatment and the
-    same finding F5 resolution. Finalizing this function's real body against
-    OD-1's resolved shape (decision 25) is explicitly WP-5's own scope, not WP-1's
-    — left unimplemented here by design."""
-    raise NotImplementedError("Module 08 Implementation Plan.md WP-5 territory")
+    Signature unchanged from WP-1's minimal, OD-1-agnostic shape (content in,
+    path out) at WP-1 per `Module 08 Implementation Plan.md Review.md` finding
+    F5 — decision 25's resolution confirms no scoping parameter is needed (a
+    single current-state file, not dated snapshots), the same treatment
+    `write_duplicate_report()` already received at WP-3."""
+    target_dir = _RUNTIME_REPORTS_PATH / "Storage Report"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    target_path = target_dir / "storage_report.md"
+    target_path.write_text(content, encoding="utf-8")
+    return str(target_path)

@@ -2,6 +2,14 @@
 
 All notable architecture/design decisions for Downloads Intelligence, in one place. Replaces the individual "Change log" footers that used to live at the bottom of `Rules/Classification Rules.md`, `Rules/Folder Rules.md`, `Rules/Confidence Rules.md`, `Rules/Ignore Rules.md`, `Build-out/02 Classification.md`, and `Build-out/06 Confidence & Review.md`.
 
+## 2026-07-20 — Module 08 WP-5 pre-implementation review: Storage Report inclusion predicate resolved (decision-recording only, no code)
+
+Following a dedicated pre-implementation engineering review of WP-5 (`generate_storage_report()`/`write_storage_report()`), one further scope question was surfaced that decisions 25/28/29 did not address: which records contribute to Storage Report's totals. Neither `Module 08 Design.md` nor any existing decision specifies whether a record counts toward "space used" once merely classified/suggested, or only once actually filed. Resolved: a record counts only if `record.processed_at is not None` — confirmed directly in `src/pipeline/execution.py` as the sole, already-existing, metadata-store-only signal for "this file is currently, actually sitting in the destination library" (set once, in `ExecutionEngine.execute_file()` step 6, after a real move/archive; reset to `None` by `undo_single_action()`). `review_required`, unreadable, not-yet-approved, and undone records are excluded; included records are grouped by `suggested_destination` and by `category`, using `size_bytes` exactly as decision 29 already scoped.
+
+**Documentation updated:** `Governance/ARCHITECTURE_DECISIONS.md` (decision 30, following the established five-part format); `Module 08 Design.md`'s "Addendum — Storage Report Scope & Data Source Resolution" (one further bullet, append-only); `Module 08 Implementation Plan.md` (WP-5's status note extended); `Runtime/Reports/README.md` (Storage Report's description corrected — it previously read "every file discovered so far," which decision 30 confirms is not accurate; only currently-filed files count).
+
+No implementation code was written. WP-5's pre-implementation review is now complete; every open scope question is resolved. Implementation may begin pending explicit project-owner approval.
+
 ## 2026-07-20 — Module 08 Implementation Planning: Storage Report scope clarified, Open Decision OD-4 resolved (decision-recording only, no code)
 
 Following the project owner's approval of a dedicated architecture review into the tension between `Module 08 Design.md` §3's "growth over time" wording and decision 25's fixed current-state-file persistence shape, both that ambiguity and Open Decision OD-4 (Storage Report's data source, §22) — the one substantive gap left blocking WP-5 after WP-0 — were resolved. No implementation code was written; `reporting.py`, `runtime_io.py`, and all test files were left untouched; no frozen module (01–07) was touched.

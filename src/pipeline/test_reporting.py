@@ -38,8 +38,6 @@ import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-import pytest
-
 import src.storage.database as database_module
 import src.storage.runtime_io as runtime_io_module
 from src.models.classification import Category
@@ -50,6 +48,7 @@ from src.pipeline.reporting import (
     filter_entries_by_day,
     generate_daily_summary,
     generate_duplicate_report,
+    generate_storage_report,
     generate_weekly_summary,
     read_action_log_entries_safe,
 )
@@ -1248,3 +1247,343 @@ class TestGenerateWeeklySummaryZeroWrite:
 
         after = daily_path.read_text(encoding="utf-8")
         assert before == after
+
+
+# --- generate_storage_report() (WP-5) ---
+#
+# Decision 25: single, continuously-updated current-state file, unconditionally
+# overwritten. Decision 29: derived entirely from size_bytes/suggested_destination/
+# category already in the metadata store — no action-log read, no filesystem walk.
+# Decision 30: a record contributes only if processed_at is not None.
+
+def _filed_record(file_id, name, category, suggested_destination, size_bytes,
+                   processed_at="2026-07-14T12:00:00+00:00", **kwargs):
+    """A record that has actually been filed (decision 30's inclusion
+    predicate) — processed_at set, exactly as ExecutionEngine.execute_file()
+    step 6 sets it after a real move/archive."""
+    return _record(
+        file_id, name, category=category, suggested_destination=suggested_destination,
+        size_bytes=size_bytes, processed_at=processed_at, **kwargs,
+    )
+
+
+def _unfiled_record(file_id, name, category=None, suggested_destination=None,
+                     size_bytes=None, **kwargs):
+    """A record that has NOT been filed — processed_at stays None (its
+    dataclass default), exactly as a review_required/unreadable/
+    not-yet-approved/undone record's real state is."""
+    return _record(
+        file_id, name, category=category, suggested_destination=suggested_destination,
+        size_bytes=size_bytes, **kwargs,
+    )
+
+
+class TestGenerateStorageReportInclusionPredicate:
+    """Decision 30: record.processed_at is not None is the sole, authoritative
+    inclusion signal."""
+
+    def test_filed_record_contributes(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 1" in content
+
+    def test_review_required_record_excluded(self, tmp_path, monkeypatch):
+        """§0.1 I2: a review_required record is left completely unchanged —
+        processed_at is never set for it, so it must never contribute."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_unfiled_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000, tier="review_required",
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 0" in content
+        assert "Finance/" not in content
+
+    def test_unreadable_record_excluded(self, tmp_path, monkeypatch):
+        """A record that never reached Module 05 has no suggested_destination
+        and no processed_at — excluded, not crashed on."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(FileRecord(
+            file_id="f1", source_id="downloads", original_name="corrupt.pdf",
+            original_path="/tmp/corrupt.pdf", current_path="/tmp/corrupt.pdf",
+            status="unreadable", size_bytes=500,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 0" in content
+
+    def test_record_awaiting_approval_excluded(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_unfiled_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000, tier="approval_required",
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 0" in content
+
+    def test_undone_record_excluded(self, tmp_path, monkeypatch):
+        """decision 30 / decision 25's "always-current view": undo_single_action()
+        resets processed_at to None — the record must fall out of the totals
+        on the very next call, with no special-casing."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_unfiled_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 0" in content
+        assert "Finance/" not in content
+
+    def test_mixed_filed_and_unfiled_only_filed_counted(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        database_module.save_file_record(_unfiled_record(
+            "f2", "review_me.pdf", Category.DOCUMENT, "Documents/", 2000, tier="review_required",
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 1" in content
+        assert "Documents/" not in content
+
+
+class TestGenerateStorageReportAggregation:
+    def test_groups_by_suggested_destination(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "statement.pdf", Category.BANK_STATEMENT, "Finance/", 2000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "| Finance/ | 2.9 KB |" in content
+
+    def test_groups_by_category(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "invoice2.pdf", Category.INVOICE, "Finance/", 500,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "| Invoice | 1.5 KB |" in content
+
+    def test_different_categories_same_destination_both_counted_toward_folder_total(
+        self, tmp_path, monkeypatch
+    ):
+        """Finance/ holds both Invoice and Bank Statement (Rules/Folder Rules.md)
+        — the destination breakdown must sum across categories, and the
+        category breakdown must keep them separate."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1024,
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "statement.pdf", Category.BANK_STATEMENT, "Finance/", 1024,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "| Finance/ | 2.0 KB |" in content
+        assert "| Invoice | 1.0 KB |" in content
+        assert "| Bank Statement | 1.0 KB |" in content
+
+    def test_archive_override_destinations_are_their_own_buckets(self, tmp_path, monkeypatch):
+        """decision 30's Trade-offs note: ~ARCHIVE~/ destinations are real,
+        currently-occupied space and must be included, not folded away."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice_copy.pdf", Category.INVOICE, "~ARCHIVE~/Duplicates/", 4096,
+            duplicate_of="orig1",
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "Resume_v8.pdf", Category.RESUME, "~ARCHIVE~/Old Versions/", 8192,
+            version_group_id="g1", version_rank="superseded",
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "| ~ARCHIVE~/Duplicates/ | 4.0 KB |" in content
+        assert "| ~ARCHIVE~/Old Versions/ | 8.0 KB |" in content
+
+    def test_missing_suggested_destination_buckets_as_unknown(self, tmp_path, monkeypatch):
+        """Defensive handling (§12 Layer 1) — should not occur for a filed
+        record given Module 05's own ownership guarantee, but never crashes
+        or silently drops the record."""
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "mystery.pdf", Category.UNKNOWN, None, 1000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "| Unknown | 1000 B |" in content
+
+    def test_missing_category_buckets_as_unknown(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "mystery.pdf", None, "Unknown/", 1000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        # Two "Unknown" buckets can coexist (one per breakdown table) without
+        # collision, since they're independent tables.
+        assert "## By Category" in content
+        assert content.count("| Unknown | 1000 B |") == 1
+
+    def test_totals_sorted_deterministically(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "a.pdf", Category.VIDEO, "Videos/", 100,
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "b.pdf", Category.AUDIO, "Audio/", 100,
+        ))
+        database_module.save_file_record(_filed_record(
+            "f3", "c.pdf", Category.ARCHIVE, "Archives/", 100,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert content.index("Archives/") < content.index("Audio/") < content.index("Videos/")
+
+
+class TestGenerateStorageReportMissingSize:
+    def test_missing_size_bytes_excluded_from_totals(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "known.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "unknown_size.pdf", Category.INVOICE, "Finance/", None,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "| Finance/ | 1000 B |" in content
+
+    def test_missing_size_count_disclosed(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "unknown_size.pdf", Category.INVOICE, "Finance/", None,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records with unknown size (excluded from totals): 1" in content
+        assert "- Filed records: 1" in content  # still counted in the honest total
+
+    def test_no_disclosure_line_when_no_size_is_missing(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "known.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "unknown size" not in content
+
+
+class TestGenerateStorageReportAsOfMarker:
+    def test_as_of_is_the_latest_processed_at_among_filed_records(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "a.pdf", Category.INVOICE, "Finance/", 100,
+            processed_at="2026-07-14T09:00:00+00:00",
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "b.pdf", Category.INVOICE, "Finance/", 100,
+            processed_at="2026-07-14T15:30:00+00:00",
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- As of: 2026-07-14T15:30:00+00:00" in content
+
+    def test_as_of_ignores_unfiled_records(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "a.pdf", Category.INVOICE, "Finance/", 100,
+            processed_at="2026-07-14T09:00:00+00:00",
+        ))
+        database_module.save_file_record(_unfiled_record(
+            "f2", "b.pdf", Category.INVOICE, "Finance/", 100,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- As of: 2026-07-14T09:00:00+00:00" in content
+
+    def test_as_of_when_no_filed_records_exist(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- As of: no filed records yet" in content
+
+
+class TestGenerateStorageReportEmptyState:
+    def test_empty_metadata_store_produces_honest_zero_report(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 0" in content
+        assert "- Total space used: 0 B" in content
+        assert "# Storage Report" in content
+
+
+class TestGenerateStorageReportIdempotency:
+    def test_regeneration_against_unchanged_data_is_byte_for_byte_identical(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        database_module.save_file_record(_filed_record(
+            "f2", "photo.jpg", Category.IMAGE, "Images/", 2000,
+        ))
+        first = Path(generate_storage_report()).read_text(encoding="utf-8")
+        second = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert first == second
+
+    def test_a_second_call_always_overwrites_no_scoping_parameter(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        generate_storage_report()
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 1" in content
+
+
+class TestGenerateStorageReportNeverReadsActionLog:
+    """decision 29: Storage Report is derived entirely from the metadata store —
+    a first among the four report types, it reads no action-log entries at all."""
+
+    def test_action_log_is_never_read_even_when_present(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        # A malformed action log would crash any report type that reads it via
+        # read_action_log_entries_safe()'s counterpart, read_action_log_entries()
+        # (unsafe) — Storage Report must be entirely unaffected either way,
+        # since it never opens the file at all.
+        (tmp_path / "action_log.jsonl").write_text("{not valid json at all", encoding="utf-8")
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "Malformed" not in content
+        assert "- Filed records: 1" in content
+
+    def test_generates_correctly_when_action_log_does_not_exist_at_all(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        assert not (tmp_path / "action_log.jsonl").exists()
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        content = Path(generate_storage_report()).read_text(encoding="utf-8")
+        assert "- Filed records: 1" in content
+        assert not (tmp_path / "action_log.jsonl").exists()
+
+
+class TestGenerateStorageReportZeroWrite:
+    def test_touches_nothing_in_the_metadata_store(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        database_module.save_file_record(_filed_record(
+            "f1", "invoice.pdf", Category.INVOICE, "Finance/", 1000,
+        ))
+        metadata_path = tmp_path / "metadata_store.json"
+        before = metadata_path.read_text(encoding="utf-8")
+
+        generate_storage_report()
+
+        after = metadata_path.read_text(encoding="utf-8")
+        assert before == after
+
+    def test_writes_only_within_reports_storage_report(self, tmp_path, monkeypatch):
+        _isolate_all(tmp_path, monkeypatch)
+        (tmp_path / "action_log.jsonl").write_text("", encoding="utf-8")
+        before_log = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+
+        generate_storage_report()
+
+        after_log = (tmp_path / "action_log.jsonl").read_text(encoding="utf-8")
+        assert before_log == after_log
+        assert (tmp_path / "Reports" / "Storage Report" / "storage_report.md").exists()
