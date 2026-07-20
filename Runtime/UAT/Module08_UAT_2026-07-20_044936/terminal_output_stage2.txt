@@ -1,0 +1,17 @@
+### main.execute(decisions=<5 real approvals>) ###
+Traceback (most recent call last):
+  File "/tmp/uat_m08_stage2.py", line 18, in <module>
+    main_module.execute(decisions=decisions)
+  File "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/src/main.py", line 635, in execute
+    records = execute_batch(records, decisions, library_root)
+  File "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/src/pipeline/execution.py", line 1800, in execute_batch
+    clear_batch_temp(batch_id)
+  File "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/src/storage/runtime_io.py", line 149, in clear_batch_temp
+    shutil.rmtree(dir_path)
+  File "/usr/lib/python3.10/shutil.py", line 725, in rmtree
+    _rmtree_safe_fd(fd, path, onerror)
+  File "/usr/lib/python3.10/shutil.py", line 681, in _rmtree_safe_fd
+    onerror(os.unlink, fullname, sys.exc_info())
+  File "/usr/lib/python3.10/shutil.py", line 679, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+PermissionError: [Errno 1] Operation not permitted: 'plan.json'

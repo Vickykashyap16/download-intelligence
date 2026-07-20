@@ -1,0 +1,159 @@
+### main.scan() ###
+Scanned /tmp/uat_m08_downloads
+  Total entries seen: 9
+  Discovered:         9
+  Skipped:            0
+
+Discovered files:
+  - Budget_Plan_v1.pdf (.pdf, 1447 bytes)
+  - Budget_Plan_v2.pdf (.pdf, 1457 bytes)
+  - Invoice_CloudHosting_Vendor.pdf (.pdf, 1528 bytes)
+  - Locked_NDA_Contract.pdf (.pdf, 1447 bytes)
+  - Old_Meeting_Notes.txt (.txt, 133 bytes)
+  - Old_Meeting_Notes_backup.txt (.txt, 133 bytes)
+  - Receipt_Coffee_Shop.pdf (.pdf, 1430 bytes)
+  - Resume_Morgan_Taylor.pdf (.pdf, 1527 bytes)
+  - Screenshot_ErrorDialog.png (.png, 5680 bytes)
+
+Metadata written to:    /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Logs/action_log.jsonl
+
+Module 01 complete.
+
+### main.classify(provider=LiveClassifier()) ###
+Classified 9 file(s):
+  - Budget_Plan_v1.pdf: Document
+  - Budget_Plan_v2.pdf: Document
+  - Invoice_CloudHosting_Vendor.pdf: Invoice
+  - Locked_NDA_Contract.pdf: Unknown [locked]
+  - Old_Meeting_Notes.txt: Document
+  - Old_Meeting_Notes_backup.txt: Document
+  - Receipt_Coffee_Shop.pdf: Invoice
+  - Resume_Morgan_Taylor.pdf: Resume
+  - Screenshot_ErrorDialog.png: Screenshot
+
+By category:
+  - Document: 4
+  - Invoice: 2
+  - Resume: 1
+  - Screenshot: 1
+  - Unknown: 1
+
+By mode:
+  - deterministic: 1
+  - text: 8
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Logs/action_log.jsonl
+
+Module 02 complete.
+
+### main.extract(provider=LiveExtractor()) ###
+Extracted metadata for 8 file(s):
+  - Budget_Plan_v1.pdf: Document
+  - Budget_Plan_v2.pdf: Document
+  - Invoice_CloudHosting_Vendor.pdf: Invoice
+  - Old_Meeting_Notes.txt: Document
+  - Old_Meeting_Notes_backup.txt: Document
+  - Receipt_Coffee_Shop.pdf: Invoice
+  - Resume_Morgan_Taylor.pdf: Resume
+  - Screenshot_ErrorDialog.png: Screenshot
+
+By mode:
+  - mixed: 1
+  - text: 7
+
+Provider was called 8 time(s).
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Logs/action_log.jsonl
+
+Module 03 complete.
+
+### main.detect_duplicates() ###
+Checked 9 file(s) for duplicates/versions:
+  - Budget_Plan_v1.pdf [superseded, version_group_id=b5332392-738d-446e-8e83-47318890ec8d]
+  - Budget_Plan_v2.pdf [latest, version_group_id=b5332392-738d-446e-8e83-47318890ec8d]
+  - Invoice_CloudHosting_Vendor.pdf
+  - Locked_NDA_Contract.pdf
+  - Old_Meeting_Notes.txt
+  - Old_Meeting_Notes_backup.txt [exact duplicate of f0283c30-889c-4855-b7c3-a59b74c0d8ae]
+  - Receipt_Coffee_Shop.pdf
+  - Resume_Morgan_Taylor.pdf
+  - Screenshot_ErrorDialog.png
+
+Exact duplicates:  1
+Near-duplicates:   0
+Version chains:    2
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Logs/action_log.jsonl
+
+Module 04 complete.
+
+### main.suggest_naming() ###
+Suggested a name/destination for 9 file(s):
+  - Budget_Plan_v1.pdf -> ~ARCHIVE~/Old Versions/Marketing_Budget_Plan_Unknown_Date.pdf [fallback: document_date]
+  - Budget_Plan_v2.pdf -> Documents/Marketing_Budget_Plan_Unknown_Date.pdf [fallback: document_date]
+  - Invoice_CloudHosting_Vendor.pdf -> Finance/Nimbushost_Cloud_Services_Nh-88213_2026-07-15.pdf
+  - Locked_NDA_Contract.pdf -> Unknown/Unsorted_Locked_Nda_Contract.pdf
+  - Old_Meeting_Notes.txt -> Documents/Q3_Planning_Meeting_Notes_Unknown_Date.txt [fallback: document_date]
+  - Old_Meeting_Notes_backup.txt -> ~ARCHIVE~/Duplicates/Q3_Planning_Meeting_Notes_Unknown_Date.txt [fallback: document_date]
+  - Receipt_Coffee_Shop.pdf -> Finance/Corner_Coffee_Co_2026-07-16.pdf
+  - Resume_Morgan_Taylor.pdf -> Documents/Resume_Morgan_Taylor_Unknown.pdf [fallback: version_indicator, last_modified_date]
+  - Screenshot_ErrorDialog.png -> Images/Screenshots/Error_Dialog_Showing_A_Connecti_Timeout_Message_With_A_Retry_Button_Unknown_Date.png [fallback: capture_date]
+
+6 file(s) used a naming fallback for at least one field.
+1 file(s) routed via override: exact_duplicate
+1 file(s) routed via override: superseded_version
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Logs/action_log.jsonl
+
+Module 05 complete.
+
+### main.score_confidence() ###
+Scored 9 file(s):
+  - Budget_Plan_v1.pdf: 76 (review_required)
+  - Budget_Plan_v2.pdf: 86 (approval_required)
+  - Invoice_CloudHosting_Vendor.pdf: 100 (auto)
+  - Locked_NDA_Contract.pdf: 60 (review_required) [hard floor: unknown_category, locked_file]
+  - Old_Meeting_Notes.txt: 86 (approval_required)
+  - Old_Meeting_Notes_backup.txt: 86 (approval_required)
+  - Receipt_Coffee_Shop.pdf: 92 (approval_required)
+  - Resume_Morgan_Taylor.pdf: 76 (review_required)
+  - Screenshot_ErrorDialog.png: 88 (approval_required)
+
+By tier:
+  - approval_required: 5
+  - auto: 1
+  - review_required: 3
+
+1 file(s) had at least one hard floor applied.
+
+Metadata written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Database/Metadata/metadata_store.json
+Action log written to: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Logs/action_log.jsonl
+
+Module 06 complete.
+
+### main.preview() ###
+Previewing 9 file(s):
+
+Auto (will execute without further input) — 1:
+  - Invoice_CloudHosting_Vendor.pdf -> Finance/Nimbushost_Cloud_Services_Nh-88213_2026-07-15.pdf
+
+Needs your decision — 5:
+  - 997fb264-2303-499a-9366-921262524835: Budget_Plan_v2.pdf -> Documents/Marketing_Budget_Plan_Unknown_Date.pdf
+  - f0283c30-889c-4855-b7c3-a59b74c0d8ae: Old_Meeting_Notes.txt -> Documents/Q3_Planning_Meeting_Notes_Unknown_Date.txt
+  - 15a03a0b-5ea5-49d6-8947-63fdc4e758a9: Old_Meeting_Notes_backup.txt -> ~ARCHIVE~/Duplicates/Q3_Planning_Meeting_Notes_Unknown_Date.txt [exact_duplicate]
+  - 734c5b19-8617-441a-b79c-c765ece5fc5e: Receipt_Coffee_Shop.pdf -> Finance/Corner_Coffee_Co_2026-07-16.pdf
+  - e3ee1409-fefc-4077-8101-50d7b7ccc4b7: Screenshot_ErrorDialog.png -> Images/Screenshots/Error_Dialog_Showing_A_Connecti_Timeout_Message_With_A_Retry_Button_Unknown_Date.png
+
+Needs attention (never auto-filed) — 3:
+  - 78946258-307f-47e7-b117-69089e537bc2: Budget_Plan_v1.pdf (suggested: ~ARCHIVE~/Old Versions/Marketing_Budget_Plan_Unknown_Date.pdf)
+  - 25c12d42-f65b-47f8-bc6b-ccc248698c62: Locked_NDA_Contract.pdf (suggested: Unknown/Unsorted_Locked_Nda_Contract.pdf)
+  - e9298550-5ed6-4fc4-be1b-0e63fd6cb4b7: Resume_Morgan_Taylor.pdf (suggested: Documents/Resume_Morgan_Taylor_Unknown.pdf)
+
+Metadata store: /sessions/nice-fervent-wozniak/mnt/Download Intelligence/Database/Metadata/metadata_store.json
+
+Module 07 preview complete — no files have been moved.

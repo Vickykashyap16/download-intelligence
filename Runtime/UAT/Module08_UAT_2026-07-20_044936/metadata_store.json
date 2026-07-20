@@ -1,0 +1,516 @@
+[
+  {
+    "file_id": "78946258-307f-47e7-b117-69089e537bc2",
+    "source_id": "downloads",
+    "original_name": "Budget_Plan_v1.pdf",
+    "original_path": "/tmp/uat_m08_downloads/Budget_Plan_v1.pdf",
+    "current_path": "/tmp/uat_m08_downloads/Budget_Plan_v1.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1447,
+    "created_at": "2026-07-19T23:14:13.449003+00:00",
+    "modified_at": "2026-07-19T23:14:13.449003+00:00",
+    "content_hash": "ea0a13a69f117d7857a22b77a1b32c31eec00e24f64fdade4119782cee03cc18",
+    "discovered_at": "2026-07-19T23:15:01.266735+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": true,
+      "detected_language": "nl",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Marketing Budget Plan",
+      "document_date": null,
+      "description": null
+    },
+    "suggested_name": "Marketing_Budget_Plan_Unknown_Date.pdf",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "b5332392-738d-446e-8e83-47318890ec8d",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 76,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "missing_optional_field:description": -2,
+      "naming_fallback:document_date": -10,
+      "non_english_content": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "997fb264-2303-499a-9366-921262524835",
+    "source_id": "downloads",
+    "original_name": "Budget_Plan_v2.pdf",
+    "original_path": "/tmp/uat_m08_downloads/Budget_Plan_v2.pdf",
+    "current_path": "/tmp/uat_m08_library/Documents/Marketing_Budget_Plan_Unknown_Date.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1457,
+    "created_at": "2026-07-19T23:14:13.450003+00:00",
+    "modified_at": "2026-07-19T23:14:13.450003+00:00",
+    "content_hash": "2661273b25eff4a43c6edee5aa4ca43926376834df6336b82b318ab44b21b51d",
+    "discovered_at": "2026-07-19T23:15:01.778031+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Marketing Budget Plan",
+      "document_date": null,
+      "description": null
+    },
+    "suggested_name": "Marketing_Budget_Plan_Unknown_Date.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "b5332392-738d-446e-8e83-47318890ec8d",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 86,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "missing_optional_field:description": -2,
+      "naming_fallback:document_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": "2026-07-19T23:15:20.861557+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-19T23:15:20.861557+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "8be57bda-e593-4355-9157-c2735aa3c269",
+    "source_id": "downloads",
+    "original_name": "Invoice_CloudHosting_Vendor.pdf",
+    "original_path": "/tmp/uat_m08_downloads/Invoice_CloudHosting_Vendor.pdf",
+    "current_path": "/tmp/uat_m08_library/Finance/Nimbushost_Cloud_Services_Nh-88213_2026-07-15.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1528,
+    "created_at": "2026-07-19T23:14:13.384003+00:00",
+    "modified_at": "2026-07-19T23:14:13.384003+00:00",
+    "content_hash": "a51ed0ad553a9ca3b8df0e2d00dde280b0aa08781ad6e6349f5442e17153ac70",
+    "discovered_at": "2026-07-19T23:15:02.284957+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "NimbusHost Cloud Services",
+      "invoice_date": "2026-07-15",
+      "invoice_number": "NH-88213",
+      "amount": "249.00",
+      "currency": "USD",
+      "tax_type": "VAT"
+    },
+    "suggested_name": "Nimbushost_Cloud_Services_Nh-88213_2026-07-15.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": "2026-07-19T23:15:20.881399+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-19T23:15:20.881399+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "25c12d42-f65b-47f8-bc6b-ccc248698c62",
+    "source_id": "downloads",
+    "original_name": "Locked_NDA_Contract.pdf",
+    "original_path": "/tmp/uat_m08_downloads/Locked_NDA_Contract.pdf",
+    "current_path": "/tmp/uat_m08_downloads/Locked_NDA_Contract.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1447,
+    "created_at": "2026-07-19T23:14:13.448003+00:00",
+    "modified_at": "2026-07-19T23:14:13.448003+00:00",
+    "content_hash": "596125630bbea655a30855d1cc44aed058ba1fab08bc434474abdcf29434cb61",
+    "discovered_at": "2026-07-19T23:15:02.793281+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Unknown",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": true
+    },
+    "extracted_metadata": {},
+    "suggested_name": "Unsorted_Locked_Nda_Contract.pdf",
+    "suggested_destination": "Unknown/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 60,
+    "confidence_breakdown": {
+      "locked_file": -40
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "f0283c30-889c-4855-b7c3-a59b74c0d8ae",
+    "source_id": "downloads",
+    "original_name": "Old_Meeting_Notes.txt",
+    "original_path": "/tmp/uat_m08_downloads/Old_Meeting_Notes.txt",
+    "current_path": "/tmp/uat_m08_library/Documents/Q3_Planning_Meeting_Notes_Unknown_Date.txt",
+    "extension": ".txt",
+    "mime_type": "text/plain",
+    "size_bytes": 133,
+    "created_at": "2026-07-19T23:14:13.448003+00:00",
+    "modified_at": "2026-07-19T23:14:13.448003+00:00",
+    "content_hash": "c691a55a9bd2a47548d97d885c179793f90925f365e2295af4a114b18a07c7d5",
+    "discovered_at": "2026-07-19T23:15:03.299420+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Q3 Planning Meeting Notes",
+      "document_date": null,
+      "description": null
+    },
+    "suggested_name": "Q3_Planning_Meeting_Notes_Unknown_Date.txt",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 86,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "missing_optional_field:description": -2,
+      "naming_fallback:document_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": "2026-07-19T23:15:20.902775+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-19T23:15:20.902775+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "15a03a0b-5ea5-49d6-8947-63fdc4e758a9",
+    "source_id": "downloads",
+    "original_name": "Old_Meeting_Notes_backup.txt",
+    "original_path": "/tmp/uat_m08_downloads/Old_Meeting_Notes_backup.txt",
+    "current_path": "/tmp/uat_m08_library/~ARCHIVE~/Duplicates/Q3_Planning_Meeting_Notes_Unknown_Date.txt",
+    "extension": ".txt",
+    "mime_type": "text/plain",
+    "size_bytes": 133,
+    "created_at": "2026-07-19T23:14:13.448003+00:00",
+    "modified_at": "2026-07-19T23:14:13.448003+00:00",
+    "content_hash": "c691a55a9bd2a47548d97d885c179793f90925f365e2295af4a114b18a07c7d5",
+    "discovered_at": "2026-07-19T23:15:03.804697+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Q3 Planning Meeting Notes",
+      "document_date": null,
+      "description": null
+    },
+    "suggested_name": "Q3_Planning_Meeting_Notes_Unknown_Date.txt",
+    "suggested_destination": "~ARCHIVE~/Duplicates/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": "f0283c30-889c-4855-b7c3-a59b74c0d8ae",
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": true,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 86,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "missing_optional_field:description": -2,
+      "naming_fallback:document_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": "2026-07-19T23:15:20.931078+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-19T23:15:20.931078+00:00",
+    "reversible": false
+  },
+  {
+    "file_id": "734c5b19-8617-441a-b79c-c765ece5fc5e",
+    "source_id": "downloads",
+    "original_name": "Receipt_Coffee_Shop.pdf",
+    "original_path": "/tmp/uat_m08_downloads/Receipt_Coffee_Shop.pdf",
+    "current_path": "/tmp/uat_m08_library/Finance/Corner_Coffee_Co_2026-07-16.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1430,
+    "created_at": "2026-07-19T23:14:13.386003+00:00",
+    "modified_at": "2026-07-19T23:14:13.386003+00:00",
+    "content_hash": "aa1763156cc807df05f167d98b60e31d19deb9345321efc872bbe5b5e9b9412e",
+    "discovered_at": "2026-07-19T23:15:04.312734+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Invoice",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "vendor": "Corner Coffee Co",
+      "invoice_date": "2026-07-16",
+      "invoice_number": null,
+      "amount": null,
+      "currency": null,
+      "tax_type": null
+    },
+    "suggested_name": "Corner_Coffee_Co_2026-07-16.pdf",
+    "suggested_destination": "Finance/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 92,
+    "confidence_breakdown": {
+      "missing_optional_field:invoice_number": -2,
+      "missing_optional_field:amount": -2,
+      "missing_optional_field:currency": -2,
+      "missing_optional_field:tax_type": -2
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": "2026-07-19T23:15:20.953196+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-19T23:15:20.953196+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "e9298550-5ed6-4fc4-be1b-0e63fd6cb4b7",
+    "source_id": "downloads",
+    "original_name": "Resume_Morgan_Taylor.pdf",
+    "original_path": "/tmp/uat_m08_downloads/Resume_Morgan_Taylor.pdf",
+    "current_path": "/tmp/uat_m08_downloads/Resume_Morgan_Taylor.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1527,
+    "created_at": "2026-07-19T23:14:13.385003+00:00",
+    "modified_at": "2026-07-19T23:14:13.385003+00:00",
+    "content_hash": "de67ff02aa670a92f390d84124dbb052e20746d2d931e12853a622e3ac0e241f",
+    "discovered_at": "2026-07-19T23:15:04.816797+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Resume",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "candidate_name": "Morgan Taylor",
+      "version_indicator": null,
+      "last_modified_date": null
+    },
+    "suggested_name": "Resume_Morgan_Taylor_Unknown.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "version_indicator",
+        "last_modified_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 76,
+    "confidence_breakdown": {
+      "missing_optional_field:version_indicator": -2,
+      "missing_optional_field:last_modified_date": -2,
+      "naming_fallback:version_indicator": -10,
+      "naming_fallback:last_modified_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "e3ee1409-fefc-4077-8101-50d7b7ccc4b7",
+    "source_id": "downloads",
+    "original_name": "Screenshot_ErrorDialog.png",
+    "original_path": "/tmp/uat_m08_downloads/Screenshot_ErrorDialog.png",
+    "current_path": "/tmp/uat_m08_library/Images/Screenshots/Error_Dialog_Showing_A_Connecti_Timeout_Message_With_A_Retry_Button_Unknown_Date.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 5680,
+    "created_at": "2026-07-19T23:14:13.441003+00:00",
+    "modified_at": "2026-07-19T23:14:13.441003+00:00",
+    "content_hash": "96daa6d014e514a3923fcc34b47d7ee63d9afd8c2c32d5509dffff80fb2fc071",
+    "discovered_at": "2026-07-19T23:15:05.324691+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": "Error dialog showing a connection timeout message with a retry button",
+      "capture_date": null
+    },
+    "suggested_name": "Error_Dialog_Showing_A_Connecti_Timeout_Message_With_A_Retry_Button_Unknown_Date.png",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-19_231500",
+    "processed_at": "2026-07-19T23:15:20.972509+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-19T23:15:20.972509+00:00",
+    "reversible": true
+  }
+]
