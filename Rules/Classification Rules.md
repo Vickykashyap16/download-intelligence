@@ -23,9 +23,10 @@ Invoice, Resume, Bank Statement, Contract, Document (generic), Image, Screenshot
 Treat as **Screenshot** if any of:
 - Filename contains `Screenshot`, `Screen Shot`, `CleanShot`, `Snip`
 - Image dimensions match a common device/screen resolution
-- No camera EXIF data present (no lens/camera model tag)
 
 Otherwise → **Image** (product photo, general picture, etc.).
+
+**Post-freeze correction (PT-002, 2026-07-20):** a third condition — "no camera EXIF data present" — previously stood here as an independent, sufficient trigger for Screenshot. Removed: real-world validation (`PATTERN_TRACKER.md` PT-002, Confirmed Pattern) directly confirmed this signal is not specific to screenshots — scanned document photos, product/marketing graphics, AI-generated images, and EXIF-stripped personal photos (e.g. shared via WhatsApp) all lack camera EXIF just as often as a real screenshot does, and none of them trigger either remaining condition. Full design record: `Build-out/02 Classification/Module 02 Post-Freeze Design Correction — PT-002.md`. Disclosed trade-off: a genuine screenshot with neither a marker filename nor a matching resolution now defaults to Image — see that document's Risk Assessment.
 
 ## Text deep pass (PDF/DOCX/text-bearing files)
 1. Extract text (first 1–2 pages is usually enough).

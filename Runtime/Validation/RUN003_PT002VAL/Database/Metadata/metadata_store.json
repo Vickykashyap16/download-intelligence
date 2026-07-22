@@ -1,0 +1,2072 @@
+[
+  {
+    "file_id": "c97bb78f-9a9b-463a-935a-d03c4f22b0e7",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "0120202407201416-30 april 2024.pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/0120202407201416-30 april 2024.pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Dilli_Haat_Stall_Allotment_Status_16-30_Apr_2024_2024-04-16.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1003769,
+    "created_at": "2026-07-22T20:16:18.448777+00:00",
+    "modified_at": "2026-07-20T05:04:30.010301+00:00",
+    "content_hash": "215ccf38f623f927b7fe45c28c0228783237251d18a0e7571ce2b9bd122429d0",
+    "discovered_at": "2026-07-22T20:18:47.369134+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Dilli Haat Stall Allotment Status (16-30 Apr 2024)",
+      "document_date": "2024-04-16",
+      "description": "Govt of India handicrafts stall allotment list"
+    },
+    "suggested_name": "Dilli_Haat_Stall_Allotment_Status_16-30_Apr_2024_2024-04-16.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.804978+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.804978+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "a4086c9d-57f7-4412-a7f5-8fbd9ada9727",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "2024 Half Year Investor Reportvf.pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/2024 Half Year Investor Reportvf.pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Qbe_Insurance_Group_2024_Half_Year_Investor_Report_2024-06-30.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 3666894,
+    "created_at": "2026-07-22T20:16:18.581263+00:00",
+    "modified_at": "2026-07-20T05:04:30.411319+00:00",
+    "content_hash": "351932d1be8978a1e7d4115934ca984a9b47357a030e82ada0aa8ce3ec5e7399",
+    "discovered_at": "2026-07-22T20:18:47.895782+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "QBE Insurance Group 2024 Half Year Investor Report",
+      "document_date": "2024-06-30",
+      "description": "Corporate half-year investor report"
+    },
+    "suggested_name": "Qbe_Insurance_Group_2024_Half_Year_Investor_Report_2024-06-30.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.811439+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.811439+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "c54c5045-f1ac-431e-8ed7-ab94c345a238",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "6406028-hd_1080_1920_25fps.mp4",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/6406028-hd_1080_1920_25fps.mp4",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Videos/6406028-hd_1080_1920_25fps_2026-07-20.mp4",
+    "extension": ".mp4",
+    "mime_type": "video/mp4",
+    "size_bytes": 10570780,
+    "created_at": "2026-07-22T20:16:18.938899+00:00",
+    "modified_at": "2026-07-20T05:04:31.432072+00:00",
+    "content_hash": "97795c61a0150a7891f75d131c235f2f9fff8994fcb5698d1e65b87f686a54c6",
+    "discovered_at": "2026-07-22T20:18:48.413817+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Video",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": "6406028-hd_1080_1920_25fps",
+      "duration": null,
+      "content_date": null
+    },
+    "suggested_name": "6406028-hd_1080_1920_25fps_2026-07-20.mp4",
+    "suggested_destination": "Videos/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 96,
+    "confidence_breakdown": {
+      "missing_optional_field:duration": -2,
+      "missing_optional_field:content_date": -2
+    },
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.818094+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.818094+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "f9c834e0-12e5-48a7-8532-d20d102ca674",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "Abalon_Standard Grades Beech.pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Abalon_Standard Grades Beech.pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Abalon_Standard_Grades_Beech.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 8475481,
+    "created_at": "2026-07-22T20:16:19.221290+00:00",
+    "modified_at": "2026-07-20T05:04:32.369571+00:00",
+    "content_hash": "ee1c15621a4e4fa03251eb7ad8802726326b7d8d1b5df7895d46159a6aa9efd5",
+    "discovered_at": "2026-07-22T20:18:48.950646+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Abalon Standard Grades - Beech",
+      "document_date": null,
+      "description": "Hardwood grading standards spec sheet"
+    },
+    "suggested_name": "Abalon_Standard_Grades_-_Beech_Unknown_Date.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "naming_fallback:document_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.824354+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-22T20:19:15.824354+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "4717737c-2913-4ecb-9570-0ed5278e2f69",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "AttachedTRI_merged.pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/AttachedTRI_merged.pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Rti_Appeal_Reply_-_Vicky_Kashyap_2026-04-26.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 354421,
+    "created_at": "2026-07-22T20:16:19.234065+00:00",
+    "modified_at": "2026-07-20T05:04:32.414771+00:00",
+    "content_hash": "0932dd5f31ab707f204ed446b660bf9e4f597173ca3d4e20de682a6b482db5fb",
+    "discovered_at": "2026-07-22T20:18:49.479045+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": true,
+      "detected_language": "hi",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "RTI Appeal Reply - Vicky Kashyap",
+      "document_date": "2026-04-26",
+      "description": "RTI first-appellate reply correspondence"
+    },
+    "suggested_name": "Rti_Appeal_Reply_-_Vicky_Kashyap_2026-04-26.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 90,
+    "confidence_breakdown": {
+      "non_english_content": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.830758+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-22T20:19:15.830758+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "d63ad16d-88ca-42eb-ab04-3115aff04106",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "ChatGPT Image Apr 10, 2025, 04_18_27 PM.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/ChatGPT Image Apr 10, 2025, 04_18_27 PM.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/ChatGPT Image Apr 10, 2025, 04_18_27 PM.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 2613484,
+    "created_at": "2026-07-22T20:16:18.278951+00:00",
+    "modified_at": "2026-07-20T05:04:32.804763+00:00",
+    "content_hash": "4fcd64b9050f894cca18000337b65a0390e078aeaadf01815758eba15eb4fb6d",
+    "discovered_at": "2026-07-22T20:18:50.506935+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "0a55bb47-024b-427c-b3c3-6c487ae90455",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "Common_loan_Application_form (1).pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Common_loan_Application_form (1).pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Pmmy_Bank_Loan_Application_Form.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 291323,
+    "created_at": "2026-07-22T20:16:19.245884+00:00",
+    "modified_at": "2026-07-20T05:04:32.852642+00:00",
+    "content_hash": "5516bd05e88a83ee672d29d46ecfdaaa0e87513a129256f825d9ae3619d49c65",
+    "discovered_at": "2026-07-22T20:18:51.026007+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "PMMY Bank Loan Application Form",
+      "document_date": null,
+      "description": "Blank Mudra Yojana loan application form template"
+    },
+    "suggested_name": "Pmmy_Bank_Loan_Application_Form_Unknown_Date.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "naming_fallback:document_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.837141+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-22T20:19:15.837141+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "8ff35718-486f-402f-8b8f-301609f565cf",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "DALL\u00b7E 2024-01-04 20.00.06 - Design a chic and versatile home decor piece that combines the rustic texture of jute with the elegance of brass finishes. This piece should have clea.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-04 20.00.06 - Design a chic and versatile home decor piece that combines the rustic texture of jute with the elegance of brass finishes. This piece should have clea.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-04 20.00.06 - Design a chic and versatile home decor piece that combines the rustic texture of jute with the elegance of brass finishes. This piece should have clea.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 1648062,
+    "created_at": "2026-07-22T20:16:18.400148+00:00",
+    "modified_at": "2026-07-20T05:04:33.099177+00:00",
+    "content_hash": "854cfce681035936d03b423d86c123d9162350a3b4ebefe170a815b022728e27",
+    "discovered_at": "2026-07-22T20:18:51.541703+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_2.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "3abb2d6b-dfc1-428c-b1cf-926f29279586",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "DALL\u00b7E 2024-01-05 14.45.36 - A macrame glass vase, elegantly crafted for home decor. The vase is made from clear glass, perfect for displaying flowers or greenery. It features int.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-05 14.45.36 - A macrame glass vase, elegantly crafted for home decor. The vase is made from clear glass, perfect for displaying flowers or greenery. It features int.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-05 14.45.36 - A macrame glass vase, elegantly crafted for home decor. The vase is made from clear glass, perfect for displaying flowers or greenery. It features int.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 1940502,
+    "created_at": "2026-07-22T20:16:17.184228+00:00",
+    "modified_at": "2026-07-20T05:04:33.445221+00:00",
+    "content_hash": "74a209127646574de975dfe378c490778cf3b9abb7a1535ce3a1675e950d6ac9",
+    "discovered_at": "2026-07-22T20:18:52.061835+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_3.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "49120aec-3bf5-497a-b138-5305a7163fd6",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "DALL\u00b7E 2024-01-08 01.06.35 - A handmade, finely woven round planter made from Kauna grass, showcasing skilled craftsmanship. The planter is light in weight, durable, and easy to c.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-08 01.06.35 - A handmade, finely woven round planter made from Kauna grass, showcasing skilled craftsmanship. The planter is light in weight, durable, and easy to c.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-08 01.06.35 - A handmade, finely woven round planter made from Kauna grass, showcasing skilled craftsmanship. The planter is light in weight, durable, and easy to c.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 1393196,
+    "created_at": "2026-07-22T20:16:17.088685+00:00",
+    "modified_at": "2026-07-20T05:04:33.633813+00:00",
+    "content_hash": "919835544d4a48e000ec23be1d0bcea27bc44c144c49291ab154e4abd391e114",
+    "discovered_at": "2026-07-22T20:18:52.577324+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_4.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "8da761ea-14b8-4879-8604-7e8154e4cee5",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "DALL\u00b7E 2024-01-08 15.22.22 - A set of StorageWorks hand-woven ACM storage baskets from LMNOH India, including one large and two medium baskets. These baskets are designed with ACM.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-08 15.22.22 - A set of StorageWorks hand-woven ACM storage baskets from LMNOH India, including one large and two medium baskets. These baskets are designed with ACM.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-08 15.22.22 - A set of StorageWorks hand-woven ACM storage baskets from LMNOH India, including one large and two medium baskets. These baskets are designed with ACM.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 1435056,
+    "created_at": "2026-07-22T20:16:16.920276+00:00",
+    "modified_at": "2026-07-20T05:04:33.950258+00:00",
+    "content_hash": "ebbd222ec1688cc760a4540ba0e1482905d10aae07c1c4e3f5ad1b16417002bf",
+    "discovered_at": "2026-07-22T20:18:53.093016+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_5.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "f4ba8c4e-30b2-4a48-b9ef-a66c4c871bbd",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "DALL\u00b7E 2024-01-11 21.34.57 - Design an ultra-simple and easily forgettable logo using only the letters 'LMNOH' for a luxury home decor brand. The style should be minimalistic and .png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-11 21.34.57 - Design an ultra-simple and easily forgettable logo using only the letters 'LMNOH' for a luxury home decor brand. The style should be minimalistic and .png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/DALL\u00b7E 2024-01-11 21.34.57 - Design an ultra-simple and easily forgettable logo using only the letters 'LMNOH' for a luxury home decor brand. The style should be minimalistic and .png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 1446490,
+    "created_at": "2026-07-22T20:16:18.334930+00:00",
+    "modified_at": "2026-07-20T05:04:34.525811+00:00",
+    "content_hash": "5b82c3db7ffbbe63dfbf2f857a7b1bf5d375c10e3b4a28173e83357320c098e6",
+    "discovered_at": "2026-07-22T20:18:53.608554+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_6.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "887b9ba9-6ea5-434a-94b7-4eee5d415f3d",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "Dreamlike surreal imagery in soft pastel colors depicts Divya, a 26-year-old Indian woman with dark hair, on a grand spiral staircase. Her ruby red satin bathrobe blends with gentle, fantastical elements.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Dreamlike surreal imagery in soft pastel colors depicts Divya, a 26-year-old Indian woman with dark hair, on a grand spiral staircase. Her ruby red satin bathrobe blends with gentle, fantastical elements.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Dreamlike surreal imagery in soft pastel colors depicts Divya, a 26-year-old Indian woman with dark hair, on a grand spiral staircase. Her ruby red satin bathrobe blends with gentle, fantastical elements.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 76314,
+    "created_at": "2026-07-22T20:16:16.978410+00:00",
+    "modified_at": "2026-07-20T05:04:34.553514+00:00",
+    "content_hash": "93611e9b5e7787835d2ca5151fc93bb3ff6e5cd7342d7709c8277ecbbc344a3f",
+    "discovered_at": "2026-07-22T20:18:54.128826+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant.jpg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "6c6408e8-d6ab-4ee3-a704-ff4491747297",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "GeM-Bidding-7429512.pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/GeM-Bidding-7429512.pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Gem_Bid_Gem2025b5867350_2025-01-28.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 114933,
+    "created_at": "2026-07-22T20:16:19.251050+00:00",
+    "modified_at": "2026-07-20T05:04:35.329395+00:00",
+    "content_hash": "e52ec0c310ccdb9c99ab3a23c367b958c9442e372ddf34677693626a061b3b40",
+    "discovered_at": "2026-07-22T20:18:55.156339+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "GeM Bid GEM/2025/B/5867350",
+      "document_date": "2025-01-28",
+      "description": "Government e-Marketplace bid document"
+    },
+    "suggested_name": "Gem_Bid_Gem2025b5867350_2025-01-28.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.843452+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.843452+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "cebbaad4-51ac-440a-bd9a-bba2088a958c",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "IMG-20201219-WA0008.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/IMG-20201219-WA0008.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/IMG-20201219-WA0008.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 269924,
+    "created_at": "2026-07-22T20:16:16.933411+00:00",
+    "modified_at": "2026-07-20T05:04:35.365149+00:00",
+    "content_hash": "4e9e24e914d0be0d18208e92136e49d3c20d16e2e20a0a50c8bcbccf5803f2e3",
+    "discovered_at": "2026-07-22T20:18:55.668736+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_2.jpg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "e316249d-65af-4e82-bebd-e31af2911ddf",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "IMG_20211002_001030_Bokeh.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/IMG_20211002_001030_Bokeh.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/IMG_20211002_001030_Bokeh.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 433061,
+    "created_at": "2026-07-22T20:16:17.979349+00:00",
+    "modified_at": "2026-07-20T05:04:35.442671+00:00",
+    "content_hash": "a441b24814826cebd6c2a016e46c133f5f7f4a474fede7266eb3135e12894647",
+    "discovered_at": "2026-07-22T20:18:56.182262+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": "2021:10:02 00:10:30"
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_3.jpg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "70f03396-64de-4930-a7f2-26de0f9d4d53",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "MDA-Internship-Nav-Chetna (4).pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/MDA-Internship-Nav-Chetna (4).pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Mda_Nav-chetna_Internship_Program_Policy.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 375960,
+    "created_at": "2026-07-22T20:16:19.266605+00:00",
+    "modified_at": "2026-07-20T05:04:35.924659+00:00",
+    "content_hash": "9f9842f9f8d3738f9bd0d56fa4726108972484d7b1415aa8c74e09ba6cbb0cb4",
+    "discovered_at": "2026-07-22T20:18:57.227887+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "MDA Nav-Chetna Internship Program Policy",
+      "document_date": null,
+      "description": "Internship program policy document"
+    },
+    "suggested_name": "Mda_Nav-chetna_Internship_Program_Policy_Unknown_Date.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "naming_fallback:document_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.849867+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-22T20:19:15.849867+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "8e84736f-9c0d-44f2-9f38-efdffcc6d093",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "Professional_LinkedIn_Banner_1128x191.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Professional_LinkedIn_Banner_1128x191.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Professional_LinkedIn_Banner_1128x191.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 77047,
+    "created_at": "2026-07-22T20:16:16.982277+00:00",
+    "modified_at": "2026-07-20T05:04:45.842233+00:00",
+    "content_hash": "c631eae8cb89b4aba81341447eab8516b1e1df4299d6996555c4c5189d248b2c",
+    "discovered_at": "2026-07-22T20:18:58.754873+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_7.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "f7e2a9f3-2dbf-4e79-b1a9-bfb27967e1be",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "Resume- Rinky Chhabra (3) (6).pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Resume- Rinky Chhabra (3) (6).pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Resume- Rinky Chhabra (3) (6).pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 191880,
+    "created_at": "2026-07-22T20:16:16.849029+00:00",
+    "modified_at": "2026-07-20T05:04:45.874475+00:00",
+    "content_hash": "be1810d326506bd2699efb1646f1107adc655fa9cd096b94de3d3e2cb80cca24",
+    "discovered_at": "2026-07-22T20:18:59.267476+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Resume",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "candidate_name": "Rinky Chhabra",
+      "version_indicator": null,
+      "last_modified_date": null
+    },
+    "suggested_name": "Resume_Rinky_Chhabra_Unknown.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "version_indicator",
+        "last_modified_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 76,
+    "confidence_breakdown": {
+      "missing_optional_field:version_indicator": -2,
+      "missing_optional_field:last_modified_date": -2,
+      "naming_fallback:version_indicator": -10,
+      "naming_fallback:last_modified_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "ae8072e8-5078-4e9a-9cb3-56eca937c110",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "Silhouetted backlighting, iridescent colors. Divya, a 26-year-old Indian woman, in a ruby red satin gown, stands on a grand spiral staircase.  Iridescent light reflects off her gown, silhouetting her against a bright background.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Silhouetted backlighting, iridescent colors. Divya, a 26-year-old Indian woman, in a ruby red satin gown, stands on a grand spiral staircase.  Iridescent light reflects off her gown, silhouetting her against a bright background.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Silhouetted backlighting, iridescent colors. Divya, a 26-year-old Indian woman, in a ruby red satin gown, stands on a grand spiral staircase.  Iridescent light reflects off her gown, silhouetting her against a bright background.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 69091,
+    "created_at": "2026-07-22T20:16:16.924922+00:00",
+    "modified_at": "2026-07-20T05:04:45.891420+00:00",
+    "content_hash": "fdb098d9c905a4bd413b313ebf33915468b6903c1f55af33345f798a3b3a15d2",
+    "discovered_at": "2026-07-22T20:18:59.781559+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_4.jpg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "eff609bf-3eca-4d2d-97b2-cf0bb38cbae8",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "Untitled canvas.jpeg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Untitled canvas.jpeg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/Untitled canvas.jpeg",
+    "extension": ".jpeg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 227812,
+    "created_at": "2026-07-22T20:16:17.989096+00:00",
+    "modified_at": "2026-07-20T05:04:45.924290+00:00",
+    "content_hash": "f1fb14d8235d88e53c6db60199b2f72f6d7348eddeea47e23d02d0b9c4c046fe",
+    "discovered_at": "2026-07-22T20:19:00.296957+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant.jpeg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "3f04b6b1-ba63-4fbd-8e50-3edea1eb5314",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "VisitNOC (1).pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/VisitNOC (1).pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Rti_Representative_Authorization_Letter_2026-07.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 83117,
+    "created_at": "2026-07-22T20:16:19.271063+00:00",
+    "modified_at": "2026-07-20T05:04:45.940381+00:00",
+    "content_hash": "32144c16b1e2964d33e80d9051416e15d28b226d9e2d4c099796b8603efa54c0",
+    "discovered_at": "2026-07-22T20:19:00.813211+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": true,
+      "detected_language": "hi",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "RTI Representative Authorization Letter",
+      "document_date": "2026-07",
+      "description": "Personal authorization letter for RTI office visit"
+    },
+    "suggested_name": "Rti_Representative_Authorization_Letter_2026-07.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 90,
+    "confidence_breakdown": {
+      "non_english_content": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.856141+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-22T20:19:15.856141+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "c20c6711-912b-4991-965e-8dfd4cf10789",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "WhatsApp Image 2024-07-01 at 1.27.24 PM.jpeg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/WhatsApp Image 2024-07-01 at 1.27.24 PM.jpeg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/WhatsApp Image 2024-07-01 at 1.27.24 PM.jpeg",
+    "extension": ".jpeg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 220685,
+    "created_at": "2026-07-22T20:16:16.819829+00:00",
+    "modified_at": "2026-07-20T05:04:45.969307+00:00",
+    "content_hash": "2554b07b1b38a56155db540f3d37f014e094eacfeb80e012183c3f7f1e3c10a1",
+    "discovered_at": "2026-07-22T20:19:01.325274+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_2.jpeg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "79e404de-5d7e-4aab-8a89-fd533c2b4584",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "WhatsApp Image 2026-03-16 at 15.15.16.jpeg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/WhatsApp Image 2026-03-16 at 15.15.16.jpeg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/WhatsApp Image 2026-03-16 at 15.15.16.jpeg",
+    "extension": ".jpeg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 245898,
+    "created_at": "2026-07-22T20:16:18.183095+00:00",
+    "modified_at": "2026-07-20T05:04:46.024544+00:00",
+    "content_hash": "8e1206f4bf830090ea76d409161e9a64bb2191b216f2999d3293b0f050195d3c",
+    "discovered_at": "2026-07-22T20:19:01.838529+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_3.jpeg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "63167047-43d3-4f4a-9e29-696468c0b571",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "YtCommentAnalyser (extract.me).zip",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/YtCommentAnalyser (extract.me).zip",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Archives/2026-07-20.zip",
+    "extension": ".zip",
+    "mime_type": "application/zip",
+    "size_bytes": 5208589,
+    "created_at": "2026-07-22T20:16:19.445127+00:00",
+    "modified_at": "2026-07-20T05:04:48.141781+00:00",
+    "content_hash": "97eb26c97bad9a8c6f7fd5134f451be777a2168c4707de945f9a2d927b02a29e",
+    "discovered_at": "2026-07-22T20:19:02.355719+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Archive",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "contents_summary": "\u00a2"
+    },
+    "suggested_name": "2026-07-20.zip",
+    "suggested_destination": "Archives/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.862606+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.862606+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "741c0f5e-cf4e-4098-934b-07d57d27b7bb",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "allenkrafts-chairs.pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/allenkrafts-chairs.pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Allenkrafts_Lounge_Chair_Spec_Sheet.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 2219767,
+    "created_at": "2026-07-22T20:16:19.507041+00:00",
+    "modified_at": "2026-07-20T05:04:49.209830+00:00",
+    "content_hash": "817a2d3e0bdad74db194eb9c4c1b9cfe2ee08063bd420af90509425a569c38d5",
+    "discovered_at": "2026-07-22T20:19:02.887363+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Allenkrafts Lounge Chair Spec Sheet",
+      "document_date": null,
+      "description": "Product dimensions/weight spec sheet"
+    },
+    "suggested_name": "Allenkrafts_Lounge_Chair_Spec_Sheet_Unknown_Date.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "document_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 88,
+    "confidence_breakdown": {
+      "missing_optional_field:document_date": -2,
+      "naming_fallback:document_date": -10
+    },
+    "tier": "approval_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.868988+00:00",
+    "approved_by": "user",
+    "approved_at": "2026-07-22T20:19:15.868988+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "1365ee4e-a902-4fa3-bfb6-1a2953ca6cc4",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "chair.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/chair.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/chair.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 38507,
+    "created_at": "2026-07-22T20:16:17.963159+00:00",
+    "modified_at": "2026-07-20T05:04:49.257651+00:00",
+    "content_hash": "fb786ce3c96f6e4247551b1b5e5c40d05368c7370cd46848424212d7de829c9f",
+    "discovered_at": "2026-07-22T20:19:03.413264+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_8.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "ade68ba0-271b-471e-92cb-8dfda241ac5d",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "diecut-box.png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/diecut-box.png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/diecut-box.png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 1340901,
+    "created_at": "2026-07-22T20:16:16.974778+00:00",
+    "modified_at": "2026-07-20T05:04:50.156940+00:00",
+    "content_hash": "8b077d639e906c191ca9072ae1641fb19388bccfcee787c106c3061fb912fa44",
+    "discovered_at": "2026-07-22T20:19:03.926148+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_9.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "16aae4ae-bf92-4c93-bddf-d24aaa28fb0c",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "google-maps-scraper.zip",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/google-maps-scraper.zip",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Archives/Injected_Leads33566aa6_Manifestjson_Popup49fbeb31js_Popuphtml_Locales_2026-07-20.zip",
+    "extension": ".zip",
+    "mime_type": "application/zip",
+    "size_bytes": 1999245,
+    "created_at": "2026-07-22T20:16:19.577592+00:00",
+    "modified_at": "2026-07-20T05:04:51.026510+00:00",
+    "content_hash": "dd136fb6ef39072e8f4dd8eda6f2d0ac24d75a3b1a04a9bbd3f0da6b51f50dfb",
+    "discovered_at": "2026-07-22T20:19:04.449306+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Archive",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "contents_summary": "background.5fadff2f.js, icon.855efe94.png, icon128.plasmo.b89b7dfa.png, icon16.plasmo.00ac8b83.png, icon32.plasmo.9ad0c5b6.png, icon48.plasmo.cae3a6b3.png, icon64.plasmo.e4b604fc.png, injected/, leads.33566aa6.js, leads.40eb3b06.css, manifest.json, popup.49fbeb31.js, popup.6970b905.css, popup.html, _locales/"
+    },
+    "suggested_name": "Injected_Leads33566aa6_Manifestjson_Popup49fbeb31js_Popuphtml_Locales_2026-07-20.zip",
+    "suggested_destination": "Archives/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.875543+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.875543+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "a4180e0f-c209-405d-934e-608a13c7774b",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "image (2).png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/image (2).png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/image (2).png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 1228397,
+    "created_at": "2026-07-22T20:16:17.122309+00:00",
+    "modified_at": "2026-07-20T05:04:51.736183+00:00",
+    "content_hash": "0cb6ff7085d05600a14fc7c12145f38f9dca54b7d02edd2abb6afd77434583f4",
+    "discovered_at": "2026-07-22T20:19:04.971519+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant.png",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "8ec00474-1603-49f2-b5ec-e3d8cc69b805",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "43660ea3-b2f8-4981-bc44-864f881709c5",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "image (42).png",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/image (42).png",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/image (42).png",
+    "extension": ".png",
+    "mime_type": "image/png",
+    "size_bytes": 2039044,
+    "created_at": "2026-07-22T20:16:18.172396+00:00",
+    "modified_at": "2026-07-20T05:04:52.670343+00:00",
+    "content_hash": "f30931c5624bd0389a925d173dc7b75ed4a32b117e27f0ac9a182b73da26b511",
+    "discovered_at": "2026-07-22T20:19:05.491229+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_10.png",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "8ec00474-1603-49f2-b5ec-e3d8cc69b805",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "9e6a394b-af75-4196-958c-26fef77213ea",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "json.txt",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/json.txt",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/json.txt",
+    "extension": ".txt",
+    "mime_type": "text/plain",
+    "size_bytes": 35102,
+    "created_at": "2026-07-22T20:16:17.187715+00:00",
+    "modified_at": "2026-07-20T05:04:52.703958+00:00",
+    "content_hash": "f933fd3c015be37b0fa5ac39058e1775375f8c6fb4c06aa47acf3fe146cc7ce9",
+    "discovered_at": "2026-07-22T20:19:06.005942+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Unknown",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {},
+    "suggested_name": "Unsorted_Json.txt",
+    "suggested_destination": "Unknown/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "b2323efe-be30-45f3-b55d-c50e0488adb8",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "nzUObTVsnu9zZntv.mp4",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/nzUObTVsnu9zZntv.mp4",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Videos/Nzuobtvsnu9zzntv_2026-07-20.mp4",
+    "extension": ".mp4",
+    "mime_type": "video/mp4",
+    "size_bytes": 18728066,
+    "created_at": "2026-07-22T20:16:20.214328+00:00",
+    "modified_at": "2026-07-20T05:05:02.338572+00:00",
+    "content_hash": "57c9d65a23bee40377f8c79eea3c0c1f0e949045c3e9f3974ed71fc44aa6038d",
+    "discovered_at": "2026-07-22T20:19:06.519609+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Video",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": "nzUObTVsnu9zZntv",
+      "duration": null,
+      "content_date": null
+    },
+    "suggested_name": "Nzuobtvsnu9zzntv_2026-07-20.mp4",
+    "suggested_destination": "Videos/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 96,
+    "confidence_breakdown": {
+      "missing_optional_field:duration": -2,
+      "missing_optional_field:content_date": -2
+    },
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.882047+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.882047+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "cb7e1a58-a1c6-4a90-8585-fa91ee10371b",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "postel2.jpeg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/postel2.jpeg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/postel2.jpeg",
+    "extension": ".jpeg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 149299,
+    "created_at": "2026-07-22T20:16:16.939868+00:00",
+    "modified_at": "2026-07-20T05:05:02.440923+00:00",
+    "content_hash": "d3b4803bd930b3aacd7f4f45e80232948b08f4b4bd0ef605e5ea03bd8d823b11",
+    "discovered_at": "2026-07-22T20:19:07.052126+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Image",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "description": null,
+      "variant": null,
+      "capture_date": null
+    },
+    "suggested_name": "Unknown_Description_Unknown_Variant_4.jpeg",
+    "suggested_destination": "Images/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "description",
+        "variant"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 68,
+    "confidence_breakdown": {
+      "missing_required_field:description": -8,
+      "missing_optional_field:variant": -2,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:description": -10,
+      "naming_fallback:variant": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "3e7eb842-3ae1-4fd7-9226-b36c47a58f94",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "ssrn-5067885.pdf",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/ssrn-5067885.pdf",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL/Filed/Documents/Exploring_The_Dynamics_Of_Inflation_Interest_Rates_And_Bond_Yields_2025-01.pdf",
+    "extension": ".pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 908190,
+    "created_at": "2026-07-22T20:16:20.247854+00:00",
+    "modified_at": "2026-07-20T05:05:03.043206+00:00",
+    "content_hash": "d6c2268d03a43c99394ec83a558d2c985ed610d3391398f7c1dda0d6f9303335",
+    "discovered_at": "2026-07-22T20:19:08.068901+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Document",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": "en",
+      "locked": false
+    },
+    "extracted_metadata": {
+      "best_guess_title": "Exploring the Dynamics of Inflation, Interest Rates, and Bond Yields",
+      "document_date": "2025-01",
+      "description": "IOSR Journal of Business and Management academic article"
+    },
+    "suggested_name": "Exploring_The_Dynamics_Of_Inflation_Interest_Rates_And_Bond_Yields_2025-01.pdf",
+    "suggested_destination": "Documents/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 100,
+    "confidence_breakdown": {},
+    "tier": "auto",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": "2026-07-22T20:19:15.888699+00:00",
+    "approved_by": "auto",
+    "approved_at": "2026-07-22T20:19:15.888699+00:00",
+    "reversible": true
+  },
+  {
+    "file_id": "a7866d8c-51c1-45dc-8ae7-51fc363f2c10",
+    "source_id": "validation_run003_pt002val",
+    "original_name": "~$atutory Forms_Voya India (1).docx",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/~$atutory Forms_Voya India (1).docx",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Download Intelligence/Runtime/Validation/RUN003_PT002VAL_staging/~$atutory Forms_Voya India (1).docx",
+    "extension": ".docx",
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "size_bytes": 162,
+    "created_at": "2026-07-22T20:16:16.934974+00:00",
+    "modified_at": "2026-07-20T05:05:03.443654+00:00",
+    "content_hash": "5a385e7aad9032311086a855a882a272c68faf28cf09142fc1c95e868c882067",
+    "discovered_at": "2026-07-22T20:19:09.097268+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Unknown",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": true,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {},
+    "suggested_name": "Unsorted_Atutory_Forms_Voya_India_1.docx",
+    "suggested_destination": "Unknown/",
+    "naming_signals": {
+      "fields_fell_back": []
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "no_extractable_text": -30
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-22_201846",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  }
+]

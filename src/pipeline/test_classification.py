@@ -126,19 +126,21 @@ def test_classify_screenshot_or_image_detects_real_screenshot_by_resolution_and_
 
 
 def test_classify_screenshot_or_image_detects_real_product_photo_as_image(tmp_path):
-    """sample_product_photo.jpg is 800x600 (not a common screen resolution) and has no
-    camera EXIF (it's a synthetic Pillow-generated image) — under the real
-    Rules/Classification Rules.md heuristic, "no camera EXIF" alone would actually tip
-    this to Screenshot too, since a real product photo would normally have camera EXIF.
-    This test uses a filename/resolution that avoids the screenshot markers to isolate
-    what the split does when EXIF is the only available signal, documenting the
-    known limitation for synthetic test images explicitly (see KNOWN_LIMITATIONS.md)."""
+    """sample_product_photo.jpg is 800x600 (not a common screen resolution), has no
+    marker filename, and has no camera EXIF (it's a synthetic Pillow-generated image).
+
+    Post-freeze correction (PT-002, 2026-07-20): before this correction, "no camera
+    EXIF" was an independent, sufficient trigger for Screenshot, so this fixture
+    (despite its name) actually asserted Category.SCREENSHOT — a known, disclosed
+    limitation at the time (see Release/Module02/KNOWN_LIMITATIONS.md), later directly
+    confirmed against real-world content by validation (PATTERN_TRACKER.md PT-002,
+    Confirmed Pattern). With that third condition removed
+    (Build-out/02 Classification/Module 02 Post-Freeze Design Correction — PT-002.md),
+    a fixture with no marker and no resolution match now correctly falls to the
+    "Otherwise -> Image" default, matching both this test's name and real-world
+    ground truth."""
     path = _SAMPLES / "Images" / "sample_product_photo.jpg"
-    # This sample has no camera EXIF (synthetic), so the heuristic's third condition
-    # ("no camera EXIF data present") correctly classifies it as Screenshot under the
-    # documented rule — even though a human would call it a product photo. This is a
-    # known heuristic limitation with synthetic test data, not a code defect.
-    assert classify_screenshot_or_image(str(path)) == Category.SCREENSHOT
+    assert classify_screenshot_or_image(str(path)) == Category.IMAGE
 
 
 def test_classify_screenshot_or_image_filename_marker_wins_immediately(tmp_path):
@@ -163,6 +165,62 @@ def test_classify_screenshot_or_image_true_photo_with_camera_exif_and_odd_dimens
     image.save(photo, exif=exif)
 
     assert classify_screenshot_or_image(str(photo)) == Category.IMAGE
+
+
+# --- PT-002 regression tests (post-freeze correction, 2026-07-20) ---
+# Synthetic fixtures for the real-world content shapes PATTERN_TRACKER.md PT-002
+# directly confirmed as false positives under the old 3-condition logic: none of
+# these have a marker filename or a common-screen-resolution match, and none have
+# camera EXIF, so under the old logic they all incorrectly returned Screenshot.
+# Under the corrected 2-condition logic they must all return Image. See
+# Build-out/02 Classification/Module 02 Post-Freeze Design Correction — PT-002.md §8 (T2).
+
+def test_classify_screenshot_or_image_scanned_document_photo_classifies_as_image(tmp_path):
+    """A phone-camera scan of a paper document: generic filename, no marker, an
+    uncommon resolution, and no EXIF (scanning apps typically strip or never write
+    camera EXIF onto the processed output). PT-002 evidence: VL-002-1 / VL-003-1."""
+    from PIL import Image
+
+    scan = tmp_path / "IMG_20260714_scan.jpg"
+    Image.new("RGB", (2481, 3508)).save(scan)  # A4 at 300dpi, not a screen resolution
+    assert classify_screenshot_or_image(str(scan)) == Category.IMAGE
+
+
+def test_classify_screenshot_or_image_synthetic_marketing_graphic_classifies_as_image(tmp_path):
+    """A product/marketing graphic exported from a design tool: generic filename, no
+    marker, an uncommon resolution, and no camera EXIF (it was never photographed)."""
+    from PIL import Image
+
+    graphic = tmp_path / "product_banner_final.png"
+    Image.new("RGB", (1080, 1350)).save(graphic)  # common social-post size, not screen
+    assert classify_screenshot_or_image(str(graphic)) == Category.IMAGE
+
+
+def test_classify_screenshot_or_image_exif_stripped_messaging_photo_classifies_as_image(tmp_path):
+    """A real personal photo re-encoded by a messaging app (e.g. WhatsApp), which
+    strips EXIF and re-compresses to app-specific dimensions: generic filename, no
+    marker, an uncommon (non-screen) resolution, and no EXIF."""
+    from PIL import Image
+
+    shared = tmp_path / "WhatsApp Image 2026-07-14 at 09.12.45.jpeg"
+    Image.new("RGB", (1600, 1200)).save(shared)  # WhatsApp's typical re-encode size
+    assert classify_screenshot_or_image(str(shared)) == Category.IMAGE
+
+
+def test_classify_screenshot_or_image_disclosed_tradeoff_unmarked_uncommon_resolution_screenshot(tmp_path):
+    """T4 (adversarial, disclosed trade-off): a genuine screenshot with neither a
+    marker filename nor a common-screen-resolution match (e.g. cropped or resized
+    before reaching Downloads) is, by design, indistinguishable at this layer from
+    the Image fixtures above and now defaults to Image rather than Screenshot. This
+    test exists to make that bounded, disclosed trade-off visible and monitored (see
+    the design record's Risk Assessment and Acceptance Criteria), not to assert it
+    is the "correct" outcome for this specific file."""
+    from PIL import Image
+
+    cropped_screenshot = tmp_path / "final_v2.png"
+    Image.new("RGB", (1234, 987)).save(cropped_screenshot)  # cropped, no longer a
+                                                             # standard screen size
+    assert classify_screenshot_or_image(str(cropped_screenshot)) == Category.IMAGE
 
 
 # --- is_locked() ---

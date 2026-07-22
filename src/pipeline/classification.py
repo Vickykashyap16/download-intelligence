@@ -20,7 +20,6 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import List, Literal, Optional, Tuple
 
-from src.core.exif import has_camera_metadata
 from src.core.images import get_dimensions, matches_screen_resolution
 from src.core.pdf import is_password_protected
 from src.core.pdf import extract_text as _pdf_extract_text
@@ -99,15 +98,41 @@ def is_text_bearing(path: str) -> bool:
 
 def classify_screenshot_or_image(path: str) -> Category:
     """The actual Screenshot-vs-Image split (Rules/Classification Rules.md): Screenshot
-    if the filename looks like one, OR dimensions match a common screen resolution, OR
-    there's no camera EXIF data. Otherwise Image. Fully deterministic — no provider
-    call. Only meaningful for paths where needs_screenshot_split() is True; callers are
-    expected to check that first."""
+    if the filename looks like one, OR dimensions match a common screen resolution.
+    Otherwise Image. Fully deterministic — no provider call. Only meaningful for paths
+    where needs_screenshot_split() is True; callers are expected to check that first.
+
+    Post-freeze correction (PT-002, 2026-07-20 — see
+    `Build-out/02 Classification/Module 02 Post-Freeze Design Correction — PT-002.md`
+    for the full design record, `Governance/FROZEN_MODULE_CHANGE_POLICY.md` for the
+    process this change was made under): a third condition — "no camera EXIF data
+    present" — previously stood as an independent, sufficient trigger for Screenshot.
+    Real-world validation (`PATTERN_TRACKER.md` PT-002, Confirmed Pattern across two
+    independent runs) directly confirmed this negative signal is not specific to
+    screenshots: scanned document photos, product/marketing graphics, AI-generated
+    images, and ordinary personal photos re-encoded or EXIF-stripped by messaging apps
+    all lack camera EXIF just as often as a real screen capture does, and none of them
+    triggered the filename-marker or resolution-match conditions either — so the old
+    third condition alone routed all of them to Screenshot before this function's own
+    documented "Otherwise -> Image" default was ever reached. Removed rather than
+    reweighted: no other cheap, deterministic corroborating signal exists at this
+    layer (this split is deliberately provider-free — see design), so requiring EXIF
+    absence to co-occur with something else was not achievable without either
+    reintroducing the same over-broad behavior in a different shape or crossing into
+    content-understanding territory this layer is not meant to do.
+
+    Disclosed trade-off (not eliminated, carried forward — see the design record's
+    Risk Assessment and Acceptance Criteria): a genuine screenshot with neither a
+    marker filename nor dimensions matching `_COMMON_SCREEN_RESOLUTIONS` (e.g.
+    cropped, resized, or renamed before reaching Downloads) now defaults to Image
+    rather than Screenshot. This is a new, bounded, disclosed possibility, not a
+    silently accepted one — `has_camera_metadata()` remains correctly implemented and
+    available in `src/core/exif.py`; it is simply no longer consulted here as an
+    independent, sufficient signal.
+    """
     if _looks_like_screenshot_filename(Path(path).name):
         return Category.SCREENSHOT
     if matches_screen_resolution(get_dimensions(path)):
-        return Category.SCREENSHOT
-    if not has_camera_metadata(path):
         return Category.SCREENSHOT
     return Category.IMAGE
 

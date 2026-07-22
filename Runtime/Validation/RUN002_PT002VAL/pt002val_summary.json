@@ -1,0 +1,160 @@
+{
+  "dataset": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample",
+  "discovered": 9,
+  "skipped": 0,
+  "records": [
+    {
+      "original_name": "Degree.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": null,
+      "version_rank": null,
+      "suggested_name": "Unknown_Description_Unknown_Variant.jpg",
+      "suggested_destination": "Images/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "MarK_Sheet_10th.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": "a5667ba3-d6f9-4851-a2e4-e943754db8e5",
+      "version_rank": "superseded",
+      "suggested_name": "Unknown_Description_Unknown_Variant.jpg",
+      "suggested_destination": "~ARCHIVE~/Old Versions/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "Mark_Sheet_12th.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": "a5667ba3-d6f9-4851-a2e4-e943754db8e5",
+      "version_rank": "latest",
+      "suggested_name": "Unknown_Description_Unknown_Variant_2.jpg",
+      "suggested_destination": "Images/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "Mark_Sheet_1st Semester.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": "c6ee43d2-0622-4f9b-bb3c-0d048e8414b6",
+      "version_rank": "superseded",
+      "suggested_name": "Unknown_Description_Unknown_Variant_2.jpg",
+      "suggested_destination": "~ARCHIVE~/Old Versions/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "Mark_Sheet_2nd Semester.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": "f9440bf7-c497-49ce-93db-106aa678b91d",
+      "version_rank": "superseded",
+      "suggested_name": "Unknown_Description_Unknown_Variant_3.jpg",
+      "suggested_destination": "~ARCHIVE~/Old Versions/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "Mark_Sheet_3rd Semester.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": "f9440bf7-c497-49ce-93db-106aa678b91d",
+      "version_rank": "latest",
+      "suggested_name": "Unknown_Description_Unknown_Variant_3.jpg",
+      "suggested_destination": "Images/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "Mark_Sheet_4th Semester.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": "c6ee43d2-0622-4f9b-bb3c-0d048e8414b6",
+      "version_rank": "latest",
+      "suggested_name": "Unknown_Description_Unknown_Variant_4.jpg",
+      "suggested_destination": "Images/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "Mark_Sheet_Final.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": null,
+      "version_rank": null,
+      "suggested_name": "Unknown_Description_Unknown_Variant_5.jpg",
+      "suggested_destination": "Images/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    },
+    {
+      "original_name": "Marksheet_5th and 6th Semster.jpg",
+      "category": "Image",
+      "classification_signals": {
+        "ambiguous": false,
+        "no_extractable_text": false,
+        "locked": false
+      },
+      "duplicate_of": null,
+      "version_group_id": null,
+      "version_rank": null,
+      "suggested_name": "Unknown_Description_Unknown_Variant_6.jpg",
+      "suggested_destination": "Images/",
+      "confidence_score": 68,
+      "tier": "review_required",
+      "processed_at": null
+    }
+  ]
+}

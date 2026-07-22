@@ -1,0 +1,19 @@
+{
+  "8ec00474-1603-49f2-b5ec-e3d8cc69b805": {
+    "version_group_id": "8ec00474-1603-49f2-b5ec-e3d8cc69b805",
+    "files": [
+      {
+        "file_id": "a4180e0f-c209-405d-934e-608a13c7774b",
+        "filename": "image (2).png",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-22T20:19:15.364937+00:00"
+      },
+      {
+        "file_id": "43660ea3-b2f8-4981-bc44-864f881709c5",
+        "filename": "image (42).png",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,533 @@
+[
+  {
+    "file_id": "00461365-ff60-4d9f-9eca-272d98ed94a6",
+    "source_id": "validation_sample",
+    "original_name": "Degree.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Degree.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Degree.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 169366,
+    "created_at": "2026-07-20T04:35:34.642824+00:00",
+    "modified_at": "2026-07-20T04:35:34.642675+00:00",
+    "content_hash": "2c4aa12da2910c5784be34df95a3a345f5f79b2625097236223e50e3bdcde65a",
+    "discovered_at": "2026-07-20T04:42:32.039798+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "37c00299-7935-44e5-b1f6-a6eeae308753",
+    "source_id": "validation_sample",
+    "original_name": "MarK_Sheet_10th.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/MarK_Sheet_10th.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/MarK_Sheet_10th.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 166130,
+    "created_at": "2026-07-20T04:35:34.644019+00:00",
+    "modified_at": "2026-07-20T04:35:34.643840+00:00",
+    "content_hash": "d221ae78aa2fa25090151f6e1fe5b7b4fa5183c079b0d44f2625d439473e660c",
+    "discovered_at": "2026-07-20T04:42:32.558766+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date.jpg",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "9c61b11a-d71e-4de7-9f3f-8af4586dec63",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "dee3f1b7-a08e-4914-8abe-4aa78ec6efcc",
+    "source_id": "validation_sample",
+    "original_name": "Mark_Sheet_12th.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_12th.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_12th.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 210402,
+    "created_at": "2026-07-20T04:35:34.645711+00:00",
+    "modified_at": "2026-07-20T04:35:34.645540+00:00",
+    "content_hash": "f8bf6e87653a5edacacce00387dfb5bdb3d8272f4b99e793d9a42e2facdfe189",
+    "discovered_at": "2026-07-20T04:42:33.066264+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date_2.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "9c61b11a-d71e-4de7-9f3f-8af4586dec63",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "10b64e57-a8e4-4afe-b3ac-fc03f0a5801d",
+    "source_id": "validation_sample",
+    "original_name": "Mark_Sheet_1st Semester.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_1st Semester.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_1st Semester.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 165204,
+    "created_at": "2026-07-20T04:35:34.647430+00:00",
+    "modified_at": "2026-07-20T04:35:34.646758+00:00",
+    "content_hash": "dc8ead22af183e0e65787710ce9a00934573ea367904cd89056bb39d81dac0df",
+    "discovered_at": "2026-07-20T04:42:33.575210+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date_2.jpg",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "55e85c9d-1a89-466e-b518-aec8827c0241",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "6acd6f16-070a-47e7-abdc-8c65eb8b29d9",
+    "source_id": "validation_sample",
+    "original_name": "Mark_Sheet_2nd Semester.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_2nd Semester.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_2nd Semester.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 190500,
+    "created_at": "2026-07-20T04:35:34.649038+00:00",
+    "modified_at": "2026-07-20T04:35:34.648682+00:00",
+    "content_hash": "0bc56985966789142b6b6ad642eb5686e5f8660e1410b03ee70df30067f78302",
+    "discovered_at": "2026-07-20T04:42:34.086950+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date_3.jpg",
+    "suggested_destination": "~ARCHIVE~/Old Versions/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "5e57f090-1229-42ac-9552-67fdc9bd9d82",
+    "version_rank": "superseded",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "07f92070-aee1-4e52-b709-5725cf2c7bd0",
+    "source_id": "validation_sample",
+    "original_name": "Mark_Sheet_3rd Semester.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_3rd Semester.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_3rd Semester.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 183898,
+    "created_at": "2026-07-20T04:35:34.650882+00:00",
+    "modified_at": "2026-07-20T04:35:34.650760+00:00",
+    "content_hash": "7ebd75dacf1b94b9c96a1c3a5281af0674f525ee0ff068cec774e4c4cc73d1d7",
+    "discovered_at": "2026-07-20T04:42:34.715811+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date_3.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "5e57f090-1229-42ac-9552-67fdc9bd9d82",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "a4d28e2a-95d5-40c1-8815-a15fadfe7d3c",
+    "source_id": "validation_sample",
+    "original_name": "Mark_Sheet_4th Semester.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_4th Semester.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_4th Semester.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 183247,
+    "created_at": "2026-07-20T04:35:34.652566+00:00",
+    "modified_at": "2026-07-20T04:35:34.652465+00:00",
+    "content_hash": "697314cff06d6d2029b4c26410b70615c607f35e74c437e3fe9d44ba4c554995",
+    "discovered_at": "2026-07-20T04:42:35.281643+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date_4.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": "55e85c9d-1a89-466e-b518-aec8827c0241",
+    "version_rank": "latest",
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "5d373b27-96fe-442e-8d5d-90ad627b7630",
+    "source_id": "validation_sample",
+    "original_name": "Mark_Sheet_Final.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_Final.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Mark_Sheet_Final.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 308443,
+    "created_at": "2026-07-20T04:35:34.655962+00:00",
+    "modified_at": "2026-07-20T04:35:34.655618+00:00",
+    "content_hash": "1df5e20e3774d7544f0c1bffb23e921a03b25285a4f9a4a40eb7351f89ddeeb2",
+    "discovered_at": "2026-07-20T04:42:35.794696+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date_5.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  },
+  {
+    "file_id": "922a25d6-bee9-4194-86e8-05ba40f8e148",
+    "source_id": "validation_sample",
+    "original_name": "Marksheet_5th and 6th Semster.jpg",
+    "original_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Marksheet_5th and 6th Semster.jpg",
+    "current_path": "/sessions/nice-fervent-wozniak/mnt/Desktop/Validation Sample/Marksheet_5th and 6th Semster.jpg",
+    "extension": ".jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 225390,
+    "created_at": "2026-07-20T04:35:34.657952+00:00",
+    "modified_at": "2026-07-20T04:35:34.657743+00:00",
+    "content_hash": "af0dc803f1ba3f5f347ec2ed4447fa42c33d4a4c84738ca25cc7730a59e996b1",
+    "discovered_at": "2026-07-20T04:42:36.306403+00:00",
+    "status": "discovered",
+    "error": null,
+    "category": "Screenshot",
+    "classification_signals": {
+      "ambiguous": false,
+      "multi_document_detected": false,
+      "no_extractable_text": false,
+      "non_english_detected": false,
+      "detected_language": null,
+      "locked": false
+    },
+    "extracted_metadata": {
+      "context_description": null,
+      "capture_date": null
+    },
+    "suggested_name": "Screenshot_Unknown_Context_Unknown_Date_6.jpg",
+    "suggested_destination": "Images/Screenshots/",
+    "naming_signals": {
+      "fields_fell_back": [
+        "context_description",
+        "capture_date"
+      ]
+    },
+    "duplicate_of": null,
+    "version_group_id": null,
+    "version_rank": null,
+    "duplicate_signals": {
+      "exact_duplicate": false,
+      "fuzzy_duplicate": false,
+      "phash_distance": null,
+      "version_conflict": false
+    },
+    "confidence_score": 70,
+    "confidence_breakdown": {
+      "missing_required_field:context_description": -8,
+      "missing_optional_field:capture_date": -2,
+      "naming_fallback:context_description": -10,
+      "naming_fallback:capture_date": -10
+    },
+    "tier": "review_required",
+    "batch_id": "2026-07-20_044413",
+    "processed_at": null,
+    "approved_by": null,
+    "approved_at": null,
+    "reversible": true
+  }
+]

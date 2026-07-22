@@ -1,0 +1,53 @@
+{
+  "9c61b11a-d71e-4de7-9f3f-8af4586dec63": {
+    "version_group_id": "9c61b11a-d71e-4de7-9f3f-8af4586dec63",
+    "files": [
+      {
+        "file_id": "37c00299-7935-44e5-b1f6-a6eeae308753",
+        "filename": "MarK_Sheet_10th.jpg",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-20T04:42:59.554638+00:00"
+      },
+      {
+        "file_id": "dee3f1b7-a08e-4914-8abe-4aa78ec6efcc",
+        "filename": "Mark_Sheet_12th.jpg",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  },
+  "5e57f090-1229-42ac-9552-67fdc9bd9d82": {
+    "version_group_id": "5e57f090-1229-42ac-9552-67fdc9bd9d82",
+    "files": [
+      {
+        "file_id": "6acd6f16-070a-47e7-abdc-8c65eb8b29d9",
+        "filename": "Mark_Sheet_2nd Semester.jpg",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-20T04:42:59.989241+00:00"
+      },
+      {
+        "file_id": "07f92070-aee1-4e52-b709-5725cf2c7bd0",
+        "filename": "Mark_Sheet_3rd Semester.jpg",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  },
+  "55e85c9d-1a89-466e-b518-aec8827c0241": {
+    "version_group_id": "55e85c9d-1a89-466e-b518-aec8827c0241",
+    "files": [
+      {
+        "file_id": "10b64e57-a8e4-4afe-b3ac-fc03f0a5801d",
+        "filename": "Mark_Sheet_1st Semester.jpg",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-20T04:43:00.235383+00:00"
+      },
+      {
+        "file_id": "a4d28e2a-95d5-40c1-8815-a15fadfe7d3c",
+        "filename": "Mark_Sheet_4th Semester.jpg",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      }
+    ]
+  }
+}

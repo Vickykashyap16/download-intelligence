@@ -43,6 +43,17 @@ from src.storage.runtime_io import append_action_log
 # parameter (§15), not an architectural constant.
 _MAX_PHASH_DISTANCE = 5
 
+# PT-003 post-freeze correction (Module 04 Post-Freeze Design Correction —
+# PT-003.md §6): a configurable implementation parameter, not an architectural
+# constant, following the same disclosed-parameter convention as
+# _MAX_PHASH_DISTANCE above. Used only by the identical-normalized-name branch
+# of version-chain candidacy corroboration (see
+# DuplicateDetectionEngine._has_corroborating_version_signal()) — the smaller of
+# two same-category, identically-named files' sizes must be at least this
+# fraction of the larger's for the pair to qualify without an explicit version
+# token. 0.5 == no more than a 2x size difference.
+_VERSION_SIZE_PROXIMITY_RATIO = 0.5
+
 # Module 04 Design.md §9 — confirmed v1 scope.
 _NEAR_DUPLICATE_CATEGORIES = frozenset({Category.IMAGE, Category.SCREENSHOT})
 _VERSION_CHAIN_CATEGORIES = frozenset({
@@ -233,6 +244,56 @@ class DuplicateDetectionEngine:
             signals.fuzzy_duplicate = True
             signals.phash_distance = best_distance
 
+    # --- PT-003 post-freeze correction: version-chain candidacy corroboration
+    # (Module 04 Post-Freeze Design Correction — PT-003.md §6). ---
+
+    def _has_corroborating_version_signal(self, record: FileRecord, candidate: FileRecord,
+                                            normalized_name: str) -> bool:
+        """A second, corroborating signal, independent of the fuzz.ratio()
+        similarity score lookup_name_matches() already applied, required before a
+        same-category, above-threshold candidate is accepted into version-chain
+        candidacy. Closes the confirmed false-positive mechanism
+        (PATTERN_TRACKER.md PT-003): near-miss-similar generic template names
+        (e.g. "Mark Sheet 10th"/"Mark Sheet 12th", "image (2)"/"image (42)") no
+        longer qualify on filename similarity alone.
+
+        Satisfied by EITHER:
+          (a) an explicit version token on at least one side — a strong,
+              structural, intentional signal that needs no further
+              corroboration, OR
+          (b) an identical normalized filename AND a size-proximity check — an
+              identical name alone is not evidence of a version relationship
+              (it is equally consistent with a generic, uncustomized filename
+              shared by two unrelated files, Round 1 review Finding E1), so it
+              must be corroborated by size, a signal derived from content
+              rather than name.
+
+        `size_bytes` is `Optional[int]` — if either side lacks a value, the
+        proximity check cannot be evaluated and fails conservatively (does not
+        qualify), the same "incomplete evidence does not assert a relationship"
+        default already used elsewhere in this design. Two zero-byte files are
+        treated as unambiguously equal in size (special-cased to avoid a
+        division by zero), not merely proximate.
+        """
+        if parse_version_token(record.original_name) is not None:
+            return True
+        if parse_version_token(candidate.original_name) is not None:
+            return True
+
+        if normalized_name != normalize_filename(candidate.original_name):
+            return False
+
+        size_a = record.size_bytes
+        size_b = candidate.size_bytes
+        if size_a is None or size_b is None:
+            return False
+
+        larger = max(size_a, size_b)
+        if larger == 0:
+            return True
+        smaller = min(size_a, size_b)
+        return (smaller / larger) >= _VERSION_SIZE_PROXIMITY_RATIO
+
     # --- Step 3 helper (H1/M1-corrected sequencing) ---
 
     def _check_version_chain(self, record: FileRecord, records_by_id: Dict[str, FileRecord],
@@ -246,6 +307,18 @@ class DuplicateDetectionEngine:
         ]
         candidates = [
             records_by_id[file_id] for file_id in candidate_ids if file_id in records_by_id
+        ]
+
+        # PT-003 post-freeze correction (Module 04 Post-Freeze Design Correction —
+        # PT-003.md §6): lookup_name_matches() has already applied the filename-
+        # similarity threshold (fuzz.ratio() >= _NAME_SIMILARITY_THRESHOLD) and the
+        # category scope — but similarity alone is not sufficient evidence of a
+        # genuine version relationship (PATTERN_TRACKER.md PT-003, both confirmed
+        # false-positive mechanisms). Require a corroborating signal, independent
+        # of the similarity score itself, before a candidate is accepted.
+        candidates = [
+            candidate for candidate in candidates
+            if self._has_corroborating_version_signal(record, candidate, normalized_name)
         ]
         if not candidates:
             return None

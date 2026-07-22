@@ -524,16 +524,22 @@ def test_engine_version_rank_by_date_only_when_token_missing_on_one_side(tmp_pat
 def test_engine_cross_group_conflict_flags_and_does_not_merge(tmp_path, monkeypatch):
     """F3/H1: a new record whose above-threshold candidates span two different
     existing, non-null version_group_ids must be flagged, never auto-merged, and
-    left with version_group_id/version_rank both None."""
+    left with version_group_id/version_rank both None.
+
+    PT-003 post-freeze correction: all three records share matching size_bytes
+    (5000) so the identical-name candidacy corroboration (§6) is satisfied —
+    this test exercises cross-group-conflict sequencing, not PT-003's own fix,
+    so the fixtures are adapted to keep reaching that logic under the revised
+    candidacy rule (Module 04 Post-Freeze Design Correction — PT-003.md §9)."""
     _isolate_storage(tmp_path, monkeypatch)
     group_a_member = _record(
         "a1", "Statement.pdf", category=Category.BANK_STATEMENT,
-        version_group_id="group-a", version_rank="latest",
+        version_group_id="group-a", version_rank="latest", size_bytes=5000,
     )
     group_b_member = _record(
         "b1", "Statement.pdf", category=Category.BANK_STATEMENT,
         version_group_id="group-b", version_rank="latest",
-        path="/tmp/other/Statement.pdf",
+        path="/tmp/other/Statement.pdf", size_bytes=5000,
     )
     database_module.save_file_record(group_a_member)
     database_module.save_file_record(group_b_member)
@@ -541,7 +547,7 @@ def test_engine_cross_group_conflict_flags_and_does_not_merge(tmp_path, monkeypa
     database_module.update_indexes(group_b_member)
 
     new_record = _record("new-1", "Statement.pdf", category=Category.BANK_STATEMENT,
-                          path="/tmp/newest/Statement.pdf")
+                          path="/tmp/newest/Statement.pdf", size_bytes=5000)
     engine = DuplicateDetectionEngine()
     result = engine.detect_file(
         new_record, {"a1": group_a_member, "b1": group_b_member, "new-1": new_record}
@@ -557,13 +563,19 @@ def test_engine_cross_group_conflict_flags_and_does_not_merge(tmp_path, monkeypa
 def test_engine_m1_null_group_never_counts_as_distinct_cross_group(tmp_path, monkeypatch):
     """M1: an ungrouped candidate (version_group_id=None) alongside a grouped one
     must NOT be treated as a cross-group conflict — this is the single most common
-    real case (a first-time pairing), and must proceed as ordinary chain creation."""
+    real case (a first-time pairing), and must proceed as ordinary chain creation.
+
+    PT-003 post-freeze correction: all three records share matching size_bytes
+    (5000) so the identical-name candidacy corroboration (§6) is satisfied — this
+    test exercises M1's group-membership sequencing, not PT-003's own fix, so the
+    fixtures are adapted to keep reaching that logic under the revised candidacy
+    rule (Module 04 Post-Freeze Design Correction — PT-003.md §9)."""
     _isolate_storage(tmp_path, monkeypatch)
-    ungrouped = _record("u1", "Contract.pdf", category=Category.CONTRACT)
+    ungrouped = _record("u1", "Contract.pdf", category=Category.CONTRACT, size_bytes=5000)
     grouped = _record(
         "g1", "Contract.pdf", category=Category.CONTRACT,
         version_group_id="group-existing", version_rank="latest",
-        path="/tmp/other/Contract.pdf",
+        path="/tmp/other/Contract.pdf", size_bytes=5000,
     )
     database_module.save_file_record(ungrouped)
     database_module.save_file_record(grouped)
@@ -571,7 +583,7 @@ def test_engine_m1_null_group_never_counts_as_distinct_cross_group(tmp_path, mon
     database_module.update_indexes(grouped)
 
     new_record = _record("new-1", "Contract.pdf", category=Category.CONTRACT,
-                          path="/tmp/newest/Contract.pdf")
+                          path="/tmp/newest/Contract.pdf", size_bytes=5000)
     engine = DuplicateDetectionEngine()
     result = engine.detect_file(
         new_record, {"u1": ungrouped, "g1": grouped, "new-1": new_record}
@@ -583,16 +595,23 @@ def test_engine_m1_null_group_never_counts_as_distinct_cross_group(tmp_path, mon
 
 def test_engine_all_null_candidates_proceeds_as_ordinary_creation(tmp_path, monkeypatch):
     """M1: multiple candidates that are ALL ungrouped must not trigger a
-    cross-group conflict either — zero non-null groups is not "multiple"."""
+    cross-group conflict either — zero non-null groups is not "multiple".
+
+    PT-003 post-freeze correction: all three records share matching size_bytes
+    (5000) so the identical-name candidacy corroboration (§6) is satisfied — see
+    the same note on the M1 test above (Module 04 Post-Freeze Design Correction —
+    PT-003.md §9)."""
     _isolate_storage(tmp_path, monkeypatch)
-    candidate_one = _record("c1", "Doc.pdf", category=Category.DOCUMENT)
-    candidate_two = _record("c2", "Doc.pdf", category=Category.DOCUMENT, path="/tmp/other/Doc.pdf")
+    candidate_one = _record("c1", "Doc.pdf", category=Category.DOCUMENT, size_bytes=5000)
+    candidate_two = _record("c2", "Doc.pdf", category=Category.DOCUMENT, path="/tmp/other/Doc.pdf",
+                             size_bytes=5000)
     database_module.save_file_record(candidate_one)
     database_module.save_file_record(candidate_two)
     database_module.update_indexes(candidate_one)
     database_module.update_indexes(candidate_two)
 
-    new_record = _record("new-1", "Doc.pdf", category=Category.DOCUMENT, path="/tmp/newest/Doc.pdf")
+    new_record = _record("new-1", "Doc.pdf", category=Category.DOCUMENT, path="/tmp/newest/Doc.pdf",
+                          size_bytes=5000)
     engine = DuplicateDetectionEngine()
     result = engine.detect_file(
         new_record, {"c1": candidate_one, "c2": candidate_two, "new-1": new_record}
@@ -644,6 +663,165 @@ def test_lookup_name_matches_is_category_scoped(tmp_path, monkeypatch):
     matches = database_module.lookup_name_matches("report", Category.RESUME)
     assert "r1" in matches
     assert "d1" not in matches
+
+
+# --- PT-003 post-freeze correction: corroborating-signal requirement for
+# version-chain candidacy (Module 04 Post-Freeze Design Correction — PT-003.md
+# §6/§10). Reproduces the two confirmed real-world false-positive shapes
+# (PATTERN_TRACKER.md PT-003) as regression tests, the identical-name branch's
+# own corroboration requirement (Round 1 review Finding E1), and its documented
+# edge cases (R6/R7, the zero-byte division-by-zero found during the round-2
+# design re-evaluation). ---
+
+def test_version_chain_near_miss_template_name_without_token_does_not_group(tmp_path, monkeypatch):
+    """Reproduces Run 002's confirmed false-positive shape (VALIDATION_LEDGER.md
+    VL-002-3): two same-category files sharing a long common template prefix,
+    differing only in a trailing ordinal — similarity score >= 90, no explicit
+    version token, no identical normalized name. Must NOT form a version-chain
+    group."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-ms10", "Mark Sheet 10th.pdf", category=Category.DOCUMENT)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-ms12", "Mark Sheet 12th.pdf", category=Category.DOCUMENT)
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-ms10": existing, "new-ms12": new_record})
+    assert result.version_group_id is None
+
+
+def test_version_chain_near_miss_generic_increment_without_token_does_not_group(tmp_path, monkeypatch):
+    """Reproduces Run 003's confirmed false-positive shape (VALIDATION_LEDGER.md
+    VL-003-2): a generic, tool-assigned filename differing only by an
+    incrementing number in parentheses. Must NOT form a version-chain group."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-img2", "image (2).pdf", category=Category.DOCUMENT)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-img42", "image (42).pdf", category=Category.DOCUMENT)
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-img2": existing, "new-img42": new_record})
+    assert result.version_group_id is None
+
+
+def test_version_chain_identical_name_with_similar_size_and_no_token_groups(tmp_path, monkeypatch):
+    """Positive control for the revised identical-name branch (§6): identical
+    normalized name, no version token, sizes within the proximity ratio — must
+    form a version-chain group."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-resave", "Report.pdf", category=Category.DOCUMENT, size_bytes=10000)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-resave", "Report.pdf", category=Category.DOCUMENT, size_bytes=11000,
+                          path="/tmp/other/Report.pdf")
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-resave": existing, "new-resave": new_record})
+    assert result.version_group_id is not None
+
+
+def test_version_chain_organic_rename_without_token_or_identical_name_does_not_group(tmp_path, monkeypatch):
+    """Disclosed trade-off (R1/U3, design §6/§8/§12): a genuine version chain
+    that uses neither an explicit version token nor an identical normalized name
+    is not detected under the revised logic. This test reports the actual,
+    accepted behavior explicitly, rather than presenting it as a silently
+    "correct" outcome either way."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-summary", "Summary.pdf", category=Category.DOCUMENT, size_bytes=5000)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-summary", "Summary2.pdf", category=Category.DOCUMENT, size_bytes=5200,
+                          path="/tmp/other/Summary2.pdf")
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-summary": existing, "new-summary": new_record})
+    assert result.version_group_id is None
+
+
+def test_version_chain_identical_generic_name_with_dissimilar_size_does_not_group(tmp_path, monkeypatch):
+    """Round 1 review Finding E1: a generic, uncustomized filename (e.g. two
+    unrelated invoices both saved as "invoice.pdf") shared by two unrelated
+    files must not be accepted as a version-chain candidate merely because the
+    names are identical — the size-proximity check must reject a large size
+    discrepancy."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-inv-a", "invoice.pdf", category=Category.INVOICE, size_bytes=20000)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-inv-b", "invoice.pdf", category=Category.INVOICE, size_bytes=2000,
+                          path="/tmp/other/invoice.pdf")
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-inv-a": existing, "new-inv-b": new_record})
+    assert result.version_group_id is None
+
+
+def test_version_chain_identical_generic_name_with_similar_size_groups_as_disclosed_residual(tmp_path, monkeypatch):
+    """R6 (disclosed residual, design §6/§8): the size-proximity check narrows
+    but does not eliminate Finding E1's exposure — two unrelated files that
+    coincidentally share both a generic name and a similar size still group.
+    This is the documented, accepted ambiguous case, not a defect."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-inv-c", "invoice.pdf", category=Category.INVOICE, size_bytes=20000)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-inv-d", "invoice.pdf", category=Category.INVOICE, size_bytes=21000,
+                          path="/tmp/other2/invoice.pdf")
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-inv-c": existing, "new-inv-d": new_record})
+    assert result.version_group_id is not None
+
+
+def test_version_chain_identical_name_with_missing_size_on_one_side_does_not_group(tmp_path, monkeypatch):
+    """R7 (design §6/§8): size_bytes is Optional[int] — if either side lacks a
+    value, the size-proximity check cannot be evaluated and must fail
+    conservatively (does not qualify), never default to qualifying."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-nosize", "Contract2.pdf", category=Category.CONTRACT, size_bytes=None)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-nosize", "Contract2.pdf", category=Category.CONTRACT, size_bytes=8000,
+                          path="/tmp/other/Contract2.pdf")
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-nosize": existing, "new-nosize": new_record})
+    assert result.version_group_id is None
+
+
+def test_version_chain_identical_name_with_both_sizes_zero_groups_without_error(tmp_path, monkeypatch):
+    """Zero-byte edge case identified during the round-2 design re-evaluation
+    (design §6): the size-proximity formula min/max is undefined for 0/0. Two
+    zero-byte files sharing an identical name must be treated as unambiguously
+    equal in size (special-cased) — must group, and must not raise."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-zero", "Empty.pdf", category=Category.DOCUMENT, size_bytes=0)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-zero", "Empty.pdf", category=Category.DOCUMENT, size_bytes=0,
+                          path="/tmp/other/Empty.pdf")
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-zero": existing, "new-zero": new_record})
+    assert result.version_group_id is not None
+
+
+def test_version_chain_explicit_token_still_sufficient_without_size_data(tmp_path, monkeypatch):
+    """Confirms the explicit-token branch is genuinely unaffected by the PT-003
+    correction: an explicit version token remains sufficient corroboration on
+    its own, with no size data required on either side (design §6 — unchanged
+    from Revision 1)."""
+    _isolate_storage(tmp_path, monkeypatch)
+    existing = _record("existing-token", "Notes_v1.pdf", category=Category.DOCUMENT, size_bytes=None)
+    database_module.save_file_record(existing)
+    database_module.update_indexes(existing)
+
+    new_record = _record("new-token", "Notes_v2.pdf", category=Category.DOCUMENT, size_bytes=None,
+                          path="/tmp/other/Notes_v2.pdf")
+    engine = DuplicateDetectionEngine()
+    result = engine.detect_file(new_record, {"existing-token": existing, "new-token": new_record})
+    assert result.version_group_id is not None
 
 
 # --- Module Contract immutability (§5) ---
@@ -872,20 +1050,26 @@ def test_batch_still_reprocesses_an_unresolved_cross_group_conflict_on_every_run
     """The flip side of the fix above: H1's correction must NOT silently make a
     genuinely-unresolved cross-group conflict idempotent too — the fifth
     architecture-review pass explicitly decided this state should stay visible
-    (re-examined and re-logged) on every run until manually resolved."""
+    (re-examined and re-logged) on every run until manually resolved.
+
+    PT-003 post-freeze correction: all three records share matching size_bytes
+    (5000) so the identical-name candidacy corroboration (§6) is satisfied — this
+    test exercises re-examination idempotency, not PT-003's own fix, so the
+    fixtures are adapted to keep reaching that logic under the revised candidacy
+    rule (Module 04 Post-Freeze Design Correction — PT-003.md §9)."""
     _isolate_storage(tmp_path, monkeypatch)
     group_a_member = _record("ga-1", "Statement.pdf", category=Category.BANK_STATEMENT,
-                              version_group_id="group-a", version_rank="latest")
+                              version_group_id="group-a", version_rank="latest", size_bytes=5000)
     group_b_member = _record("gb-1", "Statement.pdf", category=Category.BANK_STATEMENT,
                               version_group_id="group-b", version_rank="latest",
-                              path="/tmp/other/Statement.pdf")
+                              path="/tmp/other/Statement.pdf", size_bytes=5000)
     database_module.save_file_record(group_a_member)
     database_module.save_file_record(group_b_member)
     database_module.update_indexes(group_a_member)
     database_module.update_indexes(group_b_member)
 
     conflicted = _record("conflicted-1", "Statement.pdf", category=Category.BANK_STATEMENT,
-                          path="/tmp/newest/Statement.pdf")
+                          path="/tmp/newest/Statement.pdf", size_bytes=5000)
     detect_duplicates_batch([conflicted])
 
     for _ in range(2):
