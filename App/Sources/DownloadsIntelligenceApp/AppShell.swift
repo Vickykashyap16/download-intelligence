@@ -8,6 +8,15 @@ import EngineBridge
 /// package that owns it builds the real screen.
 public struct AppShell: View {
     @StateObject private var lifecycle: AppLifecycleController
+    private let bridge: EngineBridge
+
+    // Home reads independently of `lifecycle`'s own best-effort metadata
+    // read (see `HomeViewModel`'s documentation) — WP-GUI-03's stub
+    // navigation targets for "Scan now" / "Scan again" / "File them now"
+    // land here, as a simple inline replacement of the content area,
+    // matching the same placeholder pattern already used for every other
+    // not-yet-built Sidebar section below.
+    @State private var isScanStubShowing = false
 
     // "the last active Sidebar section is restored" (`Desktop
     // Implementation Blueprint.md` §2) — session-local, disposable UI
@@ -23,6 +32,7 @@ public struct AppShell: View {
     @State private var selectedSection: AppSection = .home
 
     public init(bridge: EngineBridge) {
+        self.bridge = bridge
         _lifecycle = StateObject(wrappedValue: AppLifecycleController(bridge: bridge))
     }
 
@@ -64,10 +74,30 @@ public struct AppShell: View {
 
     @ViewBuilder
     private func placeholderContent(for section: AppSection) -> some View {
-        EmptyStateView(
-            systemImageName: section.outlineSymbolName,
-            heading: section.title,
-            explanation: "\(section.title)'s real content isn't built yet — that's a future work package."
-        )
+        switch section {
+        case .home:
+            if isScanStubShowing {
+                EmptyStateView(
+                    systemImageName: "arrow.triangle.2.circlepath",
+                    heading: "Scan Progress isn't built yet",
+                    explanation: "That's a future work package.",
+                    secondaryActionTitle: "Back to Home",
+                    secondaryAction: { isScanStubShowing = false }
+                )
+            } else {
+                HomeView(
+                    bridge: bridge,
+                    onGoToReviewQueue: { selectedSection = .reviewQueue },
+                    onScanRequested: { isScanStubShowing = true },
+                    onFileThemNow: { isScanStubShowing = true }
+                )
+            }
+        default:
+            EmptyStateView(
+                systemImageName: section.outlineSymbolName,
+                heading: section.title,
+                explanation: "\(section.title)'s real content isn't built yet — that's a future work package."
+            )
+        }
     }
 }
