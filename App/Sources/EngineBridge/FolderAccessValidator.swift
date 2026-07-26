@@ -22,7 +22,18 @@ import Foundation
 /// own Python subprocess will ultimately see it (same machine, same user,
 /// same permission bits), so no subprocess invocation is needed to
 /// perform it faithfully.
-public struct FolderAccessValidator: Sendable {
+///
+/// `@unchecked Sendable`, not synthesized `Sendable`: `FileManager` itself
+/// is not `Sendable`, so a struct storing one can't get automatic
+/// conformance. The `@unchecked` assertion is safe here specifically
+/// because this type only ever calls three read-only, non-mutating query
+/// methods on it (`fileExists(atPath:isDirectory:)`,
+/// `isReadableFile(atPath:)`, `isWritableFile(atPath:)`) — documented by
+/// Apple as safe to call concurrently — and never sets a `delegate` or
+/// otherwise mutates shared state on the instance. No behavior changes as
+/// a result of this annotation; it only tells the compiler what was
+/// already true.
+public struct FolderAccessValidator: @unchecked Sendable {
     private let fileManager: FileManager
 
     /// - Parameter fileManager: injectable so tests can exercise every
