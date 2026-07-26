@@ -17,6 +17,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Dict, List, Optional
 
+import numpy
 from rapidfuzz import fuzz
 
 from src.core.hashing import hamming_distance, perceptual_hash
@@ -90,12 +91,44 @@ def load_metadata_store() -> List[FileRecord]:
     return [FileRecord(**_reconstruct_typed_fields(raw_record)) for raw_record in raw_records]
 
 
+def _json_default(value):
+    """`json.dumps()`'s `default=` hook for `_write_metadata_store()` — converts
+    numpy scalar types to their native Python equivalents so a value that's
+    numerically a plain int/float/bool is written as one, not stringified (BUG-001,
+    found during C2's first real run: `hamming_distance()`'s dependency on
+    `imagehash`/`numpy` meant `DuplicateSignals.phash_distance` could silently be a
+    `numpy.int64` rather than a native `int`, crashing `json.dumps()` with "Object
+    of type int64 is not JSON serializable" the first time a batch needed to persist
+    a near-duplicate result).
+
+    This is depth-in-defense, not the primary fix — `core/hashing.py`'s
+    `hamming_distance()` now casts to `int(...)` explicitly at the source, so this
+    hook should not normally fire in practice. It exists so a numpy scalar entering
+    the metadata model through any *other*, not-yet-identified path (a future
+    library, a future field) fails safely — converted to its correct native type
+    and value, not silently corrupted into a string and not left to crash the
+    entire batch. Anything that isn't a recognized numpy scalar still raises
+    `TypeError`, exactly as an unhandled `json.dumps()` call would without this
+    hook — this is not a blanket `str()` fallback, and does not swallow genuine
+    "this type doesn't belong in metadata at all" bugs.
+    """
+    if isinstance(value, numpy.bool_):
+        return bool(value)
+    if isinstance(value, numpy.integer):
+        return int(value)
+    if isinstance(value, numpy.floating):
+        return float(value)
+    raise TypeError(f"Object of type {type(value).__name__} is not JSON serializable")
+
+
 def _write_metadata_store(records: List[FileRecord]) -> None:
     """Overwrite metadata_store.json with `records`. v1 rewrites the whole file each
     time (see Database/README.md) — fine at this volume, not worth optimizing yet."""
     _METADATA_STORE_PATH.parent.mkdir(parents=True, exist_ok=True)
     payload = [asdict(record) for record in records]
-    _METADATA_STORE_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    _METADATA_STORE_PATH.write_text(
+        json.dumps(payload, indent=2, default=_json_default), encoding="utf-8"
+    )
 
 
 def save_file_record(record: FileRecord) -> None:

@@ -1,0 +1,1315 @@
+{
+  "run_started_at": "2026-07-26T14:10:35.726670+00:00",
+  "run_finished_at": "2026-07-26T14:10:41.720012+00:00",
+  "dataset_warnings": [
+    "application_control: 1 real record(s) no longer exist on disk (moved/deleted since the last scan) \u2014 excluded from the sampling pool, not counted against the target."
+  ],
+  "estimated_cost_range_usd": {
+    "low": 0.2592,
+    "high": 0.87552
+  },
+  "actual_cost_usd": null,
+  "priced_model": null,
+  "processing_time_seconds": 1.7802879810333252,
+  "files_per_second": 25.27680941477841,
+  "token_usage_totals": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "rate_limited_file_count": 0,
+  "sample_results": [
+    {
+      "before_file_id": "40a583c3-3520-42e0-a75d-d0b390d09cf4",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3985426f-97fd-492f-b1d2-f9b1e341b7c4",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "d057cc2b-1fa5-4957-ba6b-219790537740",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "18e1f3bf-b71b-4db0-8804-df4db4bcb056",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "10ebc216-1acb-4653-9fd8-87528d35ea6d",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "cdc0f7de-bafd-4496-9fbe-b25c444da09e",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "9e75e968-9f43-49de-b31f-b82288045c99",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "7fe81222-dcd9-45d2-aa7b-77d7b176fe99",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3a2d14fb-83b9-44e1-ae5b-b27852bbab9c",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "8720282e-1ef2-489b-9737-9c934bb62096",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "6f54ce80-efee-424e-b263-5e85ac586813",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "95ac7ddc-231a-48de-b7aa-4f6743ace078",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "fc03cb23-0fce-407b-bc2f-4db686d067ee",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "65f40a3a-4b36-480e-87ef-7e4c42539b0f",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "fc09e4e8-2476-4c27-9097-8b9c3eb64430",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "727c0bb8-108f-4ce8-83c1-47993eec2560",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "42a587b5-6584-4371-b5f3-f65d17baa2c0",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "38269669-dd01-466b-901b-3afd82b6cacf",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "62f3b002-0130-47d2-8fb4-cd76327da977",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "346abcfc-0f62-41f0-8c7d-68bc0de500ae",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "1b69dbec-c9b1-41b3-b479-8deb882f55a9",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "dead3f8f-f1c8-4720-ad30-566edcf1c4ea",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "2a51d335-78f7-48ad-ac6f-d7f70bf4a526",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "a72d3c97-3f0e-41e7-baed-eb8d97205af1",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "c4dad183-1a19-467c-b24e-8108a3060514",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "eaab7c47-d4d4-4e08-afa1-377008f803d5",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "b31e2ff5-a296-4d43-99ba-dda11338271c",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "a1088429-f508-4acd-a56e-fb9527271aeb",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "34065de2-ed48-48b1-b44f-cea04d1de9e0",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "884b9a15-5d0c-4b42-9cfc-17c92c970c79",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "cb085fa9-f559-45b4-b086-ce1183b97cf4",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "08347376-5c9e-40af-a5c4-7eb9eb50c02b",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "4893565a-4437-46fd-8a43-7b0ae983c87c",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "34ed7c88-d2ac-4ca6-b1b3-8e72b1792737",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "9b98b0b8-f75d-4b30-ad5a-3c98ae7c36ff",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "f2c665c9-c4fc-4383-93f3-d740797d8e0c",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3dce7ea2-74ba-42aa-addd-bf2202043161",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "b47e24b2-7652-4112-b858-f369f2726586",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3bfde37f-55ea-41db-805e-6f426101a333",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "6c79e3d8-7255-412e-8eb0-aae8c52ca94e",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "a560e41a-dd95-4aaa-b9e2-cc8535d43dca",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "cb476e20-b37a-4b82-9110-664d212cdc4b",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "de34097d-4f5c-4971-88db-719d3afca27a",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "42acf6f4-9ff0-4804-b710-9b716908e572",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "8ad8cf8e-c5fe-4e3a-b695-061d45d8c92e",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    }
+  ],
+  "named_case_results": [
+    {
+      "label": "INC-34 legal document",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required"
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100
+      }
+    },
+    {
+      "label": "Renamed/resized screenshot",
+      "before": {
+        "category": "Image",
+        "tier": "review_required"
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68
+      }
+    }
+  ]
+}

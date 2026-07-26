@@ -1,0 +1,94 @@
+{
+  "run_started_at": "2026-07-26T14:56:17.708686+00:00",
+  "run_finished_at": "2026-07-26T14:56:25.247585+00:00",
+  "mode": "deterministic-only (ai_provider_consent: false \u2014 today's shipped default)",
+  "files_created": [
+    "vacation_photo.jpg",
+    "vacation_photo_copy.jpg",
+    "family_clip.mp4",
+    "voice_memo.mp3",
+    "SomeApp_Installer.dmg",
+    "project_backup.zip",
+    "random_notes.txt",
+    ".DS_Store"
+  ],
+  "steps": [
+    {
+      "command": [
+        "status"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "scan"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "run"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "preview"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "execute",
+        "-y"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "undo",
+        "--last"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "report"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "files_moved_by_execute": 2,
+  "files_restored_by_undo": 2,
+  "random_notes_txt_outcome": {
+    "category": "Unknown",
+    "tier": "review_required"
+  },
+  "final_category_by_name": {
+    "SomeApp_Installer.dmg": "Application",
+    "family_clip.mp4": "Video",
+    "project_backup.zip": "Archive",
+    "random_notes.txt": "Unknown",
+    "vacation_photo.jpg": "Image",
+    "vacation_photo_copy.jpg": "Image",
+    "voice_memo.mp3": "Audio"
+  },
+  "action_log_action_counts": {
+    "skip": 2,
+    "discover": 14,
+    "classify": 7,
+    "extract_metadata": 6,
+    "detect_duplicates_and_versions": 7,
+    "suggest_naming_and_destination": 7,
+    "score_confidence": 7,
+    "move_rename": 2,
+    "undo": 2
+  },
+  "findings": []
+}

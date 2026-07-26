@@ -1,0 +1,26 @@
+{
+  "legal_form.pdf": {
+    "category": "Document",
+    "notes": "Synthetic legal/corporate-filing-style PDF (Companies Act / Articles of Association wording), mirroring the real INC-34 case found during the C2 Sandbox Product Validation (see Tests/C2 Sandbox Product Validation Report.md, Finding 1). Correct answer is Document — a live judgment pass should not leave this Unknown."
+  },
+  "b3f0a1c2-91e4-4a2b-9c7a-2f6e9d1a7c88.jpg": {
+    "category": "Screenshot",
+    "notes": "Synthetic UI-like image (payment-amount card layout) with a UUID-style filename and dimensions (600x1284) deliberately outside core/images.py's _COMMON_SCREEN_RESOLUTIONS, mirroring the real screenshot found in the C2 validation (Finding 2, PT-002's disclosed trade-off). Correct answer is Screenshot even though the deterministic filename/resolution split alone won't reach it without a judgment pass or a future correction."
+  },
+  "photo.jpg": {
+    "category": "Image",
+    "notes": "Synthetic gradient/shape composition — a genuine non-screenshot image. Correct answer is Image."
+  },
+  "ambiguous_note.txt": {
+    "category": "Unknown",
+    "notes": "Three short, contextless lines with no identifying content. Genuinely ambiguous even to a human reader. Correct answer IS Unknown — a provider that also lands here is being appropriately cautious, not wrong; see run_harness.py's accuracy definition."
+  },
+  "archive.zip": {
+    "category": "Archive",
+    "notes": "Deterministic (extension-based, Module 02 Pass 1) — never reaches a provider call. Included so the harness's tier-distribution/naming-quality metrics reflect a realistic mix, not only provider-dependent cases."
+  },
+  "MyApp_1.2.3_Mac.dmg": {
+    "category": "Application",
+    "notes": "Deterministic (extension-based). Included for the same reason as archive.zip."
+  }
+}

@@ -23,6 +23,18 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
+# BUG-001 (found during C2's first real run): a `details` dict passed to
+# append_action_log() can carry values computed by another module — e.g.
+# Module 04's `phash_distance` (pipeline/duplicate_detector.py) — that were, at
+# the time, silently a numpy scalar rather than a native Python number
+# depending on the installed numpy version. Reusing storage/database.py's
+# `_json_default()` here rather than duplicating it: unlike the project's
+# disclosed `_SOURCES_CONFIG_PATH` triplication (three independently-computed
+# constants, no drift risk), this is one real function whose behavior must
+# stay identical everywhere it's used — a second, independently-maintained
+# copy would be exactly the kind of drift risk worth avoiding.
+from src.storage.database import _json_default
+
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _ACTION_LOG_PATH = _PROJECT_ROOT / "Runtime" / "Logs" / "action_log.jsonl"
 _RUNTIME_TEMP_PATH = _PROJECT_ROOT / "Runtime" / "Temp"
@@ -75,7 +87,7 @@ def append_action_log(batch_id: str, file_id: str, action: str,
     if details:
         entry["details"] = details
     with open(_ACTION_LOG_PATH, "a", encoding="utf-8") as log_file:
-        log_file.write(json.dumps(entry) + "\n")
+        log_file.write(json.dumps(entry, default=_json_default) + "\n")
 
 
 def read_action_log_entries() -> List[dict]:

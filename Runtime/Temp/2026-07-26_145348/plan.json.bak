@@ -1,0 +1,12 @@
+[
+  {
+    "file_id": "0123be82-7234-4438-b7a7-6a126a97d5a5",
+    "from": "/sessions/nice-fervent-wozniak/tmp/e2e_source_hq6p30sa/family_clip.mp4",
+    "to": "/sessions/nice-fervent-wozniak/tmp/e2e_dest_djo8um4x/Videos/Family_Clip_2026-07-26.mp4"
+  },
+  {
+    "file_id": "89e4f56b-c8c7-4af0-8977-ee009c7821dd",
+    "from": "/sessions/nice-fervent-wozniak/tmp/e2e_source_hq6p30sa/project_backup.zip",
+    "to": "/sessions/nice-fervent-wozniak/tmp/e2e_dest_djo8um4x/Archives/Readmetxt_2026-07-26.zip"
+  }
+]

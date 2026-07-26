@@ -10,6 +10,7 @@ Run with: pytest src/storage/test_database.py -v
 
 from pathlib import Path
 
+import numpy
 from PIL import Image
 
 import src.storage.database as database_module
@@ -485,3 +486,77 @@ def test_log_user_correction_supports_none_corrected_value_for_rejection(tmp_pat
 
     corrections = database_module._load_index(database_module._USER_CORRECTIONS_PATH, [])
     assert corrections[0]["corrected_value"] is None
+
+
+# === BUG-001 (found during C2's first real run) ===
+#
+# `hamming_distance()` (core/hashing.py) is now fixed at the source to always
+# return a native `int` — see core/test_hashing.py. The tests below cover the
+# second, deliberately-added layer: `_json_default()`, `_write_metadata_store()`'s
+# `json.dumps()` fallback, which exists so a numpy scalar entering the metadata
+# model through any *other* path (not just this specific bug) fails safely —
+# converted to its correct native value and type, not stringified and not left
+# to crash `json.dumps()` outright. Real numpy scalar types are used throughout
+# (`numpy.int64`, `numpy.float64`, `numpy.bool_`), not plain Python int/float/bool
+# standing in for them — the whole point of this bug was that numpy scalars are
+# NOT interchangeable with native types at the JSON-serialization boundary, even
+# though they compare equal to them everywhere else.
+
+def test_json_default_converts_numpy_int64_to_native_int():
+    result = database_module._json_default(numpy.int64(7))
+    assert result == 7
+    assert type(result) is int
+
+
+def test_json_default_converts_numpy_float64_to_native_float():
+    result = database_module._json_default(numpy.float64(3.5))
+    assert result == 3.5
+    assert type(result) is float
+
+
+def test_json_default_converts_numpy_bool_to_native_bool():
+    result_true = database_module._json_default(numpy.bool_(True))
+    result_false = database_module._json_default(numpy.bool_(False))
+    assert result_true is True
+    assert result_false is False
+
+
+def test_json_default_still_raises_for_a_genuinely_unsupported_type():
+    """Not a blanket str() fallback — an object that isn't a recognized numpy
+    scalar must still raise TypeError, exactly as json.dumps() would without
+    this hook, so a real "this doesn't belong in metadata" bug isn't hidden."""
+    class NotJSONSafe:
+        pass
+
+    try:
+        database_module._json_default(NotJSONSafe())
+        assert False, "expected TypeError for a genuinely unsupported type"
+    except TypeError as error:
+        assert "NotJSONSafe" in str(error)
+
+
+def test_save_and_load_round_trips_a_real_numpy_int64_phash_distance(tmp_path, monkeypatch):
+    """End-to-end reproduction of BUG-001 exactly as it occurred: a
+    DuplicateSignals.phash_distance holding a real numpy.int64 (simulating an
+    imagehash/numpy version combination where ImageHash.__sub__() doesn't
+    already return a native int) must save without crashing and load back as
+    a native Python int with the correct value — not a string, not a numpy
+    scalar, not lost."""
+    _isolate_store(tmp_path, monkeypatch)
+
+    record = FileRecord(
+        file_id="numpy-repro-1",
+        source_id="downloads",
+        original_name="photo_copy.jpg",
+        original_path="/tmp/photo_copy.jpg",
+        current_path="/tmp/photo_copy.jpg",
+        duplicate_signals=DuplicateSignals(fuzzy_duplicate=True, phash_distance=numpy.int64(4)),
+    )
+
+    database_module.save_file_record(record)  # must not raise
+
+    loaded = database_module.load_metadata_store()
+    assert len(loaded) == 1
+    reloaded_distance = loaded[0].duplicate_signals.phash_distance
+    assert reloaded_distance == 4
+    assert type(reloaded_distance) is int

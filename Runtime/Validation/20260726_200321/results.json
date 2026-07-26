@@ -1,0 +1,1355 @@
+{
+  "run_started_at": "2026-07-26T14:32:20.754576+00:00",
+  "run_finished_at": "2026-07-26T14:33:21.071226+00:00",
+  "anthropic_api_key_present_at_start": true,
+  "dataset_warnings": [
+    "application_control: 1 real record(s) no longer exist on disk (moved/deleted since the last scan) \u2014 excluded from the sampling pool, not counted against the target."
+  ],
+  "estimated_cost_range_usd": {
+    "low": 0.2592,
+    "high": 0.87552
+  },
+  "actual_cost_usd": null,
+  "priced_model": null,
+  "processing_time_seconds": 52.966078996658325,
+  "files_per_second": 0.849600364090366,
+  "token_usage_totals": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "rate_limited_file_count": 0,
+  "provider_fallback_details": [
+    "52ee0914-76b2-408d-889a-c08535c29378: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqDJ6qxXu2by8WPV1i4'}",
+    "d311b032-e713-4654-bc7b-30acac23dd43: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqDT46zAzwdfXeVVMHm'}",
+    "d3739a2f-ac04-4931-9ee8-41a110aa27f9: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqDbgm1AtXde85CNeeg'}",
+    "fe275a5c-7c8c-473d-b18a-476584368bd9: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqDmaaRkpLHFs5farjw'}",
+    "6a3a5e84-2c5f-4c93-812a-16e0ad177eab: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqDtVJWkrqrzsvV59MK'}",
+    "55efbe08-9a17-4483-b47a-87f55ef0ebd7: extraction_failed \u2014 PackageNotFoundError: Package not found at '/Users/vicky/Downloads/~$atutory Forms_Voya India (1).docx'",
+    "872feb5b-82c9-4dcb-8dd6-320b7111a6f9: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqDwSenaq3rAwKs796T'}",
+    "2e60b5b5-7a1c-4371-aeb1-7ca4e074cb2d: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqDyRDqLsuhYCKpgRxG'}",
+    "c4e81648-6119-4304-ae9f-54aa19d72191: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqE3hwNy1uPSVKTVsNj'}",
+    "07393ed0-f784-4038-bbe8-c9a35c7cdfd9: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqE68J3Cnhc94TWjk4V'}",
+    "14b1dd89-8aa7-48e6-b8ae-e35433b4850b: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqE85N7ry122hFX5mJu'}",
+    "6f9f3c17-f0d5-4b44-a4f1-f032bda15765: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqEARkwB99cXwzBFNVp'}",
+    "d80177e3-6651-4c72-af4b-e1c506368ac9: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqELGqiRAtV93v6ezs7'}",
+    "de80fcb9-4c37-4b6b-b108-d342a35b6b6d: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqEkjG2ppyKLZc3W7XC'}",
+    "2c284371-cbad-4dd0-98eb-9521b6e5d982: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqEriAxzj8j2iYxdBK7'}",
+    "2677328e-c43d-46b2-a040-c030db4c09bf: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqEtbHJRzpbcKAb6jop'}",
+    "6948d968-b19c-47b1-a313-0e1367029728: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqF2dUVTxrmpQJo18dH'}",
+    "6ae9eaef-1049-4b60-9730-510bec33db7f: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqF7L15JPCkavpQiEdH'}",
+    "a636fb2a-f340-412a-8d0b-8995c2feb19d: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFAVW28bFKTBAHZNXT'}",
+    "38206cf0-c53b-48cb-b82f-ea85b591422c: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFCJ9fvYoZsJGWaF3Y'}",
+    "c6a16933-5562-4029-a40e-fa9c65104a07: extraction_failed \u2014 PackageNotFoundError: Package not found at '/Users/vicky/Downloads/~$rsonal Brand Reflection Worksheet.docx'",
+    "541ce446-8cc5-41eb-882e-126aeb2c96a3: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFNan7oTS2GPi9mpgS'}",
+    "1dd90c30-8fa7-42a6-b7c8-0ab669d821c6: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFS58BytkL9xeUHLbB'}",
+    "b1d4cc08-8982-42b8-962a-e2971eaa6e7e: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFU8eeRoEXzRMTfmxo'}",
+    "828cc88b-ca33-49eb-b11a-c35db7ce575e: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFZh1xZkKXve2HNiLK'}",
+    "e40fe82a-df6b-4c94-87b8-d9d9f5bc5113: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFbaccemX919Qqg3xr'}",
+    "7a0fd1a1-7ea3-4f1e-9a2e-54e3083d216b: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFfhR82iU5Ej4cpN8o'}",
+    "e5adbcd5-763d-4991-8417-499fc029395f: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFhxMCvh8m9eLgqbDh'}",
+    "6b62b304-3b90-40d9-b93c-cd4e4d5f06e9: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFu74quAaFSR525Ufu'}",
+    "e681d1ce-6fff-4d61-8f84-8c7f3510f52c: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFvuiDXXWfZFmmT2nU'}",
+    "2f829c19-bca9-4383-9945-2111f24bd177: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFxq3vopa1kAuqJCbz'}",
+    "004ba460-f6f3-4114-8edf-99aaba9f8ccf: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqFztpo6Xv9uPRnrVp5'}",
+    "0eed84cc-572e-4e5c-90ba-77c393a537aa: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqG7c9KPehPwcmo3LZb'}",
+    "c72a8c85-5b66-49cf-ac25-2fda54ef58f1: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqGJyWoNHcS1fKVxCNF'}",
+    "cc9ea2e5-7478-4a8f-b8e9-3b729826424f: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqGYFEFjMcp4kKYcwpQ'}",
+    "2a8597ba-2f66-4136-854f-37f65d5bcd3c: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqGttharNcjFnaZ2KUa'}",
+    "a07969cd-f53d-4836-b2db-0883b8bfd410: provider_exception \u2014 ProviderError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CdQqHQ7rUxQ1YBnQDyebi'}"
+  ],
+  "sample_results": [
+    {
+      "before_file_id": "40a583c3-3520-42e0-a75d-d0b390d09cf4",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3985426f-97fd-492f-b1d2-f9b1e341b7c4",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "d057cc2b-1fa5-4957-ba6b-219790537740",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "18e1f3bf-b71b-4db0-8804-df4db4bcb056",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "10ebc216-1acb-4653-9fd8-87528d35ea6d",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "cdc0f7de-bafd-4496-9fbe-b25c444da09e",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "9e75e968-9f43-49de-b31f-b82288045c99",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "7fe81222-dcd9-45d2-aa7b-77d7b176fe99",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3a2d14fb-83b9-44e1-ae5b-b27852bbab9c",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "8720282e-1ef2-489b-9737-9c934bb62096",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "6f54ce80-efee-424e-b263-5e85ac586813",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "95ac7ddc-231a-48de-b7aa-4f6743ace078",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "fc03cb23-0fce-407b-bc2f-4db686d067ee",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "65f40a3a-4b36-480e-87ef-7e4c42539b0f",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "fc09e4e8-2476-4c27-9097-8b9c3eb64430",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "727c0bb8-108f-4ce8-83c1-47993eec2560",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "42a587b5-6584-4371-b5f3-f65d17baa2c0",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "38269669-dd01-466b-901b-3afd82b6cacf",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "62f3b002-0130-47d2-8fb4-cd76327da977",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "no_extractable_text": -30
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "346abcfc-0f62-41f0-8c7d-68bc0de500ae",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 90,
+        "confidence_breakdown": {
+          "non_english_content": -10
+        },
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "1b69dbec-c9b1-41b3-b479-8deb882f55a9",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "dead3f8f-f1c8-4720-ad30-566edcf1c4ea",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "2a51d335-78f7-48ad-ac6f-d7f70bf4a526",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "a72d3c97-3f0e-41e7-baed-eb8d97205af1",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "c4dad183-1a19-467c-b24e-8108a3060514",
+      "group": "unknown_sample",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100,
+        "confidence_breakdown": {},
+        "required_fields_total": 0,
+        "required_fields_populated": 0,
+        "naming_fell_back": false
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "eaab7c47-d4d4-4e08-afa1-377008f803d5",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "b31e2ff5-a296-4d43-99ba-dda11338271c",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "a1088429-f508-4acd-a56e-fb9527271aeb",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "34065de2-ed48-48b1-b44f-cea04d1de9e0",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "884b9a15-5d0c-4b42-9cfc-17c92c970c79",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 70,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "cb085fa9-f559-45b4-b086-ce1183b97cf4",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "08347376-5c9e-40af-a5c4-7eb9eb50c02b",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "4893565a-4437-46fd-8a43-7b0ae983c87c",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "34ed7c88-d2ac-4ca6-b1b3-8e72b1792737",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "9b98b0b8-f75d-4b30-ad5a-3c98ae7c36ff",
+      "group": "image_control",
+      "before": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68,
+        "confidence_breakdown": {
+          "missing_required_field:description": -8,
+          "missing_optional_field:variant": -2,
+          "missing_optional_field:capture_date": -2,
+          "naming_fallback:description": -10,
+          "naming_fallback:variant": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 0,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "f2c665c9-c4fc-4383-93f3-d740797d8e0c",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3dce7ea2-74ba-42aa-addd-bf2202043161",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "b47e24b2-7652-4112-b858-f369f2726586",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "3bfde37f-55ea-41db-805e-6f426101a333",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "6c79e3d8-7255-412e-8eb0-aae8c52ca94e",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "a560e41a-dd95-4aaa-b9e2-cc8535d43dca",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "cb476e20-b37a-4b82-9110-664d212cdc4b",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "naming_fallback:version": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "de34097d-4f5c-4971-88db-719d3afca27a",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "42acf6f4-9ff0-4804-b710-9b716908e572",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "review_required",
+        "confidence_score": 76,
+        "confidence_breakdown": {
+          "missing_optional_field:version": -2,
+          "missing_optional_field:platform": -2,
+          "naming_fallback:version": -10,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    },
+    {
+      "before_file_id": "8ad8cf8e-c5fe-4e3a-b695-061d45d8c92e",
+      "group": "application_control",
+      "before": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "after": {
+        "category": "Application",
+        "tier": "approval_required",
+        "confidence_score": 88,
+        "confidence_breakdown": {
+          "missing_optional_field:platform": -2,
+          "naming_fallback:platform": -10
+        },
+        "required_fields_total": 1,
+        "required_fields_populated": 1,
+        "naming_fell_back": true
+      },
+      "rate_limited": false
+    }
+  ],
+  "named_case_results": [
+    {
+      "label": "INC-34 legal document",
+      "before": {
+        "category": "Unknown",
+        "tier": "review_required"
+      },
+      "after": {
+        "category": "Unknown",
+        "tier": "review_required",
+        "confidence_score": 100
+      }
+    },
+    {
+      "label": "Renamed/resized screenshot",
+      "before": {
+        "category": "Image",
+        "tier": "review_required"
+      },
+      "after": {
+        "category": "Image",
+        "tier": "review_required",
+        "confidence_score": 68
+      }
+    }
+  ]
+}

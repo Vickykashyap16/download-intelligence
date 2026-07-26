@@ -61,5 +61,19 @@ def perceptual_hash(path: Union[str, Path]) -> str:
 def hamming_distance(hash_a: str, hash_b: str) -> int:
     """Distance between two perceptual hashes produced by `perceptual_hash()` — the
     number of differing bits. Smaller means more visually similar (Module 04
-    Design.md §11)."""
-    return imagehash.hex_to_hash(hash_a) - imagehash.hex_to_hash(hash_b)
+    Design.md §11).
+
+    Explicitly cast to a native `int` (BUG-001, found during C2's first real run):
+    `ImageHash.__sub__()` computes this via `numpy.count_nonzero()`, whose return
+    type has varied across numpy versions — some return a native Python `int`,
+    others a numpy integer scalar (`numpy.int64`/`numpy.intp`). Without this cast,
+    this function's actual runtime return type silently depended on whichever
+    numpy version happened to be installed, even though it was always annotated
+    `-> int` — and a numpy scalar stored into `DuplicateSignals.phash_distance`
+    (pipeline/duplicate_detector.py) crashes `json.dumps()` in
+    `storage/database.py`'s `_write_metadata_store()` with "Object of type int64
+    is not JSON serializable" the first time a batch actually needs to persist a
+    near-duplicate result. `int(...)` is a value-preserving, not lossy, cast here:
+    the underlying value is already a whole number count of differing bits.
+    """
+    return int(imagehash.hex_to_hash(hash_a) - imagehash.hex_to_hash(hash_b))

@@ -4,7 +4,7 @@
 
 sources:
   - source_id: downloads
-    path: null   # filled in at runtime from the user's actual Downloads folder path
+    path: /Users/vicky/Downloads
     type: local_folder
     enabled: true
     recursive: false   # v1 only scans the top level — see Rules/Ignore Rules.md "Source scope"
@@ -16,4 +16,19 @@ execution_mode: manual   # manual | scheduled | watch_folder — see README.md "
 # Sibling to `sources:`, null until the user configures it (the design's own
 # proposed shape, Module 07 Design.md §11/§26). Read by src/main.py's execute()
 # (WP-12) before any file is moved.
-destination_root: null
+destination_root: /Users/vicky/Desktop/Organized Downloads
+
+# TD-01 v0.9 — autonomous Classification/Metadata Extraction provider selection
+# (see "Build-out/02 Classification/TD-01 Provider Architecture — Design
+# Package.md"). null (the default) means the same behavior this project has
+# always had: no live judgment outside an interactive Claude session, every
+# judgment-dependent file falls back to Category.UNKNOWN / null fields. Setting
+# these to "claude" only takes effect once ai_provider_consent is also true —
+# never edit this value by hand to turn the provider on; run
+# 'python -m src.cli provider enable' instead, which shows the required
+# disclosure (what gets sent, that it costs real money, that ANTHROPIC_API_KEY
+# must be set) before writing true here. The API key itself is never stored in
+# this file — it's read from the ANTHROPIC_API_KEY environment variable only.
+classification_provider: null
+extraction_provider: null
+ai_provider_consent: false

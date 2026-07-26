@@ -1,0 +1,79 @@
+{
+  "run_started_at": "2026-07-26T14:51:55.237863+00:00",
+  "run_finished_at": "2026-07-26T14:51:55.290028+00:00",
+  "mode": "deterministic-only (ai_provider_consent: false \u2014 today's shipped default)",
+  "files_created": [
+    "vacation_photo.jpg",
+    "vacation_photo_copy.jpg",
+    "family_clip.mp4",
+    "voice_memo.mp3",
+    "SomeApp_Installer.dmg",
+    "project_backup.zip",
+    "random_notes.txt",
+    ".DS_Store"
+  ],
+  "steps": [
+    {
+      "command": [
+        "status"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "scan"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "run"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "preview"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "execute",
+        "-y"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "report"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "files_moved_by_execute": 0,
+  "files_restored_by_undo": 0,
+  "random_notes_txt_outcome": {
+    "category": null,
+    "tier": null
+  },
+  "final_category_by_name": {},
+  "action_log_action_counts": {},
+  "findings": [
+    "No batch_id found in the isolated action log \u2014 cannot exercise undo.",
+    "DEFECT: no 'skip' action-log entry was found for .DS_Store \u2014 expected exactly one.",
+    "DEFECT: neither vacation_photo.jpg nor vacation_photo_copy.jpg (byte-identical) was flagged as an exact duplicate.",
+    "DEFECT: vacation_photo.jpg classified as None, expected one of ['Image', 'Screenshot'].",
+    "DEFECT: vacation_photo_copy.jpg classified as None, expected one of ['Image', 'Screenshot'].",
+    "DEFECT: family_clip.mp4 classified as None, expected one of ['Video'].",
+    "DEFECT: voice_memo.mp3 classified as None, expected one of ['Audio'].",
+    "DEFECT: SomeApp_Installer.dmg classified as None, expected one of ['Application'].",
+    "DEFECT: project_backup.zip classified as None, expected one of ['Archive']."
+  ]
+}

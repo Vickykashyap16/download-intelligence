@@ -1,0 +1,30 @@
+{
+  "run_started_at": "2026-07-26T12:56:47.486800+00:00",
+  "run_finished_at": "2026-07-26T12:56:47.578606+00:00",
+  "dataset_warnings": [
+    "unknown_sample: 40a583c3-3520-42e0-a75d-d0b390d09cf4 no longer exists at '/Users/vicky/Downloads/Statutory Forms_Voya India (2).docx' \u2014 skipped.",
+    "unknown_sample: 3985426f-97fd-492f-b1d2-f9b1e341b7c4 no longer exists at '/Users/vicky/Downloads/Print _ Udyam Registration Certificate (2).pdf' \u2014 skipped.",
+    "unknown_sample: d057cc2b-1fa5-4957-ba6b-219790537740 no longer exists at '/Users/vicky/Downloads/sitemap-137.txt' \u2014 skipped.",
+    "image_control: eaab7c47-d4d4-4e08-afa1-377008f803d5 no longer exists at '/Users/vicky/Downloads/DALL\u00b7E 2024-01-08 00.59.10 - A bamboo chair and table set, consisting of 4 chairs and 1 table, designed for use in living rooms, balconies, lounges, bedrooms, caf\u00e9s, and offices. .png' \u2014 skipped.",
+    "image_control: b31e2ff5-a296-4d43-99ba-dda11338271c no longer exists at '/Users/vicky/Downloads/IMG20220703224407.jpg' \u2014 skipped.",
+    "application_control: fdc89616-3a6e-4559-98cf-5f96c846c063 no longer exists at '/Users/vicky/Downloads/MovaviScreenRecorderSetupC_Wdi2qjn_.dmg' \u2014 skipped.",
+    "application_control: 3dce7ea2-74ba-42aa-addd-bf2202043161 no longer exists at '/Users/vicky/Downloads/democreator-mac_setup_full7744.dmg' \u2014 skipped.",
+    "named case 'INC-34 legal document': file not found at '/Users/vicky/Desktop/sample/1-11920857482.pdf34DSC.pdf' \u2014 skipped. Use --extra-file to point at its current location.",
+    "named case 'Renamed/resized screenshot': file not found at '/Users/vicky/Desktop/sample/5579374e-6e1d-46a6-9ddc-2203c5d68e56.jpeg' \u2014 skipped. Use --extra-file to point at its current location."
+  ],
+  "estimated_cost_range_usd": {
+    "low": 0.0,
+    "high": 0.0
+  },
+  "actual_cost_usd": null,
+  "priced_model": null,
+  "processing_time_seconds": 0.00014662742614746094,
+  "files_per_second": 0.0,
+  "token_usage_totals": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "rate_limited_file_count": 0,
+  "sample_results": [],
+  "named_case_results": []
+}

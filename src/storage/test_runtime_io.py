@@ -37,7 +37,11 @@ Run with: pytest src/storage/test_runtime_io.py -v
 from datetime import date
 
 import src.storage.runtime_io as runtime_io_module
+import numpy
+
 from src.storage.runtime_io import (
+    append_action_log,
+    read_action_log_entries,
     write_daily_summary,
     write_duplicate_report,
     write_storage_report,
@@ -47,6 +51,61 @@ from src.storage.runtime_io import (
 
 def _isolate_reports(tmp_path, monkeypatch):
     monkeypatch.setattr(runtime_io_module, "_RUNTIME_REPORTS_PATH", tmp_path / "Reports")
+
+
+def _isolate_action_log(tmp_path, monkeypatch):
+    monkeypatch.setattr(runtime_io_module, "_ACTION_LOG_PATH", tmp_path / "action_log.jsonl")
+
+
+# === BUG-001 (found during C2's first real run) ===
+#
+# `append_action_log()` is the other real entry point a numpy scalar could reach
+# `json.dumps()` through: pipeline/duplicate_detector.py logs a `details` dict
+# containing `phash_distance` (Module 04 Design.md §16/§21) on every near-duplicate
+# detection — per-file, immediately, ahead of the batch-level metadata store save
+# `storage/database.py` also guards. A departure from this file's own established
+# convention (its own docstring: `append_action_log()`/`read_action_log_entries()`
+# are normally tested via a `pipeline/*.py` caller, e.g. `pipeline/test_execution.py`)
+# — deliberate here, matching the file's own precedent for WP-1's functions, since
+# this is testing runtime_io.py's own JSON-safety behavior at its serialization
+# boundary, not pipeline business logic.
+
+class TestAppendActionLogNumpyScalarSafety:
+    def test_accepts_a_details_dict_containing_a_real_numpy_int64(self, tmp_path, monkeypatch):
+        _isolate_action_log(tmp_path, monkeypatch)
+
+        append_action_log(
+            batch_id="2026-07-23_test",
+            file_id="f1",
+            action="archive_duplicate",
+            from_path="/tmp/a.jpg",
+            to_path="/tmp/archive/a.jpg",
+            approved_by="auto",
+            details={"phash_distance": numpy.int64(4)},
+        )  # must not raise
+
+        entries = read_action_log_entries()
+        assert len(entries) == 1
+        assert entries[0]["details"]["phash_distance"] == 4
+        assert type(entries[0]["details"]["phash_distance"]) is int
+
+    def test_accepts_numpy_float64_and_bool_in_details_too(self, tmp_path, monkeypatch):
+        _isolate_action_log(tmp_path, monkeypatch)
+
+        append_action_log(
+            batch_id="2026-07-23_test",
+            file_id="f2",
+            action="archive_duplicate",
+            from_path="/tmp/b.jpg",
+            to_path="/tmp/archive/b.jpg",
+            approved_by="auto",
+            details={"similarity_score": numpy.float64(0.87), "fuzzy_duplicate": numpy.bool_(True)},
+        )
+
+        entries = read_action_log_entries()
+        assert entries[0]["details"]["similarity_score"] == 0.87
+        assert type(entries[0]["details"]["similarity_score"]) is float
+        assert entries[0]["details"]["fuzzy_duplicate"] is True
 
 
 # --- write_daily_summary() ---

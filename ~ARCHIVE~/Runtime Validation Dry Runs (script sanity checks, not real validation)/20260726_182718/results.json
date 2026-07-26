@@ -1,0 +1,29 @@
+{
+  "run_started_at": "2026-07-26T12:57:18.057754+00:00",
+  "run_finished_at": "2026-07-26T12:57:18.081206+00:00",
+  "dataset_warnings": [
+    "unknown_sample: 321 real record(s) no longer exist on disk (moved/deleted since the last scan) \u2014 excluded from the sampling pool, not counted against the target.",
+    "image_control: 431 real record(s) no longer exist on disk (moved/deleted since the last scan) \u2014 excluded from the sampling pool, not counted against the target.",
+    "application_control: 22 real record(s) no longer exist on disk (moved/deleted since the last scan) \u2014 excluded from the sampling pool, not counted against the target.",
+    "unknown_sample: only 0/3 available (pool of existing real Unknown records is smaller than the target).",
+    "image_control: only 0/2 available.",
+    "application_control: only 0/2 available.",
+    "named case 'INC-34 legal document': file not found at '/Users/vicky/Desktop/sample/1-11920857482.pdf34DSC.pdf' \u2014 skipped. Use --extra-file to point at its current location.",
+    "named case 'Renamed/resized screenshot': file not found at '/Users/vicky/Desktop/sample/5579374e-6e1d-46a6-9ddc-2203c5d68e56.jpeg' \u2014 skipped. Use --extra-file to point at its current location."
+  ],
+  "estimated_cost_range_usd": {
+    "low": 0.0,
+    "high": 0.0
+  },
+  "actual_cost_usd": null,
+  "priced_model": null,
+  "processing_time_seconds": 8.153915405273438e-05,
+  "files_per_second": 0.0,
+  "token_usage_totals": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "rate_limited_file_count": 0,
+  "sample_results": [],
+  "named_case_results": []
+}

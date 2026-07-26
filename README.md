@@ -27,7 +27,10 @@ Download Intelligence/
 ├── CHANGELOG.md            — dated log of design decisions
 ├── CLAUDE.md                — operating instructions for Claude (not for humans)
 ├── Important info.md        — session-to-session memory for Claude
-├── Build-out/                — architecture spec, one numbered folder per pipeline step
+├── Build-out/                — architecture spec, one numbered folder per pipeline step or
+│                                cross-cutting interface layer (e.g. `09 CLI & Product Interface/`,
+│                                added for C1 — the CLI orchestrates Modules 01-08, it isn't a
+│                                ninth transform stage in the chain itself)
 │   ├── 00 Pre-build context & examples/  — full spec (Pre-build context.md)
 │   ├── 01 Watch & Ingest/
 │   ├── 02 Classification/
@@ -73,7 +76,7 @@ Extract metadata → Detect duplicates/versions → Suggest filename → Suggest
 Show preview → User approval → Move/Rename → Generate logs & reports
 ```
 
-Mapped 1:1 to the 8 numbered `Build-out/` folders — see each for the architecture, and the corresponding `Rules/` file for the actual business logic.
+Mapped 1:1 to the 8 numbered pipeline-stage `Build-out/` folders — see each for the architecture, and the corresponding `Rules/` file for the actual business logic. (`Build-out/09 CLI & Product Interface/` is the one folder that isn't a stage in this chain — it's the CLI layer that orchestrates all eight, added for C1.)
 
 ## Execution modes
 

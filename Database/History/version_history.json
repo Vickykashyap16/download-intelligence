@@ -1,1 +1,36 @@
-{}
+{
+  "d1632e09-329f-4e4b-9598-3b4fe2a723b2": {
+    "version_group_id": "d1632e09-329f-4e4b-9598-3b4fe2a723b2",
+    "files": [
+      {
+        "file_id": "865e3172-06d8-45cb-aa17-00a58f88208f",
+        "filename": "DHBVN_Sep-23_-_Sunil_Kumar_1_50.jpg.jpg",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      },
+      {
+        "file_id": "33949ac0-8f0d-40dc-8598-57a8651e1616",
+        "filename": "DHBVN_Sep-23_-_Sunil_Kumar_1_50.jpg.webp",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-23T10:47:33.785215+00:00"
+      }
+    ]
+  },
+  "e21b7255-79c5-45fe-97a9-e670d38459c5": {
+    "version_group_id": "e21b7255-79c5-45fe-97a9-e670d38459c5",
+    "files": [
+      {
+        "file_id": "cb77a753-2c68-411c-9589-2eba212667c2",
+        "filename": "a9e6c383-fd5f-4bcf-afa5-b35ea3f5d5ca_11186412.jpeg.png",
+        "rank_at_time": "latest",
+        "superseded_at": null
+      },
+      {
+        "file_id": "e4fa9fc6-47d7-4a65-bdfe-74127f998259",
+        "filename": "a9e6c383-fd5f-4bcf-afa5-b35ea3f5d5ca_11186412.jpeg.webp",
+        "rank_at_time": "superseded",
+        "superseded_at": "2026-07-23T10:47:53.176188+00:00"
+      }
+    ]
+  }
+}

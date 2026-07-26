@@ -204,6 +204,12 @@ class ProviderMetadata:
     provider_version: Optional[str] = None
     latency_ms: Optional[int] = None
     reasoning: Optional[str] = None
+    token_usage: Optional[Dict[str, int]] = None   # {"input_tokens": N, "output_tokens": N}
+                                        # — added for TD-01 v0.9, mirrors
+                                        # classification.py's identically-named field
+                                        # exactly (design §21's convention-following-not-
+                                        # sharing pattern extended to this addition). See
+                                        # that file's copy for the full rationale.
 
 
 @dataclass

@@ -14,7 +14,10 @@ finding M3 (fresh pass).
 
 Also covers Module 07 (Preview, Approval & Execution)'s CLI wiring — WP-12,
 Module 07 Implementation Plan.md — `preview()`/`execute()`/`undo()`: the §5
-CLI-level eligibility filter (`_eligible_for_execution_records()`), `preview()`'s
+CLI-level eligibility filter (`eligible_for_execution_records()` — renamed from
+`_eligible_for_execution_records()` as part of C1, `Build-out/09 CLI & Product
+Interface/C1 CLI Entry Point — Design Package.md` §1.3 item 2, so `src/cli.py`
+can reuse it directly instead of duplicating its filter), `preview()`'s
 read-only tier-grouped output, `execute()`'s externally-supplied `decisions`
 parameter (OD-3 deferral), its `capture_user_correction()` call site (§10 step 2,
 before execution), its `_load_destination_root()` config reader (the disclosed
@@ -38,6 +41,7 @@ import src.storage.runtime_io as runtime_io_module
 from src.models.classification import Category
 from src.models.execution import ApprovalDecision, ApprovalDecisionType
 from src.models.file_record import FileRecord
+from src.storage.database import save_file_record
 
 
 def _isolate_storage(tmp_path, monkeypatch):
@@ -601,3 +605,234 @@ def test_report_not_part_of_the_automatic_main_chain():
     chain_start = source.index('if __name__ == "__main__":')
     chain_block = source[chain_start:]
     assert "report()" not in chain_block
+
+
+# --- TD-01 v0.9: _resolve_provider_for_classification() /
+# _resolve_provider_for_extraction() ("Build-out/02 Classification/TD-01
+# Provider Architecture — Design Package.md" §5/§7). Each resolver is tested
+# directly (not through a full classify_batch()/extract_metadata_batch()
+# call) — it's a small, pure config-reading decision function, and
+# classify_batch()/extract_metadata_batch() themselves already have their own
+# full test coverage in src/pipeline/test_classification.py /
+# src/pipeline/test_metadata.py. ---
+
+
+def _write_sources_config_with_provider_keys(
+    tmp_path, monkeypatch, classification_provider=None,
+    extraction_provider=None, ai_provider_consent=False,
+):
+    """Extends _write_sources_config() with the TD-01 v0.9 provider keys."""
+    config_path = tmp_path / "sources.yaml"
+    config = {
+        "sources": [
+            {"source_id": "downloads", "path": None, "type": "local_folder",
+             "enabled": True, "recursive": False},
+        ],
+        "execution_mode": "manual",
+        "destination_root": None,
+        "classification_provider": classification_provider,
+        "extraction_provider": extraction_provider,
+        "ai_provider_consent": ai_provider_consent,
+    }
+    config_path.write_text(yaml.safe_dump(config), encoding="utf-8")
+    monkeypatch.setattr(main_module, "_SOURCES_CONFIG_PATH", config_path)
+    return config_path
+
+
+class _Sentinel:
+    """A unique, easily-identity-checked stand-in — used both as an
+    "explicit provider" argument and as what a mocked
+    resolve_classification_provider()/resolve_extraction_provider() returns,
+    so a test can assert exactly which one ended up flowing through without
+    depending on any real provider class."""
+
+
+def test_resolve_provider_for_classification_explicit_argument_always_wins(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, classification_provider="claude", ai_provider_consent=True,
+    )
+    monkeypatch.setattr(
+        main_module, "resolve_classification_provider",
+        lambda key: (_ for _ in ()).throw(AssertionError("must not be called when explicit_provider is given")),
+    )
+    explicit = _Sentinel()
+    result = main_module._resolve_provider_for_classification(explicit)
+    assert result is explicit
+
+
+def test_resolve_provider_for_classification_returns_none_when_consent_false(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, classification_provider="claude", ai_provider_consent=False,
+    )
+    result = main_module._resolve_provider_for_classification(None)
+    assert result is None
+
+
+def test_resolve_provider_for_classification_returns_none_when_key_unset(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, classification_provider=None, ai_provider_consent=True,
+    )
+    result = main_module._resolve_provider_for_classification(None)
+    assert result is None
+
+
+def test_resolve_provider_for_classification_resolves_when_consent_and_key_present(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, classification_provider="claude", ai_provider_consent=True,
+    )
+    resolved = _Sentinel()
+    received_keys = []
+    monkeypatch.setattr(
+        main_module, "resolve_classification_provider",
+        lambda key: received_keys.append(key) or resolved,
+    )
+    result = main_module._resolve_provider_for_classification(None)
+    assert result is resolved
+    assert received_keys == ["claude"]
+
+
+def test_resolve_provider_for_classification_never_constructs_claude_live_classifier(tmp_path, monkeypatch):
+    """Backward-compatibility invariant (design §7's Compatibility
+    Analysis): the resolver itself must never fall back to
+    ClaudeLiveClassifier() — only classify_batch()'s own existing
+    `provider or ClaudeLiveClassifier()` default may do that. When opt-in is
+    off, this function must return exactly None, not a placeholder
+    instance."""
+    _write_sources_config_with_provider_keys(tmp_path, monkeypatch, ai_provider_consent=False)
+    result = main_module._resolve_provider_for_classification(None)
+    assert result is None
+
+
+def test_resolve_provider_for_extraction_explicit_argument_always_wins(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, extraction_provider="claude", ai_provider_consent=True,
+    )
+    monkeypatch.setattr(
+        main_module, "resolve_extraction_provider",
+        lambda key: (_ for _ in ()).throw(AssertionError("must not be called when explicit_provider is given")),
+    )
+    explicit = _Sentinel()
+    result = main_module._resolve_provider_for_extraction(explicit)
+    assert result is explicit
+
+
+def test_resolve_provider_for_extraction_returns_none_when_consent_false(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, extraction_provider="claude", ai_provider_consent=False,
+    )
+    result = main_module._resolve_provider_for_extraction(None)
+    assert result is None
+
+
+def test_resolve_provider_for_extraction_returns_none_when_key_unset(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, extraction_provider=None, ai_provider_consent=True,
+    )
+    result = main_module._resolve_provider_for_extraction(None)
+    assert result is None
+
+
+def test_resolve_provider_for_extraction_resolves_when_consent_and_key_present(tmp_path, monkeypatch):
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, extraction_provider="claude", ai_provider_consent=True,
+    )
+    resolved = _Sentinel()
+    received_keys = []
+    monkeypatch.setattr(
+        main_module, "resolve_extraction_provider",
+        lambda key: received_keys.append(key) or resolved,
+    )
+    result = main_module._resolve_provider_for_extraction(None)
+    assert result is resolved
+    assert received_keys == ["claude"]
+
+
+def test_resolve_provider_for_classification_and_extraction_are_independent(tmp_path, monkeypatch):
+    """A config with classification opted in but extraction not configured
+    must resolve one and return None for the other — the two keys are read
+    and gated completely independently, mirroring classify_provider/
+    extraction_provider being two separate config keys."""
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, classification_provider="claude",
+        extraction_provider=None, ai_provider_consent=True,
+    )
+    resolved = _Sentinel()
+    monkeypatch.setattr(main_module, "resolve_classification_provider", lambda key: resolved)
+
+    classification_result = main_module._resolve_provider_for_classification(None)
+    extraction_result = main_module._resolve_provider_for_extraction(None)
+
+    assert classification_result is resolved
+    assert extraction_result is None
+
+
+def test_classify_passes_resolved_provider_through_to_classify_batch(tmp_path, monkeypatch):
+    """Integration-level check (one layer up from the resolver unit tests
+    above): classify()'s own call site must actually pass
+    _resolve_provider_for_classification()'s result into classify_batch(),
+    not silently drop it. classify() takes no records argument — it loads
+    eligible records from the metadata store itself, so a real
+    discovered-but-unclassified record must be seeded first or classify()
+    exits early via its own "Nothing to classify" short-circuit before ever
+    reaching classify_batch()."""
+    _isolate_storage(tmp_path, monkeypatch)
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, classification_provider="claude", ai_provider_consent=True,
+    )
+    source_file = tmp_path / "file.txt"
+    source_file.write_text("hello")
+    save_file_record(FileRecord(
+        file_id="f1", source_id="downloads", original_name="file.txt",
+        original_path=str(source_file), current_path=str(source_file),
+        status="discovered", category=None, discovered_at="2026-01-01T00:00:00Z",
+    ))
+    resolved = _Sentinel()
+    monkeypatch.setattr(main_module, "resolve_classification_provider", lambda key: resolved)
+
+    received = {}
+
+    def _fake_classify_batch(records, provider=None):
+        received["provider"] = provider
+        # main.py's classify() prints record.category.value for every
+        # record after calling this — a real classify_batch() always
+        # assigns a category (never leaves it None for a "discovered"
+        # record), so the fake must too, to accurately stand in for it.
+        for record in records:
+            record.category = Category.DOCUMENT
+        return records
+
+    monkeypatch.setattr(main_module, "classify_batch", _fake_classify_batch)
+    main_module.classify()
+
+    assert received["provider"] is resolved
+
+
+def test_extract_passes_resolved_provider_through_to_extract_metadata_batch(tmp_path, monkeypatch):
+    """Mirrors the classify() test above — extract() likewise loads its own
+    eligible records (discovered, category set and not Unknown, extraction
+    not yet attempted) from the metadata store rather than taking them as a
+    parameter."""
+    _isolate_storage(tmp_path, monkeypatch)
+    _write_sources_config_with_provider_keys(
+        tmp_path, monkeypatch, extraction_provider="claude", ai_provider_consent=True,
+    )
+    source_file = tmp_path / "invoice.pdf"
+    source_file.write_text("hello")
+    save_file_record(FileRecord(
+        file_id="f2", source_id="downloads", original_name="invoice.pdf",
+        original_path=str(source_file), current_path=str(source_file),
+        status="discovered", category=Category.INVOICE, discovered_at="2026-01-01T00:00:00Z",
+    ))
+    resolved = _Sentinel()
+    monkeypatch.setattr(main_module, "resolve_extraction_provider", lambda key: resolved)
+
+    received = {}
+
+    def _fake_extract_metadata_batch(records, provider=None):
+        received["provider"] = provider
+        return records
+
+    monkeypatch.setattr(main_module, "extract_metadata_batch", _fake_extract_metadata_batch)
+    main_module.extract()
+
+    assert received["provider"] is resolved

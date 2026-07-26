@@ -1,4 +1,15 @@
 # Downloads Intelligence — pipeline dependencies
+#
+# HISTORICAL / NOT THE INSTALL SOURCE OF TRUTH. Kept for the per-dependency
+# rationale comments below (why each package was chosen), but the real,
+# pinned, install-from-this-file requirements list is the root
+# `requirements.txt` — use that one for `pip install -r requirements.txt`.
+# This file's "unpinned scaffold stage" framing below is itself stale (all
+# modules have long since been implemented and tested); not rewritten as a
+# second pinned manifest to avoid a second place version pins can drift out
+# of sync, per the Product Readiness Review's H1/H2 recommendation
+# (2026-07-23) to have exactly one authoritative, pinned manifest.
+#
 # Unpinned for now (scaffold stage); pin exact versions once modules are implemented and tested.
 
 PyYAML          # load config/sources.yaml (the only non-deprecated config file — see src/README.md)
@@ -13,6 +24,18 @@ mutagen         # embedded audio-tag reading (core/media.py) — Module 03, appr
                 # Build-out/03 Metadata Extraction/Module 03 Design.md §16 (pure-Python,
                 # no system binary dependency; video tag/duration reading deliberately
                 # not pursued in v1 for the same reason — see that section)
+numpy           # imagehash's own transitive dependency, made explicit (BUG-001, found
+                # 2026-07-23) — storage/database.py and storage/runtime_io.py both need
+                # to recognize numpy scalar types (int64/float64/bool_) at their JSON
+                # serialization boundary, since ImageHash.__sub__()'s return type has
+                # varied across numpy versions; not a new dependency footprint, just an
+                # existing one now used directly instead of only transitively
+anthropic       # TD-01 v0.9 — the official Anthropic SDK, used only by
+                # providers/claude.py (the opt-in, off-by-default autonomous
+                # Classification/Metadata Extraction provider). See
+                # "Build-out/02 Classification/TD-01 Provider Architecture —
+                # Design Package.md" §7's compatibility analysis for why this
+                # is a new, explicit dependency rather than a hidden one.
 
 # Notes:
 # - watchdog is NOT included: Watch Folder (real-time) mode is deferred past v1 (see ROADMAP.md).

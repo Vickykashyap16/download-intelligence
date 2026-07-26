@@ -70,3 +70,29 @@ None. This is the second module in the pipeline; Module 01's contract is unaffec
 **`MODULE_STATUS.md` intentionally left unchanged**, for the exact reason Module 01's own precedent already established and documented: it is a permanent, point-in-time release snapshot, never revised after generation. `Release/VERSIONS.md` is this module's current, authoritative version.
 
 **Full narrative, lessons learned, and lifecycle evaluation:** `PT002_POSTMORTEM.md`, `PT002_WORKFLOW_EVALUATION.md`.
+
+---
+
+## Post-freeze correction #2 (2026-07-26) — TD-01 v0.9: opt-in autonomous Claude API ClassificationProvider
+
+**Severity:** High-impact gap resolution, not a defect (`TECHNICAL_DEBT_REGISTER.md` TD-01). **Module Version:** patched, `1.0.1` → `1.1.0` (MINOR, per `Release/VERSIONS.md`'s own convention — "additive change that doesn't break the module's `MODULE_CONTRACT.md`... a new optional field, a new supported extension" — not PATCH, since this is a genuine new capability, not a bug fix).
+
+**What changed:** `src/providers/claude.py`'s `ClaudeAPIClassifier` — a real, non-interactive `ClassificationProvider` implementation calling the Claude API over the network — registered under `"claude"` via `src/providers/registry.py` (a new module, `src/providers/`, entirely outside this module's own files). `ClaudeLiveClassifier` (this module's own documented interactive-session placeholder) is **completely untouched** and remains the default provider whenever no autonomous provider is opted into. `ProviderMetadata` (defined in `src/pipeline/classification.py`) gained one new optional field, `token_usage: Optional[Dict[str, int]] = None`, needed by the Provider Evaluation Harness's cost metric — additive with a default, every existing call site constructing `ProviderMetadata` without it is unaffected.
+
+**Why this belongs to Module 02's own contract boundary, not a separate system:** `ClassificationProvider` was designed from the start (`Module 02 Design.md §25`) as a swap point specifically so a real backend could be added later "without touching the engine, batch orchestration, storage, or confidence layers." This correction is that swap happening for the first time — `ClassificationEngine`, `classify_batch()`, and every downstream module are provably untouched (verified via the full regression suite and a scope-diff check against `git status`).
+
+**Not enabled by default:** activation requires both `ai_provider_consent: true` in `src/config/sources.yaml` (written only by `python -m src.cli provider enable`'s explicit disclosure-and-confirmation flow — outside this module, in `src/cli.py`) and a real `ANTHROPIC_API_KEY` environment variable. `main.py`'s `_resolve_provider_for_classification()` returns `None` in every other case, letting `classify_batch()`'s own pre-existing `provider or ClaudeLiveClassifier()` default apply exactly as before — verified directly, not just by design intent.
+
+**Design record:** `Build-out/02 Classification/TD-01 Provider Architecture — Design Package.md` (seven-candidate comparison, decision matrix, v0.9/v1.0 recommendation, registry + harness architecture, §7 Engineering Change Playbook addendum — Risk Assessment, Compatibility Analysis, Regression Impact, Test Plan, 5 numbered Acceptance Criteria, Rollback Strategy).
+
+**Scope:** `src/providers/` (new), `src/cli.py`'s `provider` subcommand (new), `src/main.py`'s two new resolver functions, `src/config/sources.yaml`'s three new keys, and the one additive `ProviderMetadata.token_usage` field in this module's own `src/pipeline/classification.py` (and, independently, in `src/pipeline/metadata.py` — Module 03's own copy, per each module's existing convention-following-not-sharing pattern). No other line of this module's code was touched.
+
+**Regression tests added:** `src/providers/test_registry.py` (13), `src/providers/test_claude.py` (26, all mocking the `anthropic` client — no real network call), 12 new provider-command tests in `src/test_cli.py`, 13 new resolver tests in `src/test_main.py` (including a dedicated test proving the resolver never itself constructs `ClaudeLiveClassifier()`). Full suite: **889/889** (871 in `src/` + 18 in the Provider Evaluation Harness's own separate test file, `Tests/Provider Evaluation Harness/test_run_harness.py`).
+
+**Verification performed:** all five design-committed acceptance criteria checked against real evidence, not just inspection (`Tests/Provider Evaluation Harness/TD-01 v0.9 Validation Report.md`) — including a real CLI run of every `provider enable`/`disable`/`status` path and a real harness dry run against the actual `"claude"` provider (exercising the missing-API-key fallback end-to-end).
+
+**Disclosed, not swept under this entry:** no `ANTHROPIC_API_KEY` was available in the implementation environment, so no real Claude API classification call was ever made — only the unconfigured-provider fallback path (network egress to `api.anthropic.com` confirmed reachable, `HTTP 401`, not a connection failure) and a fake-stub-provider harness run were exercised. This module's real-world classification accuracy *with* the Claude API provider enabled remains unmeasured pending a user-supplied key. `TECHNICAL_DEBT_REGISTER.md`'s TD-01 is recorded as **partially resolved**, not closed, for exactly this reason. The 13-check Pipeline Contract Verification gate was not separately re-run — consistent with post-freeze correction #1's own precedent for a scope this narrow and this thoroughly regression-tested, per `ENGINEERING_CHANGE_PLAYBOOK.md`.
+
+**`MODULE_STATUS.md` intentionally left unchanged** — point-in-time snapshot convention, same as correction #1 above. `Release/VERSIONS.md` is this module's current, authoritative version.
+
+**Full narrative:** `CHANGELOG.md`'s 2026-07-26 entry; `Tests/Provider Evaluation Harness/TD-01 v0.9 Validation Report.md`.

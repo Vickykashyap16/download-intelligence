@@ -1,0 +1,5 @@
+{"batch_id": "batch-001", "file_id": "file-001", "action": "discover", "from": null, "to": null, "timestamp": "2026-07-25T10:00:00Z", "approved_by": "auto"}
+{"batch_id": "batch-001", "file_id": "file-001", "action": "move_rename", "from": "/Users/fixture/Downloads/invoice.pdf", "to": "/Users/fixture/Organized Downloads/Invoices/2026-07-25_Acme_Invoice.pdf", "timestamp": "2026-07-25T10:05:00Z", "approved_by": "auto", "details": {"confidence_score": 97, "tier": "auto"}}
+{"batch_id": "batch-002", "file_id": "file-002", "action": "move_rename"   this line is deliberately not valid JSON
+
+{"batch_id": "batch-003", "file_id": "file-003", "from": null, "to": null, "timestamp": "2026-07-25T11:00:00Z", "approved_by": "user"}

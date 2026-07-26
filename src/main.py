@@ -65,6 +65,19 @@ from src.storage.database import (
 )
 from src.storage.runtime_io import action_log_path
 
+# TD-01 v0.9 — importing src.providers.claude is what registers "claude" into
+# the provider registry (import-time side effect, see that module's and
+# src/providers/registry.py's own docstrings). This is the one place that
+# import happens for every entry point built on top of this file (both
+# `python -m src.main` and `python -m src.cli`, since cli.py itself imports
+# from this module). Deliberately NOT imported lazily inside classify()/
+# extract() — importing it unconditionally at module load has no behavioral
+# effect unless a user has also opted in (ai_provider_consent: true) and
+# configured a real key, per _resolve_provider_for_classification()/
+# _resolve_provider_for_extraction() below.
+import src.providers.claude  # noqa: F401 (imported for its registration side effect)
+from src.providers.registry import resolve_classification_provider, resolve_extraction_provider
+
 # Module 07's destination library root config file (Open Decision OD-1, resolved
 # as Governance/ARCHITECTURE_DECISIONS.md decision 20). No Module 07 work
 # package's own "Owned components" list ever named the actual config key/reader
@@ -163,6 +176,12 @@ def classify(provider=None) -> None:
     — instead of relying on this function's default. This optional parameter is the
     only change this CLI wiring needed to support that documented pattern; it does
     not change default behavior for a normal, non-live invocation.
+
+    TD-01 v0.9 (`Build-out/02 Classification/TD-01 Provider Architecture — Design
+    Package.md`): when `provider` is `None`, `_resolve_provider_for_classification()`
+    now checks for an opted-in, configured autonomous provider (e.g. the Claude API)
+    before falling back to the placeholder above — off by default, on only via
+    `python -m src.cli provider enable`. See that function's own docstring.
     """
     records = [
         record for record in load_metadata_store()
@@ -173,7 +192,7 @@ def classify(provider=None) -> None:
         return
 
     file_ids = {record.file_id for record in records}
-    classify_batch(records, provider=provider)
+    classify_batch(records, provider=_resolve_provider_for_classification(provider))
 
     # mode/fallback/provider detail lives in the action log, not on FileRecord itself
     # (design §12 scopes that detail to the log, not the persisted record) — read it
@@ -227,6 +246,10 @@ def extract(provider=None) -> None:
     run supplies live judgment by passing an explicit provider — e.g.
     `extract(provider=my_live_provider)` — instead of relying on this function's
     default.
+
+    TD-01 v0.9: when `provider` is `None`, `_resolve_provider_for_extraction()`
+    now checks for an opted-in, configured autonomous provider before falling
+    back to the placeholder above — off by default. See that function's docstring.
     """
     records = [
         record for record in load_metadata_store()
@@ -240,7 +263,7 @@ def extract(provider=None) -> None:
         return
 
     file_ids = {record.file_id for record in records}
-    extract_metadata_batch(records, provider=provider)
+    extract_metadata_batch(records, provider=_resolve_provider_for_extraction(provider))
 
     log_details_by_file_id = _read_action_log_details(file_ids, action="extract_metadata")
 
@@ -462,7 +485,7 @@ def score_confidence() -> None:
     print("\nModule 06 complete.")
 
 
-def _eligible_for_execution_records() -> list:
+def eligible_for_execution_records() -> list:
     """The §5 CLI-level eligibility filter for Module 07 (Module 07 Design.md §5):
     every `status == "discovered"` record with `category`/`suggested_name`/
     `confidence_score` all populated (i.e. `tier` populated — confirming the full
@@ -475,6 +498,23 @@ def _eligible_for_execution_records() -> list:
     `execute()` still reloads fresh from the metadata store itself rather than
     reusing any list `preview()` built, since time may have passed between the
     two calls (see `execute()`'s own docstring).
+
+    Public (no leading underscore) as of C1 (`Build-out/09 CLI & Product
+    Interface/C1 CLI Entry Point — Design Package.md` §1.3 item 2, Engineering
+    Review finding F2): `src/cli.py`'s interactive approval loop needs this
+    exact eligibility-filtered record set to build its own `PreviewRow` list,
+    and reusing this function rather than reimplementing its four-condition
+    filter a second time avoids the kind of duplicated-logic drift this
+    project's own PT-002/PT-003 postmortems identified as a real, recurring
+    failure mode. The alternative — leaving this private and importing it
+    across the module boundary anyway (`from src.main import
+    _eligible_for_execution_records`, which Python permits; the leading
+    underscore is a convention, not an enforced restriction) — was considered
+    and rejected: it would have left a permanent, load-bearing dependency on a
+    name `main.py` marks as internal, for the sake of avoiding a one-line,
+    zero-behavior-change rename. This function's body, filter conditions, and
+    both call sites below (`preview()`, `execute()`) are otherwise byte-for-
+    byte unchanged from the original `_eligible_for_execution_records()`.
     """
     return [
         record for record in load_metadata_store()
@@ -506,18 +546,76 @@ def _load_destination_root() -> Optional[Path]:
     resolved by favoring "read config, pass it through" over "read config,
     also decide what an invalid value means").
     """
-    with open(_SOURCES_CONFIG_PATH, "r", encoding="utf-8") as config_file:
-        config = yaml.safe_load(config_file)
-
+    config = _load_raw_config()
     destination_root = config.get("destination_root")
     if not destination_root:
         return None
     return Path(destination_root)
 
 
+def _load_raw_config() -> dict:
+    """Reads and parses `src/config/sources.yaml` once — shared by
+    `_load_destination_root()` (above) and TD-01 v0.9's provider resolution
+    (below), the project's two "read one optional top-level key, tolerate it
+    being absent, never raise" callers. Deliberately not unified with
+    `load_source_config()` (`pipeline/watch_ingest.py`), whose "not configured
+    -> raise a clear error" semantics are correct for the *source* — a
+    required setting — but wrong for these optional ones."""
+    with open(_SOURCES_CONFIG_PATH, "r", encoding="utf-8") as config_file:
+        return yaml.safe_load(config_file) or {}
+
+
+def _resolve_provider_for_classification(explicit_provider):
+    """TD-01 v0.9 (`Build-out/02 Classification/TD-01 Provider Architecture —
+    Design Package.md` §5/§7): resolves the provider `classify()` should
+    actually use for this call.
+
+    `explicit_provider` (the caller-supplied `provider=` argument) always
+    wins when given — unchanged from the pre-TD-01 behavior, and still the
+    mechanism a live, interactive Claude session uses to supply real
+    judgment (`classify(provider=my_live_provider)`).
+
+    When `explicit_provider` is `None`, this consults `src/config/
+    sources.yaml`: only when the user has explicitly opted in
+    (`ai_provider_consent: true`, written solely by `python -m src.cli
+    provider enable`'s confirmation flow) AND a real `classification_provider`
+    key is set does this resolve a registry provider (e.g. the Claude API).
+    In every other case — opt-in off (the default), or on with no key set —
+    this returns `None`, which `classify_batch()`'s own existing default
+    (`provider or ClaudeLiveClassifier()`) turns into exactly today's
+    unchanged behavior. This function never itself falls back to
+    `ClaudeLiveClassifier()` — that remains `classify_batch()`'s job, so
+    there is exactly one place in the codebase that decides "no provider
+    resolved -> use the interactive-session placeholder."
+    """
+    if explicit_provider is not None:
+        return explicit_provider
+    config = _load_raw_config()
+    if not config.get("ai_provider_consent"):
+        return None
+    key = config.get("classification_provider")
+    if not key:
+        return None
+    return resolve_classification_provider(key)
+
+
+def _resolve_provider_for_extraction(explicit_provider):
+    """Mirrors `_resolve_provider_for_classification()` exactly, for
+    `extract()`'s `extraction_provider` config key."""
+    if explicit_provider is not None:
+        return explicit_provider
+    config = _load_raw_config()
+    if not config.get("ai_provider_consent"):
+        return None
+    key = config.get("extraction_provider")
+    if not key:
+        return None
+    return resolve_extraction_provider(key)
+
+
 def preview() -> None:
     """Run Module 07's preview stage (WP-12, Module 07 Design.md §9/§10 step 1)
-    on every record `_eligible_for_execution_records()` selects. Read-only:
+    on every record `eligible_for_execution_records()` selects. Read-only:
     `preview_batch()` (WP-3) performs zero filesystem/log/Database writes, and
     this CLI wrapper performs none either — printing only.
 
@@ -534,7 +632,7 @@ def preview() -> None:
     not hardcoded" pattern already established by
     `classify(provider=...)`/`extract(provider=...)`.
     """
-    records = _eligible_for_execution_records()
+    records = eligible_for_execution_records()
     if not records:
         print("Nothing to preview — no discovered, scored records still awaiting execution.")
         return
@@ -574,7 +672,7 @@ def preview() -> None:
 
 def execute(decisions: Optional[Dict[str, ApprovalDecision]] = None) -> None:
     """Run Module 07's execution stage (WP-12, Module 07 Design.md §9/§10 step 3)
-    on every record `_eligible_for_execution_records()` selects, reloaded fresh
+    on every record `eligible_for_execution_records()` selects, reloaded fresh
     here — never trusting an earlier `preview()` call's snapshot, since time may
     have passed and another run may have changed eligibility.
 
@@ -616,7 +714,7 @@ def execute(decisions: Optional[Dict[str, ApprovalDecision]] = None) -> None:
     if decisions is None:
         decisions = {}
 
-    records = _eligible_for_execution_records()
+    records = eligible_for_execution_records()
     if not records:
         print("Nothing to execute — no discovered, scored records still awaiting execution.")
         return

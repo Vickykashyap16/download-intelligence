@@ -48,6 +48,47 @@ def test_hamming_distance_is_zero_for_identical_hashes(tmp_path):
     assert hamming_distance(h, h) == 0
 
 
+# === BUG-001 (found during C2's first real run) ===
+#
+# `hamming_distance()` was always annotated `-> int`, but its actual runtime
+# return value silently depended on the installed numpy version:
+# `ImageHash.__sub__()` computes the distance via `numpy.count_nonzero()`,
+# which some numpy versions return as a native Python `int` and others as a
+# numpy integer scalar (`numpy.int64`/`numpy.intp`). The tests above only ever
+# checked the *value* (`== 0`, `> 5`), which passes either way — numpy
+# integers compare equal to Python ints — so none of them caught that the
+# *type* could be wrong. A numpy scalar stored into
+# `DuplicateSignals.phash_distance` crashes `json.dumps()` in
+# `storage/database.py`'s `_write_metadata_store()` the first time a batch
+# needs to persist a near-duplicate result ("Object of type int64 is not JSON
+# serializable") — this is exactly the class of gap a value-only assertion
+# cannot catch, and exactly why this test checks `type(...) is int` directly.
+
+def test_hamming_distance_returns_a_native_python_int(tmp_path):
+    path_a = tmp_path / "a.png"
+    path_b = tmp_path / "b.png"
+    _make_image(path_a, (200, 50, 50))
+    _make_image(path_b, (10, 10, 200))
+    hash_a = perceptual_hash(path_a)
+    hash_b = perceptual_hash(path_b)
+
+    distance = hamming_distance(hash_a, hash_b)
+
+    assert type(distance) is int, (
+        f"hamming_distance() must return a native int, not {type(distance).__name__} "
+        "— a numpy scalar here crashes json.dumps() when it's later persisted "
+        "into DuplicateSignals.phash_distance (BUG-001)."
+    )
+
+
+def test_hamming_distance_of_identical_hashes_is_also_a_native_int(tmp_path):
+    path = tmp_path / "photo.png"
+    _make_image(path, (10, 20, 30))
+    h = perceptual_hash(path)
+
+    assert type(hamming_distance(h, h)) is int
+
+
 def test_perceptual_hash_raises_for_unreadable_image(tmp_path):
     garbage = tmp_path / "not_an_image.png"
     garbage.write_bytes(b"this is not image data at all")

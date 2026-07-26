@@ -46,3 +46,29 @@ None. This is the third module in the pipeline; Module 01's and Module 02's cont
 - `Rules/Confidence Rules.md`'s deduction math now has an automated, permanent guard against the exact class of citation/taxonomy drift that had to be caught manually once already (Module 02's own release audit, F4) — the drift-guard tests added for F2 above.
 - New `Tests/Module 03 Metadata/` dataset built for integration testing: a real ID3-tagged MP3 and a real untagged MP3 (genuine audio via `ffmpeg`), a real EXIF-bearing JPEG (genuine camera metadata via Pillow), a multi-entry nested-directory ZIP, a corrupted-but-valid-extension ZIP, and two realistically-named installer files — reused unchanged from `Samples/`/existing `Tests/` datasets wherever those already covered a scenario.
 - Full three-tier validation discipline carried through from design to release: a senior-architect design review, an independent implementation audit (2 Medium findings resolved), a 59-case integration test plan (0 implementation defects — 4 test-harness bugs found, confirmed, and fixed), a 20-requirement live-judgment UAT (0 defects, including a deliberately adversarial redaction test), and a final independent release audit (5 findings, all resolved or explicitly disposed of — see `Release/Module03/RELEASE_AUDIT.md`).
+
+---
+
+## Post-freeze correction #1 (2026-07-26) — TD-01 v0.9: opt-in autonomous Claude API MetadataExtractionProvider
+
+**Severity:** High-impact gap resolution, not a defect (`TECHNICAL_DEBT_REGISTER.md` TD-01). **Module Version:** patched, `1.0.0` → `1.1.0` (MINOR, per `Release/VERSIONS.md`'s own convention — additive, not a bug fix, and not a contract change).
+
+**What changed:** `src/providers/claude.py`'s `ClaudeAPIExtractor` — a real, non-interactive `MetadataExtractionProvider` implementation, mirroring `ClaudeAPIClassifier`'s structure exactly (this module's own design §21 precedent: independently defined, convention-following, never code-shared with Module 02's equivalent) — registered under `"claude"` via the new `src/providers/registry.py`. `ClaudeLiveExtractor` (this module's own documented interactive-session placeholder) is **completely untouched** and remains the default whenever no autonomous provider is opted into. `ProviderMetadata` (defined in `src/pipeline/metadata.py`, this module's own independent copy) gained one new optional field, `token_usage: Optional[Dict[str, int]] = None`, mirroring `pipeline/classification.py`'s identical addition — additive with a default, no existing call site affected.
+
+**Why this belongs to Module 03's own contract boundary, not a separate system:** `MetadataExtractionProvider` (`Module 03 Design.md §23`) was designed as the same kind of deliberate swap point Module 02's `ClassificationProvider` is. This correction is that swap happening for the first time on this module's side too — `MetadataExtractionEngine`, `extract_metadata_batch()`, and every downstream module are provably untouched (full regression suite plus a scope-diff check).
+
+**Not enabled by default:** requires both `ai_provider_consent: true` (written only by `python -m src.cli provider enable`, outside this module) and a real `ANTHROPIC_API_KEY`. `main.py`'s `_resolve_provider_for_extraction()` returns `None` otherwise, letting `extract_metadata_batch()`'s own pre-existing `provider or ClaudeLiveExtractor()` default apply unchanged — verified directly with a dedicated test proving the resolver never itself constructs the placeholder.
+
+**Design record:** `Build-out/02 Classification/TD-01 Provider Architecture — Design Package.md` (same design package Module 02's correction #2 references — TD-01 spans both modules by its own register entry).
+
+**Scope:** `src/providers/` (shared with Module 02's correction, new), `src/cli.py`'s `provider` subcommand (shared), `src/main.py`'s extraction resolver, `src/config/sources.yaml`'s `extraction_provider` key, and the one additive `ProviderMetadata.token_usage` field in this module's own `src/pipeline/metadata.py`. No other line of this module's code was touched.
+
+**Regression tests added:** shared with Module 02's correction (`src/providers/test_registry.py`, `src/providers/test_claude.py` — the extractor's own tests included in that same 26-test file, mocking the `anthropic` client), plus this module's share of the 12 new CLI provider tests and 13 new `main.py` resolver tests (the extraction-specific half of each). Full suite: **889/889**.
+
+**Verification performed:** identical acceptance-criteria evidence to Module 02's correction #2 (`Tests/Provider Evaluation Harness/TD-01 v0.9 Validation Report.md`) — the harness's `extract_metadata_batch()` stage is exercised by the same real-provider dry run and fake-oracle-provider test run.
+
+**Disclosed, not swept under this entry:** same gap as Module 02's correction #2 — no `ANTHROPIC_API_KEY` was available in the implementation environment, so no real Claude API extraction call was ever made. `TECHNICAL_DEBT_REGISTER.md`'s TD-01 (which names both modules) is **partially resolved**, not closed.
+
+**`MODULE_STATUS.md` intentionally left unchanged** — point-in-time snapshot convention. `Release/VERSIONS.md` is this module's current, authoritative version.
+
+**Full narrative:** `CHANGELOG.md`'s 2026-07-26 entry; `Tests/Provider Evaluation Harness/TD-01 v0.9 Validation Report.md`; Module 02's own `RELEASE_NOTES.md` correction #2 for the classification-side detail.

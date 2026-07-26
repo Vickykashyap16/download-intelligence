@@ -18,7 +18,7 @@ import time
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import List, Literal, Optional, Tuple
+from typing import Dict, List, Literal, Optional, Tuple
 
 from src.core.images import get_dimensions, matches_screen_resolution
 from src.core.pdf import is_password_protected
@@ -203,6 +203,18 @@ class ProviderMetadata:
                                         # design §18 for why this is provider-agnostic
     reasoning: Optional[str] = None    # optional free-text rationale — see design §17
                                         # privacy note before any provider populates this
+    token_usage: Optional[Dict[str, int]] = None   # {"input_tokens": N, "output_tokens": N}
+                                        # — added for TD-01 v0.9 (see
+                                        # "Build-out/02 Classification/TD-01 Provider
+                                        # Architecture — Design Package.md" §6/§7's
+                                        # compatibility analysis): optional, defaults to
+                                        # None for every provider that doesn't report it
+                                        # (ClaudeLiveClassifier, any deterministic-only
+                                        # path). Populated by src/providers/claude.py's
+                                        # real API provider so the Provider Evaluation
+                                        # Harness can compute estimated cost per run —
+                                        # never read by ClassificationEngine itself, an
+                                        # observability-only field like the others here.
 
 
 @dataclass
