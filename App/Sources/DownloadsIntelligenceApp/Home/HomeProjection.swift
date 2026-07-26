@@ -68,16 +68,6 @@ public struct HomeProjection: Equatable, Sendable {
         self.weeklyTierCounts = weeklyTierCounts
     }
 
-    /// How many days back "This week" (`High-Fidelity UI Specification.md`
-    /// §2, "the trend summary") looks from `now`. Neither document that
-    /// specifies Home defines the exact week-boundary algorithm (calendar
-    /// week vs. rolling window) — this is a small, implementation-time
-    /// default in the same spirit as `Package.swift`'s macOS-13 and
-    /// SwiftUI choices: a rolling 7-day window is the simplest honest
-    /// reading of "this week" that requires no assumption about the user's
-    /// locale-specific week start day.
-    public static let weeklyWindowInDays = 7
-
     private static let dateFormatter = ISO8601DateFormatter()
 
     /// Computes the projection from the engine's own records — no other
@@ -201,14 +191,15 @@ public struct HomeProjection: Equatable, Sendable {
         return BatchSummary(fileCount: fileCount, date: latest.date)
     }
 
-    /// Per-tier counts among records discovered within `weeklyWindowInDays`
-    /// of `now` — see that property's documentation for why a rolling
-    /// window was chosen. Untiered records (still mid-pipeline, never
-    /// reached confidence scoring) are excluded, since the trend summary
-    /// reports the *tier* distribution specifically.
+    /// Per-tier counts among records discovered within
+    /// `HomeConfiguration.weeklyTrendWindowInDays` of `now` — see that
+    /// property's documentation for why a rolling window was chosen.
+    /// Untiered records (still mid-pipeline, never reached confidence
+    /// scoring) are excluded, since the trend summary reports the *tier*
+    /// distribution specifically.
     private static func weeklyTierCounts(in records: [FileRecordSnapshot], now: Date) -> [Tier: Int] {
         guard let windowStart = Calendar(identifier: .gregorian).date(
-            byAdding: .day, value: -weeklyWindowInDays, to: now
+            byAdding: .day, value: -HomeConfiguration.weeklyTrendWindowInDays, to: now
         ) else { return [:] }
 
         let recentTiers = records.compactMap { record -> Tier? in

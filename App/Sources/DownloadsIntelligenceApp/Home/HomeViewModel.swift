@@ -70,19 +70,16 @@ public final class HomeViewModel: ObservableObject {
 
     /// Starts the periodic status refresh Home's steady state requires
     /// (`Desktop Implementation Blueprint.md` §2, Idle phase: "refreshing
-    /// Home's status on a modest periodic interval"). Neither that
-    /// document nor `GUI Engineering Work Packages.md` fixes an exact
-    /// interval — 30 seconds is this implementation's concrete default for
-    /// "modest," in the same spirit as the small, documented defaults
-    /// already made in `Package.swift` (macOS 13, SwiftUI) and elsewhere in
-    /// this target; callers (tests, in particular) may pass a much shorter
-    /// interval to observe re-polling without a real 30-second wait.
+    /// Home's status on a modest periodic interval"). The default interval
+    /// is `HomeConfiguration.defaultRefreshInterval`; callers (tests, in
+    /// particular) may pass a much shorter interval to observe re-polling
+    /// without a real 30-second wait.
     ///
     /// Calling this again while already running restarts the loop rather
     /// than stacking a second one, so a view's `.task` re-invocation (e.g.
     /// after a SwiftUI view identity change) can never leave two refresh
     /// loops running concurrently against the same view model.
-    public func startPeriodicRefresh(interval: TimeInterval = 30) {
+    public func startPeriodicRefresh(interval: TimeInterval = HomeConfiguration.defaultRefreshInterval) {
         refreshTask?.cancel()
         refreshTask = Task { [weak self] in
             while !Task.isCancelled {
