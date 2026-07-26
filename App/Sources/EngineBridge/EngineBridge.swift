@@ -4,13 +4,16 @@ import Foundation
 /// `EngineBridge` (`ProcessRunner`, `EngineMutationGuard`,
 /// `ConfigurationReader`, `MetadataStoreReader`, `ActionLogReader`,
 /// `ReportsReader`, `EngineVersionReader`, `VersionCompatibilityChecker`,
-/// `FileGUILogger`) is an internal collaborator this facade coordinates —
-/// per WP-GUI-00's own framing ("Build and independently verify the
-/// subprocess-invocation and artifact-reading layer the entire GUI depends
-/// on"), no future screen or view is meant to reach past this type to use
-/// any of those collaborators directly. That boundary is enforced by
-/// access control here: every collaborator is a `private let`, reachable
-/// only through this type's own methods.
+/// `FileGUILogger`, `FolderAccessValidator`) is an internal collaborator
+/// this facade coordinates — per WP-GUI-00's own framing ("Build and
+/// independently verify the subprocess-invocation and artifact-reading
+/// layer the entire GUI depends on"), no future screen or view is meant to
+/// reach past this type to use any of those collaborators directly. That
+/// boundary is enforced by access control here: every collaborator is a
+/// `private let`, reachable only through this type's own methods.
+/// (`FolderAccessValidator` was added by WP-GUI-00A, a small isolated
+/// extension of this same facade — see `validateFolder(at:requireWritable:)`
+/// below for why.)
 ///
 /// This type contains **no parsing, comparison, subprocess, or file-I/O
 /// logic of its own.** Every one of its methods does exactly two things:
@@ -85,6 +88,7 @@ public actor EngineBridge {
     private let versionReader: EngineVersionReader
     private let versionChecker: VersionCompatibilityChecker
     private let logger: FileGUILogger
+    private let folderAccessValidator: FolderAccessValidator
 
     public init(configuration: Configuration) {
         let locations = EngineArtifactLocations(projectRootURL: configuration.projectRootURL)
@@ -119,6 +123,7 @@ public actor EngineBridge {
             minimumSupportedVersion: configuration.minimumSupportedEngineVersion,
             maximumSupportedVersion: configuration.maximumSupportedEngineVersion
         )
+        self.folderAccessValidator = FolderAccessValidator()
     }
 
     // MARK: - Version readiness
@@ -168,6 +173,35 @@ public actor EngineBridge {
     /// incompatible.
     public func currentEngineVersion() throws -> SemanticVersion {
         try versionReader.read()
+    }
+
+    // MARK: - Folder validation
+
+    /// Checks whether `url` is usable as a Source or Destination folder —
+    /// exists, is a directory, and has read (and, if `requireWritable` is
+    /// `true`, write) permission — via a real, syscall-backed check
+    /// (`FolderAccessValidator`), never assumed. Added by WP-GUI-00A
+    /// (EngineBridge Folder Validation) specifically because WP-GUI-02
+    /// (Onboarding)'s Technical Notes require disabling its "Continue"/
+    /// "Scan now" action until the folder the user selected is "verified
+    /// readable/writable via a real Engine Bridge check" — a capability
+    /// that did not exist anywhere in this package or the underlying
+    /// engine CLI before this addition (see
+    /// `Downloads Intelligence — UX Design/Open Dependencies.md`,
+    /// OD-GUI-1).
+    ///
+    /// Deliberately **not** run behind `verifyEngineIsCompatible()`,
+    /// unlike every other method on this facade: this check inspects a
+    /// local filesystem path directly, never invoking the engine
+    /// subprocess or reading one of its artifacts, so requiring engine
+    /// compatibility first would couple two unrelated concerns for no
+    /// benefit. The engine's own Python subprocess runs as the same local
+    /// user on the same machine, so this direct check is a faithful proxy
+    /// for what that subprocess would itself see when it later reads from
+    /// or writes to this path — no subprocess invocation is needed to
+    /// determine that.
+    public func validateFolder(at url: URL, requireWritable: Bool) -> FolderValidationOutcome {
+        folderAccessValidator.validate(url, requireWritable: requireWritable)
     }
 
     // MARK: - Command execution
