@@ -30,6 +30,20 @@
 // architecture: `GUI Architecture Specification.md` §3/§8 already establishes
 // that the Engine Bridge reads the engine's on-disk artifacts directly.
 
+// WP-GUI-01 (`GUI Engineering Work Packages.md`) adds the application shell
+// and shared component library on top of WP-GUI-00's `EngineBridge`. Per
+// `GUI Architecture Specification.md` §2, the specific UI framework was
+// deliberately left as an implementation detail deferred past the
+// architecture documents ("SwiftUI vs. AppKit, or a mix"); SwiftUI is the
+// concrete choice made here, for the same reason macOS 13 was chosen above
+// as a small, easily-revised default rather than a re-litigated decision:
+// it renders genuinely native macOS chrome (window, sidebar, sheets)
+// satisfying `06 Visual Design System.md` §10's macOS Alignment
+// requirements directly, it is fully available on the macOS 13 baseline
+// already fixed in this file, and it lets the shared component library
+// (§7 of that same document) be expressed as small, independently
+// testable view types consistent with `GUI Architecture Specification.md`
+// §4's "one implementation per component, reused everywhere" rule.
 import PackageDescription
 
 let package = Package(
@@ -38,7 +52,8 @@ let package = Package(
         .macOS(.v13)
     ],
     products: [
-        .library(name: "EngineBridge", targets: ["EngineBridge"])
+        .library(name: "EngineBridge", targets: ["EngineBridge"]),
+        .executable(name: "DownloadsIntelligenceApp", targets: ["DownloadsIntelligenceApp"])
     ],
     dependencies: [
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.6")
@@ -51,6 +66,17 @@ let package = Package(
         .testTarget(
             name: "EngineBridgeTests",
             dependencies: ["EngineBridge"],
+            resources: [
+                .copy("Fixtures")
+            ]
+        ),
+        .executableTarget(
+            name: "DownloadsIntelligenceApp",
+            dependencies: ["EngineBridge"]
+        ),
+        .testTarget(
+            name: "DownloadsIntelligenceAppTests",
+            dependencies: ["DownloadsIntelligenceApp"],
             resources: [
                 .copy("Fixtures")
             ]
