@@ -38,7 +38,29 @@ public final class AppLifecycleController: ObservableObject {
         phase = .loadingConfiguration
 
         do {
-            _ = try await bridge.readConfiguration()
+            let configuration = try await bridge.readConfiguration()
+            if configuration.destinationRoot == nil {
+                // WP-GUI-01A (First-Run Detection Correction): a
+                // syntactically valid, present `sources.yaml` can still
+                // represent "never configured" — `destination_root` is
+                // the engine's own recorded invariant for that state
+                // (`Governance/ARCHITECTURE_DECISIONS.md` decision 20:
+                // "null until the user configures it"), independent of
+                // whether the file itself exists. `.artifactNotFound`
+                // below only catches the file-absent case; without this
+                // check, a config file shipped pre-seeded-but-empty would
+                // decode successfully (`EngineConfiguration`'s own
+                // tolerant `Codable` conformance) and incorrectly route
+                // straight to `.displayingHome`, skipping First Run
+                // Experience for a genuinely first-time user. Deliberately
+                // checks only this one field — no other configuration
+                // content (`sources`, in particular) is inspected here;
+                // see `Downloads Intelligence — UX Design/Open
+                // Dependencies.md`, OD-GUI-2, for why that line was drawn
+                // where it was.
+                phase = .firstRunNeeded
+                return
+            }
         } catch EngineBridgeError.artifactNotFound {
             // "the configuration is entirely absent... this is a
             // first-time setup" (`Desktop Implementation Blueprint.md`

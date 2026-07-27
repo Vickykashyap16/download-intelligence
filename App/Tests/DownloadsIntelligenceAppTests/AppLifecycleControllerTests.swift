@@ -66,6 +66,22 @@ final class AppLifecycleControllerTests: XCTestCase {
         XCTAssertEqual(controller.phase, .firstRunNeeded)
     }
 
+    /// WP-GUI-01A: a config file that exists, parses successfully, but has
+    /// `destination_root: null` (the engine's own recorded "not yet
+    /// configured" invariant — `Governance/ARCHITECTURE_DECISIONS.md`
+    /// decision 20) must route to First Run Experience exactly like a
+    /// missing file does — not to `.displayingHome`, which is what would
+    /// happen without this check, since `EngineConfiguration` decodes this
+    /// shape successfully rather than throwing.
+    func test_presentButUnconfiguredDestination_routesToFirstRunNeeded() async throws {
+        let bridge = try makeBridge(project: "DestinationNotConfiguredEngineProject")
+        let controller = AppLifecycleController(bridge: bridge)
+
+        await controller.start()
+
+        XCTAssertEqual(controller.phase, .firstRunNeeded)
+    }
+
     // MARK: - Error State wiring (WP-GUI-01's Acceptance Criteria)
 
     func test_incompatibleEngineVersion_routesToErrorState_withPlainLanguageContent() async throws {

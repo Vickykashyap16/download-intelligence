@@ -1,0 +1,11 @@
+sources:
+  - source_id: downloads
+    path: /Users/fixture/Downloads
+    type: local_folder
+    enabled: true
+    recursive: false
+execution_mode: manual
+destination_root: null
+classification_provider: null
+extraction_provider: null
+ai_provider_consent: false

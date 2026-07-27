@@ -11,12 +11,26 @@ public struct AppShell: View {
     private let bridge: EngineBridge
 
     // Home reads independently of `lifecycle`'s own best-effort metadata
-    // read (see `HomeViewModel`'s documentation) — WP-GUI-03's stub
-    // navigation targets for "Scan now" / "Scan again" / "File them now"
-    // land here, as a simple inline replacement of the content area,
-    // matching the same placeholder pattern already used for every other
-    // not-yet-built Sidebar section below.
-    @State private var isScanStubShowing = false
+    // read (see `HomeViewModel`'s documentation). WP-GUI-04 replaces what
+    // was, through WP-GUI-03, a shared placeholder for both "Scan now" and
+    // "File them now" with the real Scan Progress/Scan Complete flow
+    // (`ScanFlowView`) for scanning specifically. `scanViewModel` is
+    // `nil` whenever no scan is in flight or being reviewed; creating one
+    // (`beginScan()`) is what starts a real `run` invocation. It is owned
+    // here, at `AppShell`'s level — not by whichever screen is currently
+    // rendering it — precisely so Sidebar navigation away from Scan
+    // Progress never cancels the scan (`High-Fidelity UI Specification.md`
+    // §3, `Desktop Implementation Blueprint.md` §7).
+    @State private var scanViewModel: ScanViewModel?
+
+    // Execute (what Scan Complete's "File the N now" and Home's "File them
+    // now" both lead to) remains out of scope for WP-GUI-04 — this is its
+    // own, distinct "not built yet" placeholder, separate from scanning
+    // now that scanning does something real. Reusing the scan stub here
+    // instead (as WP-GUI-03 did, before either screen existed) would
+    // incorrectly launch a real `run` invocation when the user actually
+    // asked to file an already-computed batch.
+    @State private var isFilingStubShowing = false
 
     // "the last active Sidebar section is restored" (`Desktop
     // Implementation Blueprint.md` §2) — session-local, disposable UI
@@ -43,15 +57,53 @@ public struct AppShell: View {
                 ProgressIndicatorView(.indeterminate)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .firstRunNeeded:
-                // First Run Experience's real content is WP-GUI-02's
-                // scope; this is a routing placeholder only, per
-                // WP-GUI-01's own "out of scope: any screen's real
-                // content."
-                EmptyStateView(
-                    systemImageName: "folder",
-                    heading: "Let's get set up",
-                    explanation: "First-time setup isn't built yet — that's the next work package."
-                )
+                // WP-GUI-02: Welcome + First Run Experience, replacing
+                // WP-GUI-01's routing-only placeholder. "Scan now" (Step 3)
+                // now leads to the real Scan Progress/Scan Complete flow
+                // (WP-GUI-04) — the same `ScanFlowView` Home's own "Scan
+                // now"/"Scan again" use, never a second, bespoke
+                // implementation. Onboarding has no Sidebar of its own
+                // (unlike Home's call site below, which renders inside a
+                // `NavigationSplitView`), so Scan Complete's real "Review"/
+                // "File the N now" actions have nowhere meaningful to route
+                // to yet here — both, plus an explicit "Continue to Home"
+                // action, all converge on the same outcome: dismiss the
+                // scan and re-run the lifecycle from scratch
+                // (`await lifecycle.start()`), exactly the same fixed
+                // sequence a normal relaunch would perform (`Desktop
+                // Implementation Blueprint.md` §15, "Normal Launch...
+                // follows the ordinary lifecycle in §2 straight through to
+                // Display Home") — now reaching `.displayingHome` for the
+                // first time, since the configuration First Run Experience
+                // just wrote and verified now has a non-nil
+                // `destinationRoot` (WP-GUI-01A's own routing check). This
+                // is a deliberate, disclosed scope boundary, not an
+                // oversight: WP-GUI-02 already left "Home or any screen
+                // reached after 'Scan now'" out of its own scope, and nothing
+                // here reopens that decision beyond making the transition a
+                // real one instead of a placeholder.
+                if let scanViewModel {
+                    ScanFlowView(
+                        viewModel: scanViewModel,
+                        onReview: {
+                            self.scanViewModel = nil
+                            selectedSection = .reviewQueue
+                            Task { await lifecycle.start() }
+                        },
+                        onFileNow: {
+                            self.scanViewModel = nil
+                            isFilingStubShowing = true
+                            Task { await lifecycle.start() }
+                        },
+                        extraCompletionActionTitle: "Continue to Home",
+                        extraCompletionAction: {
+                            self.scanViewModel = nil
+                            Task { await lifecycle.start() }
+                        }
+                    )
+                } else {
+                    OnboardingFlowView(bridge: bridge, onScanRequested: { beginScan() })
+                }
             case .error(let presentation):
                 ErrorStateView(presentation)
             case .displayingHome:
@@ -72,24 +124,54 @@ public struct AppShell: View {
         }
     }
 
+    /// Starts a new scan — the single place a `ScanViewModel` is created,
+    /// so both entry points (below, and the `.firstRunNeeded` case above)
+    /// always begin from the exact same fresh state.
+    private func beginScan() {
+        scanViewModel = ScanViewModel(bridge: bridge)
+    }
+
+    /// Execute remains out of scope for WP-GUI-04 (`GUI Engineering Work
+    /// Packages.md`, WP-GUI-04 Scope: "Out of scope: Preview, Review Queue,
+    /// or Execute") — this is its own "not built yet" placeholder, shared
+    /// by every call site that can reach it (Home's "File them now," Scan
+    /// Complete's "File the N now"), one implementation reused per `GUI
+    /// Architecture Specification.md` §4.
+    @ViewBuilder
+    private func filingStub(secondaryAction: @escaping () -> Void) -> some View {
+        EmptyStateView(
+            systemImageName: "tray.and.arrow.down",
+            heading: "Filing isn't built yet",
+            explanation: "That's a future work package.",
+            secondaryActionTitle: "Back to Home",
+            secondaryAction: secondaryAction
+        )
+    }
+
     @ViewBuilder
     private func placeholderContent(for section: AppSection) -> some View {
         switch section {
         case .home:
-            if isScanStubShowing {
-                EmptyStateView(
-                    systemImageName: "arrow.triangle.2.circlepath",
-                    heading: "Scan Progress isn't built yet",
-                    explanation: "That's a future work package.",
-                    secondaryActionTitle: "Back to Home",
-                    secondaryAction: { isScanStubShowing = false }
+            if isFilingStubShowing {
+                filingStub { isFilingStubShowing = false }
+            } else if let scanViewModel {
+                ScanFlowView(
+                    viewModel: scanViewModel,
+                    onReview: {
+                        self.scanViewModel = nil
+                        selectedSection = .reviewQueue
+                    },
+                    onFileNow: {
+                        self.scanViewModel = nil
+                        isFilingStubShowing = true
+                    }
                 )
             } else {
                 HomeView(
                     bridge: bridge,
                     onGoToReviewQueue: { selectedSection = .reviewQueue },
-                    onScanRequested: { isScanStubShowing = true },
-                    onFileThemNow: { isScanStubShowing = true }
+                    onScanRequested: { beginScan() },
+                    onFileThemNow: { isFilingStubShowing = true }
                 )
             }
         default:
