@@ -90,12 +90,23 @@ public final class ScanViewModel: ObservableObject {
 
         do {
             _ = try await bridge.run(.run)
-            pollTask?.cancel()
+            // `cancel()` alone only requests cancellation — the loop's own
+            // `Task.sleep` reacts to that promptly, but nothing guarantees
+            // the task has actually finished unwinding (or, if cancellation
+            // lands mid-`pollOnce()`, finished that in-flight read) by the
+            // time a bare `cancel()` call returns. Awaiting `.value` here
+            // ensures the poll loop has fully stopped before `start()`
+            // can return.
+            let poller = pollTask
             pollTask = nil
+            poller?.cancel()
+            await poller?.value
             await finish(baselineRecords: baselineRecords)
         } catch {
-            pollTask?.cancel()
+            let poller = pollTask
             pollTask = nil
+            poller?.cancel()
+            await poller?.value
             phase = .failed(Self.failurePresentation(error))
         }
     }

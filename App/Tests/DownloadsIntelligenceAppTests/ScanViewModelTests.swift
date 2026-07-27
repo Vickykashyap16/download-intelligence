@@ -46,7 +46,33 @@ final class ScanViewModelTests: XCTestCase {
     // MARK: - End-to-end: indeterminate → determinate → complete
 
     func test_start_observesIndeterminateThenDeterminate_thenCompletesWithCorrectProjection() async throws {
-        let bridge = try makeBridge(project: "ScanningEngineProject")
+        // Copied to an isolated temp directory, not read/written in place —
+        // `run` genuinely mutates this fixture's metadata store, so reusing
+        // the checked-in copy directly would leave it contaminated with
+        // this test's own output for every subsequent run (the same class
+        // of test-isolation defect already found and fixed for Module 07).
+        let root = try fixtureURL("ScanningEngineProject")
+        let tempRoot = makeTempDirectory()
+        try FileManager.default.copyItem(at: root, to: tempRoot)
+        defer { try? FileManager.default.removeItem(at: tempRoot) }
+        // `copyItem` preserves the source file's permission bits, and the
+        // test-resource-bundle copy of this fixture that `Bundle.module`
+        // resolves to is non-writable — so without this, the fixture's own
+        // `save_store()` (a plain `open(path, "w")`) fails with a
+        // permission error on its very first write, the subprocess exits
+        // non-zero, and — since `ScanViewModel.start()` never inspects
+        // `run`'s exit code — the metadata store silently stays empty for
+        // the rest of this test.
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o644],
+            ofItemAtPath: tempRoot.appendingPathComponent("Database/Metadata/metadata_store.json").path
+        )
+        let bridge = EngineBridge(configuration: .init(
+            projectRootURL: tempRoot,
+            minimumSupportedEngineVersion: minimumSupportedVersion,
+            maximumSupportedEngineVersion: maximumSupportedVersion,
+            guiLogDirectoryURL: makeTempDirectory()
+        ))
         let viewModel = ScanViewModel(bridge: bridge, pollInterval: 0.05)
 
         var observedIndeterminate = false
@@ -142,7 +168,18 @@ final class ScanViewModelTests: XCTestCase {
     // MARK: - Idempotent start()
 
     func test_start_calledTwice_secondCallIsNoOp() async throws {
-        let bridge = try makeBridge(project: "ScanningEngineProject")
+        // Isolated temp copy — see the identical note in
+        // test_start_observesIndeterminateThenDeterminate_thenCompletesWithCorrectProjection.
+        let root = try fixtureURL("ScanningEngineProject")
+        let tempRoot = makeTempDirectory()
+        try FileManager.default.copyItem(at: root, to: tempRoot)
+        defer { try? FileManager.default.removeItem(at: tempRoot) }
+        let bridge = EngineBridge(configuration: .init(
+            projectRootURL: tempRoot,
+            minimumSupportedEngineVersion: minimumSupportedVersion,
+            maximumSupportedEngineVersion: maximumSupportedVersion,
+            guiLogDirectoryURL: makeTempDirectory()
+        ))
         let viewModel = ScanViewModel(bridge: bridge, pollInterval: 0.05)
 
         await viewModel.start()
