@@ -121,4 +121,37 @@ final class EngineBridgeFolderValidationTests: XCTestCase {
 
         XCTAssertEqual(outcome, .valid, "validateFolder must not be blocked by engine incompatibility")
     }
+
+    // MARK: - Concurrency
+
+    /// `validateFolder` never touches `EngineMutationGuard` — it isn't an
+    /// engine-mutating operation, so unlike `run(_:)` it has no slot to
+    /// contend for at all. This is the same proof
+    /// `EngineBridgeTests.test_readOnlyCommand_doesNotRequireMutationSlot`
+    /// already established for `run(.status)`, applied here: many
+    /// concurrent calls through the actor must all resolve correctly, with
+    /// nothing lost, hung, or corrupted — the real-world exercise of the
+    /// `@unchecked Sendable` guarantee `FolderAccessValidator` makes about
+    /// itself, not just a single-threaded correctness check.
+    func test_validateFolder_manyConcurrentCalls_allSucceedConsistently() async throws {
+        let logDirectory = makeTempLogDirectory()
+        defer { try? FileManager.default.removeItem(at: logDirectory) }
+        let bridge = try makeBridge(project: "FakeEngineProject", guiLogDirectory: logDirectory)
+
+        let candidateDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("EngineBridgeFolderValidationTests-concurrent-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: candidateDirectory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: candidateDirectory) }
+
+        await withTaskGroup(of: FolderValidationOutcome.self) { group in
+            for _ in 0..<20 {
+                group.addTask {
+                    await bridge.validateFolder(at: candidateDirectory, requireWritable: true)
+                }
+            }
+            for await outcome in group {
+                XCTAssertEqual(outcome, .valid)
+            }
+        }
+    }
 }
