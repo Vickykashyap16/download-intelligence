@@ -1,12 +1,21 @@
 import XCTest
 import EngineBridge
+// Scoped import: resolves this one declaration by its exact module path,
+// disambiguating it from XCTest's own colliding top-level `Category` symbol
+// (only a problem in files that import both XCTest and EngineBridge —
+// `EngineBridge.Category` is used bare, without conflict, everywhere else
+// in this codebase). This is a different resolution mechanism from ordinary
+// qualified-name lookup, so it isn't affected by `EngineBridge` also being
+// the name of a type (the `EngineBridge` actor) declared inside this same
+// module.
+import enum EngineBridge.Category
 @testable import DownloadsIntelligenceApp
 
 final class ScanCompleteProjectionTests: XCTestCase {
 
     private func makeRecord(
         fileID: String,
-        category: EngineBridge.Category? = nil,
+        category: Category? = nil,
         tier: Tier? = nil
     ) -> FileRecordSnapshot {
         FileRecordSnapshot(
