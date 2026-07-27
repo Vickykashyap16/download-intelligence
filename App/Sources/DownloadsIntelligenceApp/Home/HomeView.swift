@@ -21,17 +21,26 @@ public struct HomeView: View {
     private let onGoToReviewQueue: () -> Void
     private let onScanRequested: () -> Void
     private let onFileThemNow: () -> Void
+    private let onGoToPreview: (() -> Void)?
 
+    /// - Parameter onGoToPreview: WP-GUI-05's Home entry point into Preview
+    ///   (`High-Fidelity UI Specification.md` §7: "Preview is reachable
+    ///   from Scan Complete ('Review full plan') and, once a plan exists,
+    ///   from Home"). Optional and additive, `nil` by default — shown only
+    ///   in the `.needsReview`/`.readyToFile` steady states, since those
+    ///   are exactly the states in which a plan exists at all.
     public init(
         bridge: EngineBridge,
         onGoToReviewQueue: @escaping () -> Void,
         onScanRequested: @escaping () -> Void,
-        onFileThemNow: @escaping () -> Void
+        onFileThemNow: @escaping () -> Void,
+        onGoToPreview: (() -> Void)? = nil
     ) {
         _viewModel = StateObject(wrappedValue: HomeViewModel(bridge: bridge))
         self.onGoToReviewQueue = onGoToReviewQueue
         self.onScanRequested = onScanRequested
         self.onFileThemNow = onFileThemNow
+        self.onGoToPreview = onGoToPreview
     }
 
     public var body: some View {
@@ -108,6 +117,13 @@ public struct HomeView: View {
                     SecondaryButton(secondaryActionTitle, action: onScanRequested)
                         .fixedSize()
                         .padding(.top, 32)
+                }
+
+                if let onGoToPreview {
+                    Button("Review the full plan", action: onGoToPreview)
+                        .buttonStyle(.plain)
+                        .foregroundStyle(Color.accentColor)
+                        .padding(.top, 16)
                 }
             }
             .padding(32)

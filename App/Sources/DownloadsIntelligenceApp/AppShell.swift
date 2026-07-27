@@ -32,6 +32,19 @@ public struct AppShell: View {
     // asked to file an already-computed batch.
     @State private var isFilingStubShowing = false
 
+    // Preview (WP-GUI-05) has nothing in flight to preserve across
+    // Sidebar navigation the way a running scan does — `PreviewFlowView`
+    // owns its own `PreviewViewModel` internally (see that type's own
+    // documentation), so this is a plain `Bool`, not a hoisted view model,
+    // mirroring `isFilingStubShowing`'s own simplicity. Reachable from Scan
+    // Complete's "Review full plan" and, once a plan exists, from Home's
+    // "Review the full plan" (`High-Fidelity UI Specification.md` §7).
+    // Preview is deliberately not a sixth `AppSection` — `AppSection`'s own
+    // documentation is explicit that drill-down states like this live as
+    // state within whichever section reaches them, never as an additional
+    // case there.
+    @State private var isPreviewShowing = false
+
     // "the last active Sidebar section is restored" (`Desktop
     // Implementation Blueprint.md` §2) — session-local, disposable UI
     // state (`GUI Architecture Specification.md` §7), not business data,
@@ -154,6 +167,25 @@ public struct AppShell: View {
         case .home:
             if isFilingStubShowing {
                 filingStub { isFilingStubShowing = false }
+            } else if isPreviewShowing {
+                PreviewFlowView(
+                    bridge: bridge,
+                    onExecuteNow: {
+                        isPreviewShowing = false
+                        isFilingStubShowing = true
+                    },
+                    onReview: {
+                        isPreviewShowing = false
+                        selectedSection = .reviewQueue
+                    },
+                    onScanNow: {
+                        isPreviewShowing = false
+                        beginScan()
+                    },
+                    onBackToHome: {
+                        isPreviewShowing = false
+                    }
+                )
             } else if let scanViewModel {
                 ScanFlowView(
                     viewModel: scanViewModel,
@@ -164,6 +196,10 @@ public struct AppShell: View {
                     onFileNow: {
                         self.scanViewModel = nil
                         isFilingStubShowing = true
+                    },
+                    onReviewFullPlan: {
+                        self.scanViewModel = nil
+                        isPreviewShowing = true
                     }
                 )
             } else {
@@ -171,7 +207,8 @@ public struct AppShell: View {
                     bridge: bridge,
                     onGoToReviewQueue: { selectedSection = .reviewQueue },
                     onScanRequested: { beginScan() },
-                    onFileThemNow: { isFilingStubShowing = true }
+                    onFileThemNow: { isFilingStubShowing = true },
+                    onGoToPreview: { isPreviewShowing = true }
                 )
             }
         default:

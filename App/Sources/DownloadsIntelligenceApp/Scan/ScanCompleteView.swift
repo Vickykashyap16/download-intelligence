@@ -15,6 +15,7 @@ public struct ScanCompleteView: View {
     private let onFileNow: () -> Void
     private let extraSecondaryActionTitle: String?
     private let extraSecondaryAction: (() -> Void)?
+    private let onReviewFullPlan: (() -> Void)?
 
     /// - Parameters:
     ///   - extraSecondaryActionTitle/extraSecondaryAction: an additional,
@@ -24,18 +25,27 @@ public struct ScanCompleteView: View {
     ///     once the very first scan's result has been shown (see
     ///     `AppShell`'s own documentation for why this one entry point
     ///     needs it and the Home entry point does not).
+    ///   - onReviewFullPlan: WP-GUI-05's "Review full plan" entry point into
+    ///     Preview (`Downloads Intelligence — Figma Design Production
+    ///     Guide.md`, Frame 05: "an optional 'review full plan' path →
+    ///     `08 — Preview`"; `High-Fidelity UI Specification.md` §7: "Preview
+    ///     is reachable from Scan Complete ('Review full plan')"). Optional
+    ///     and additive — `nil` (the default) renders nothing, so every
+    ///     existing call site from WP-GUI-04 is unaffected.
     public init(
         projection: ScanCompleteProjection,
         onReview: @escaping () -> Void,
         onFileNow: @escaping () -> Void,
         extraSecondaryActionTitle: String? = nil,
-        extraSecondaryAction: (() -> Void)? = nil
+        extraSecondaryAction: (() -> Void)? = nil,
+        onReviewFullPlan: (() -> Void)? = nil
     ) {
         self.projection = projection
         self.onReview = onReview
         self.onFileNow = onFileNow
         self.extraSecondaryActionTitle = extraSecondaryActionTitle
         self.extraSecondaryAction = extraSecondaryAction
+        self.onReviewFullPlan = onReviewFullPlan
     }
 
     public var body: some View {
@@ -92,6 +102,13 @@ public struct ScanCompleteView: View {
                 if let extraSecondaryActionTitle, let extraSecondaryAction {
                     SecondaryButton(extraSecondaryActionTitle, action: extraSecondaryAction)
                         .fixedSize()
+                        .padding(.top, 16)
+                }
+
+                if let onReviewFullPlan {
+                    Button("Review full plan", action: onReviewFullPlan)
+                        .buttonStyle(.plain)
+                        .foregroundStyle(Color.accentColor)
                         .padding(.top, 16)
                 }
             }

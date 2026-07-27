@@ -12,19 +12,28 @@ struct ScanFlowView: View {
     private let onFileNow: () -> Void
     private let extraCompletionActionTitle: String?
     private let extraCompletionAction: (() -> Void)?
+    private let onReviewFullPlan: (() -> Void)?
 
+    /// - Parameter onReviewFullPlan: forwarded straight through to
+    ///   `ScanCompleteView`'s own parameter of the same name (WP-GUI-05's
+    ///   "Review full plan" entry point into Preview). Optional and
+    ///   additive, `nil` by default — the First Run Experience entry point
+    ///   (which has no Sidebar for Preview to live in) deliberately leaves
+    ///   this `nil`; only the Home entry point supplies it.
     init(
         viewModel: ScanViewModel,
         onReview: @escaping () -> Void,
         onFileNow: @escaping () -> Void,
         extraCompletionActionTitle: String? = nil,
-        extraCompletionAction: (() -> Void)? = nil
+        extraCompletionAction: (() -> Void)? = nil,
+        onReviewFullPlan: (() -> Void)? = nil
     ) {
         self.viewModel = viewModel
         self.onReview = onReview
         self.onFileNow = onFileNow
         self.extraCompletionActionTitle = extraCompletionActionTitle
         self.extraCompletionAction = extraCompletionAction
+        self.onReviewFullPlan = onReviewFullPlan
     }
 
     var body: some View {
