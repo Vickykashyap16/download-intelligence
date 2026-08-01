@@ -22,6 +22,16 @@ import EngineBridge
 /// occur in between (`EngineMutationGuard`'s single-slot rule), "most
 /// recent batch" and "the batch just filed" are the same batch.
 ///
+/// `target` (added by WP-GUI-09) generalizes this to History's second
+/// entry point, which can trigger Undo against *any* past batch, not only
+/// the most recent one — `EngineCommand.undo(.batchID(String))` already
+/// maps to the CLI's own `undo <batch_id>` positional argument (no engine
+/// change needed; see `Open Dependencies.md` OD-GUI-4 for the one Undo
+/// capability that genuinely doesn't exist yet — per-file undo, which
+/// remains out of scope here). Defaults to `.last`, preserving WP-GUI-08's
+/// original, tested behavior exactly for the Execute-result entry point,
+/// which never passes this parameter explicitly.
+///
 /// Owned by `AppShell` as `@State`, created fresh at the moment "Undo this
 /// batch" is pressed — the same per-visit ownership pattern
 /// `ExecuteViewModel` already establishes.
@@ -38,20 +48,26 @@ public final class UndoViewModel: ObservableObject {
 
     private let bridge: EngineBridge
     private let confirmedRows: [ExecuteResultProjection.FiledRow]
+    private let target: EngineCommand.UndoTarget
 
     /// The count shown on the confirmation dialog ("This will move N files
     /// back...") — exposed directly so the view never has to reach into a
     /// non-`.confirming` phase to render its own confirmation copy.
     public var totalToUndo: Int { confirmedRows.count }
 
-    public init(bridge: EngineBridge, confirmedRows: [ExecuteResultProjection.FiledRow]) {
+    public init(
+        bridge: EngineBridge,
+        confirmedRows: [ExecuteResultProjection.FiledRow],
+        target: EngineCommand.UndoTarget = .last
+    ) {
         self.bridge = bridge
         self.confirmedRows = confirmedRows
+        self.target = target
     }
 
-    /// "Undo this batch": invokes the engine's real `undo --last` under the
-    /// mutation guard, then derives the result exclusively from a fresh
-    /// action-log re-read.
+    /// "Undo this batch": invokes the engine's real `undo` command (`--last`
+    /// or a specific `batch_id`, per `target`) under the mutation guard,
+    /// then derives the result exclusively from a fresh action-log re-read.
     ///
     /// Regardless of whether the invocation itself throws — a clean
     /// CLI-level refusal, a subprocess launch failure, or an abnormal
@@ -61,6 +77,20 @@ public final class UndoViewModel: ObservableObject {
     /// Execute's own equivalent interruption cases. Only if the action-log
     /// re-read *itself* fails — the one case where no verified outcome can
     /// be determined at all — does this route to `.failed`.
+    ///
+    /// For `.batchID(id)` specifically, the re-read entries are filtered to
+    /// that `batchID` before being handed to `UndoResultProjection.compute
+    /// (confirmedRows:actionLogEntries:)`, which otherwise reconciles by
+    /// `fileID` alone — correct for `.last`, where the batch just executed
+    /// is definitionally the only recent activity for those exact
+    /// `fileID`s, but not provably safe in general for an arbitrary
+    /// historical batch a `fileID` could in principle have participated in
+    /// more than once across the product's lifetime. Filtering here keeps
+    /// that guarantee correct for History's own entry point without
+    /// touching `UndoResultProjection` itself, and without changing
+    /// `.last`'s own computation in any way — the exact same entries this
+    /// method has always handed to `compute(_:_:)` reach it unfiltered
+    /// whenever `target == .last`.
     public func confirmAndUndo() async {
         guard !confirmedRows.isEmpty else {
             phase = .result(UndoResultProjection(totalAttempted: 0, restoredRows: [], problemRows: []))
@@ -69,11 +99,17 @@ public final class UndoViewModel: ObservableObject {
 
         phase = .undoing
 
-        _ = try? await bridge.run(.undo(.last))
+        _ = try? await bridge.run(.undo(target))
 
         do {
             let logResult = try await bridge.readActionLog()
-            let result = UndoResultProjection.compute(confirmedRows: confirmedRows, actionLogEntries: logResult.entries)
+            let relevantEntries: [ActionLogEntry]
+            if case .batchID(let id) = target {
+                relevantEntries = logResult.entries.filter { $0.batchID == id }
+            } else {
+                relevantEntries = logResult.entries
+            }
+            let result = UndoResultProjection.compute(confirmedRows: confirmedRows, actionLogEntries: relevantEntries)
             phase = .result(result)
         } catch let error as EngineBridgeError {
             phase = .failed(.forEngineBridgeFailure(error))

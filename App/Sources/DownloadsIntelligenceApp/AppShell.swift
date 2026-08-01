@@ -36,18 +36,21 @@ public struct AppShell: View {
     // now"/"File the N now" actions all converge on.
     @State private var executeViewModel: ExecuteViewModel?
 
-    // Undo (what Execute's own result screen leads to) — WP-GUI-07's own
-    // "not built yet" placeholder here (formerly `isUndoStubShowing`) is
-    // filled in for real by WP-GUI-08. `nil` whenever no Undo dialog is
-    // open; creating one (`beginUndo(filedRows:)`) is what "Undo this
-    // batch" on Execute's result screen leads to. Unlike `scanViewModel`/
-    // `executeViewModel`, Undo is not itself a Sidebar-navigable "screen" —
-    // per `High-Fidelity UI Specification.md` §9's own Layout
-    // Specification, it is "rendered as a Dialog... overlaid on the
-    // context it was triggered from," so it is presented via `.sheet(...)`
-    // on top of whatever `executeViewModel`'s own content already is,
-    // rather than replacing it the way `isUndoStubShowing`'s old
-    // full-content-swap placeholder did.
+    // Undo (what Execute's own result screen leads to, and — as of
+    // WP-GUI-09 — what a past batch's own row in History leads to too) —
+    // WP-GUI-07's own "not built yet" placeholder here (formerly
+    // `isUndoStubShowing`) was filled in for real by WP-GUI-08. `nil`
+    // whenever no Undo dialog is open; creating one
+    // (`beginUndo(filedRows:target:)`) is what either entry point's own
+    // "Undo this batch" leads to. Unlike `scanViewModel`/`executeViewModel`,
+    // Undo is not itself a Sidebar-navigable "screen" — per `High-Fidelity
+    // UI Specification.md` §9's own Layout Specification, it is "rendered
+    // as a Dialog... overlaid on the context it was triggered from," so
+    // it's presented via a single `.sheet(...)` hoisted above
+    // `placeholderContent(for:)` itself (`body`, `.displayingHome` case),
+    // reachable from whichever section is currently on screen, rather than
+    // being attached separately underneath each section that can trigger
+    // it.
     @State private var undoViewModel: UndoViewModel?
 
     // Preview (WP-GUI-05) has nothing in flight to preserve across
@@ -141,7 +144,24 @@ public struct AppShell: View {
                 NavigationSplitView {
                     SidebarView(selection: $selectedSection)
                 } detail: {
+                    // Hoisted here (WP-GUI-09), rather than attached only to
+                    // `.home`'s `ExecuteFlowView` as it was through
+                    // WP-GUI-08, so the same Undo dialog/sheet is reachable
+                    // from every section that can trigger it — now `.home`
+                    // (Execute's own result screen) and `.history` (a past
+                    // batch's own "Undo this batch") both converge on this
+                    // one `undoViewModel`/`.sheet`, exactly as `High-Fidelity
+                    // UI Specification.md` §9 frames Undo: one dialog, two
+                    // entry points, never two separate implementations.
                     placeholderContent(for: selectedSection)
+                        .sheet(isPresented: Binding(
+                            get: { undoViewModel != nil },
+                            set: { isPresented in if !isPresented { undoViewModel = nil } }
+                        )) {
+                            if let undoViewModel {
+                                UndoFlowView(viewModel: undoViewModel, onBackToHome: { self.undoViewModel = nil })
+                            }
+                        }
                 }
             }
         }
@@ -174,13 +194,17 @@ public struct AppShell: View {
 
     /// Starts a new Undo flow — the single place an `UndoViewModel` is
     /// created, mirroring `beginExecute()`'s own single-creation-point
-    /// pattern. Reachable only from Execute's own result screen pressing
-    /// "Undo this batch"; `filedRows` is that screen's own already-verified
-    /// `ExecuteResultProjection.filedRows`, captured at the moment the
-    /// button is pressed — see `UndoViewModel`'s own documentation for why
-    /// this is seeded directly rather than independently re-derived.
-    private func beginUndo(filedRows: [ExecuteResultProjection.FiledRow]) {
-        undoViewModel = UndoViewModel(bridge: bridge, confirmedRows: filedRows)
+    /// pattern. Reachable from two entry points as of WP-GUI-09: Execute's
+    /// own result screen pressing "Undo this batch" (`target: .last`, the
+    /// original WP-GUI-08 behavior, unchanged) and History's own
+    /// per-batch "Undo this batch" (`target: .batchID(_)`, naming the
+    /// specific past batch that row belongs to — `filedRows` is that same
+    /// screen's own already-computed `HistoryProjection.Batch.filedRows`,
+    /// mapped to `ExecuteResultProjection.FiledRow`). See `UndoViewModel`'s
+    /// own documentation for why `filedRows` is seeded directly rather
+    /// than independently re-derived, and why `target` defaults to `.last`.
+    private func beginUndo(filedRows: [ExecuteResultProjection.FiledRow], target: EngineCommand.UndoTarget = .last) {
+        undoViewModel = UndoViewModel(bridge: bridge, confirmedRows: filedRows, target: target)
     }
 
     @ViewBuilder
@@ -202,14 +226,6 @@ public struct AppShell: View {
                     },
                     onBackToHome: { self.executeViewModel = nil }
                 )
-                .sheet(isPresented: Binding(
-                    get: { undoViewModel != nil },
-                    set: { isPresented in if !isPresented { undoViewModel = nil } }
-                )) {
-                    if let undoViewModel {
-                        UndoFlowView(viewModel: undoViewModel, onBackToHome: { self.undoViewModel = nil })
-                    }
-                }
             } else if isPreviewShowing {
                 PreviewFlowView(
                     bridge: bridge,
@@ -265,6 +281,13 @@ public struct AppShell: View {
             ReviewQueueSectionView(
                 bridge: bridge,
                 onQueueEmpty: { selectedSection = .home }
+            )
+        case .history:
+            HistorySectionView(
+                bridge: bridge,
+                onUndoBatch: { batchID, filedRows in
+                    beginUndo(filedRows: filedRows, target: .batchID(batchID))
+                }
             )
         default:
             EmptyStateView(
