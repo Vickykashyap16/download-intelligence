@@ -1,0 +1,50 @@
+[
+  {
+    "file_id": "old-file", "source_id": "downloads", "original_name": "old.pdf",
+    "original_path": "/Users/fixture/Downloads/old.pdf",
+    "current_path": "/Users/fixture/Organized Downloads/Finance/old.pdf",
+    "extension": ".pdf", "mime_type": "application/pdf", "size_bytes": 1024,
+    "created_at": "2026-06-25T10:00:00Z", "modified_at": "2026-06-25T10:00:00Z",
+    "content_hash": "hash-old-file", "discovered_at": "2026-06-25T10:00:00Z",
+    "status": "executed", "category": "Invoice",
+    "suggested_name": "old.pdf", "suggested_destination": "Finance/",
+    "confidence_score": 98, "tier": "auto", "processed_at": "2026-07-01T09:00:00Z",
+    "batch_id": "fixture-batch-0", "approved_by": "auto"
+  },
+  {
+    "file_id": "filed-1", "source_id": "downloads", "original_name": "2026-07-19_acme.pdf",
+    "original_path": "/Users/fixture/Downloads/2026-07-19_acme.pdf",
+    "current_path": "/Users/fixture/Organized Downloads/Finance/2026-07-19_Acme_Invoice.pdf",
+    "extension": ".pdf", "mime_type": "application/pdf", "size_bytes": 1024,
+    "created_at": "2026-07-27T10:00:00Z", "modified_at": "2026-07-27T10:00:00Z",
+    "content_hash": "hash-filed-1", "discovered_at": "2026-07-27T10:00:00Z",
+    "status": "executed", "category": "Invoice",
+    "suggested_name": "2026-07-19_Acme_Invoice.pdf", "suggested_destination": "Finance/",
+    "confidence_score": 97, "tier": "auto", "processed_at": "2026-08-01T10:00:00Z",
+    "batch_id": "fixture-batch-1", "approved_by": "auto"
+  },
+  {
+    "file_id": "filed-2", "source_id": "downloads", "original_name": "IMG_4821.jpg",
+    "original_path": "/Users/fixture/Downloads/IMG_4821.jpg",
+    "current_path": "/Users/fixture/Organized Downloads/Images/vacation_photo.jpg",
+    "extension": ".jpg", "mime_type": "image/jpeg", "size_bytes": 2048,
+    "created_at": "2026-07-27T10:00:00Z", "modified_at": "2026-07-27T10:00:00Z",
+    "content_hash": "hash-filed-2", "discovered_at": "2026-07-27T10:00:00Z",
+    "status": "executed", "category": "Image",
+    "suggested_name": "vacation_photo.jpg", "suggested_destination": "Images/",
+    "confidence_score": 96, "tier": "auto", "processed_at": "2026-08-01T10:00:01Z",
+    "batch_id": "fixture-batch-1", "approved_by": "auto"
+  },
+  {
+    "file_id": "restore-conflict", "source_id": "downloads", "original_name": "locked_file.pdf",
+    "original_path": "/Users/fixture/Downloads/locked_file.pdf",
+    "current_path": "/Users/fixture/Organized Downloads/Documents/locked_file.pdf",
+    "extension": ".pdf", "mime_type": "application/pdf", "size_bytes": 512,
+    "created_at": "2026-07-27T10:00:00Z", "modified_at": "2026-07-27T10:00:00Z",
+    "content_hash": "hash-restore-conflict", "discovered_at": "2026-07-27T10:00:00Z",
+    "status": "executed", "category": "Document",
+    "suggested_name": "locked_file.pdf", "suggested_destination": "Documents/",
+    "confidence_score": 95, "tier": "auto", "processed_at": "2026-08-01T10:00:02Z",
+    "batch_id": "fixture-batch-1", "approved_by": "auto"
+  }
+]

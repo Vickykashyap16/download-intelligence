@@ -36,12 +36,19 @@ public struct AppShell: View {
     // now"/"File the N now" actions all converge on.
     @State private var executeViewModel: ExecuteViewModel?
 
-    // Undo (what Execute's own result screen leads to) remains out of scope
-    // for WP-GUI-07 (`GUI Engineering Work Packages.md`, WP-GUI-07 Scope:
-    // "Out of scope: Undo (next milestone)") — its own, distinct "not built
-    // yet" placeholder, mirroring the exact pattern this file previously
-    // used for Execute itself before this work package filled it in.
-    @State private var isUndoStubShowing = false
+    // Undo (what Execute's own result screen leads to) — WP-GUI-07's own
+    // "not built yet" placeholder here (formerly `isUndoStubShowing`) is
+    // filled in for real by WP-GUI-08. `nil` whenever no Undo dialog is
+    // open; creating one (`beginUndo(filedRows:)`) is what "Undo this
+    // batch" on Execute's result screen leads to. Unlike `scanViewModel`/
+    // `executeViewModel`, Undo is not itself a Sidebar-navigable "screen" —
+    // per `High-Fidelity UI Specification.md` §9's own Layout
+    // Specification, it is "rendered as a Dialog... overlaid on the
+    // context it was triggered from," so it is presented via `.sheet(...)`
+    // on top of whatever `executeViewModel`'s own content already is,
+    // rather than replacing it the way `isUndoStubShowing`'s old
+    // full-content-swap placeholder did.
+    @State private var undoViewModel: UndoViewModel?
 
     // Preview (WP-GUI-05) has nothing in flight to preserve across
     // Sidebar navigation the way a running scan does — `PreviewFlowView`
@@ -165,37 +172,44 @@ public struct AppShell: View {
         executeViewModel = ExecuteViewModel(bridge: bridge)
     }
 
-    /// Undo remains out of scope for WP-GUI-07 (`GUI Engineering Work
-    /// Packages.md`, WP-GUI-07 Scope: "Out of scope: Undo (next
-    /// milestone)") — this is its own "not built yet" placeholder,
-    /// reachable only from Execute's own result screen, mirroring the
-    /// exact "not built yet" stub pattern this file previously used for
-    /// Execute itself (`GUI Architecture Specification.md` §4's "one
-    /// implementation per component, reused everywhere").
-    @ViewBuilder
-    private func undoStub(secondaryAction: @escaping () -> Void) -> some View {
-        EmptyStateView(
-            systemImageName: "arrow.uturn.backward",
-            heading: "Undo isn't built yet",
-            explanation: "That's a future work package.",
-            secondaryActionTitle: "Back",
-            secondaryAction: secondaryAction
-        )
+    /// Starts a new Undo flow — the single place an `UndoViewModel` is
+    /// created, mirroring `beginExecute()`'s own single-creation-point
+    /// pattern. Reachable only from Execute's own result screen pressing
+    /// "Undo this batch"; `filedRows` is that screen's own already-verified
+    /// `ExecuteResultProjection.filedRows`, captured at the moment the
+    /// button is pressed — see `UndoViewModel`'s own documentation for why
+    /// this is seeded directly rather than independently re-derived.
+    private func beginUndo(filedRows: [ExecuteResultProjection.FiledRow]) {
+        undoViewModel = UndoViewModel(bridge: bridge, confirmedRows: filedRows)
     }
 
     @ViewBuilder
     private func placeholderContent(for section: AppSection) -> some View {
         switch section {
         case .home:
-            if isUndoStubShowing {
-                undoStub { isUndoStubShowing = false }
-            } else if let executeViewModel {
+            if let executeViewModel {
                 ExecuteFlowView(
                     viewModel: executeViewModel,
                     onCancel: { self.executeViewModel = nil },
-                    onUndo: { isUndoStubShowing = true },
+                    onUndo: {
+                        // "Undo this batch" is only ever reachable while
+                        // Execute's own result screen is on display, so
+                        // `executeViewModel.phase` is guaranteed to be
+                        // `.result` at the moment this closure runs.
+                        if case .result(let result) = executeViewModel.phase {
+                            beginUndo(filedRows: result.filedRows)
+                        }
+                    },
                     onBackToHome: { self.executeViewModel = nil }
                 )
+                .sheet(isPresented: Binding(
+                    get: { undoViewModel != nil },
+                    set: { isPresented in if !isPresented { undoViewModel = nil } }
+                )) {
+                    if let undoViewModel {
+                        UndoFlowView(viewModel: undoViewModel, onBackToHome: { self.undoViewModel = nil })
+                    }
+                }
             } else if isPreviewShowing {
                 PreviewFlowView(
                     bridge: bridge,
