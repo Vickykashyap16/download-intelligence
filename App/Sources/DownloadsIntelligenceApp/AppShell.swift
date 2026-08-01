@@ -211,6 +211,18 @@ public struct AppShell: View {
                     onGoToPreview: { isPreviewShowing = true }
                 )
             }
+        case .reviewQueue:
+            // "Empty: routes to Home's fully caught up empty state rather
+            // than a bespoke empty Review Queue screen" (`High-Fidelity UI
+            // Specification.md` §5) — a genuinely empty queue at fresh-read
+            // time redirects the Sidebar selection itself back to `.home`,
+            // rather than rendering separate "empty" content under this
+            // section, so the Sidebar highlight always agrees with what's
+            // actually on screen.
+            ReviewQueueSectionView(
+                bridge: bridge,
+                onQueueEmpty: { selectedSection = .home }
+            )
         default:
             EmptyStateView(
                 systemImageName: section.outlineSymbolName,
