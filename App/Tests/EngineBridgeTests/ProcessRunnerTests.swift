@@ -166,7 +166,7 @@ final class ProcessRunnerTests: XCTestCase {
     func test_providerEnable_isRefusedWithoutExplicitOptIn() async throws {
         let runner = try makeRunner()
         do {
-            _ = try await runner.run(.provider(.enable))
+            _ = try await runner.run(.provider(.enable(yes: false)))
             XCTFail("Expected commandRequiresInteractiveInput to be thrown")
         } catch EngineBridgeError.commandRequiresInteractiveInput {
             // expected
@@ -175,10 +175,23 @@ final class ProcessRunnerTests: XCTestCase {
 
     func test_providerEnable_withExplicitOptIn_receivesImmediateEOFRatherThanHanging() async throws {
         let runner = try makeRunner()
-        let result = try await runner.run(.provider(.enable), allowInteractive: true)
+        let result = try await runner.run(.provider(.enable(yes: false)), allowInteractive: true)
 
         XCTAssertEqual(result.exitCode, 1)
         XCTAssertTrue(result.standardError.contains("EOF"))
+    }
+
+    // MARK: - provider enable -y (INFRA-01 / OD-GUI-5, consumed by WP-GUI-12)
+
+    func test_providerEnable_withYes_isNeverRefused_noAllowInteractiveNeeded() async throws {
+        // `requiresInteractiveInput` is false for `.enable(yes: true)`, so
+        // this must succeed with the default `allowInteractive: false` —
+        // proving EngineCommand's `yes` flag actually reaches ProcessRunner's
+        // refusal gate, not just its own `argv`.
+        let runner = try makeRunner()
+        let result = try await runner.run(.provider(.enable(yes: true)))
+
+        XCTAssertTrue(result.succeeded)
     }
 
     // MARK: - additionalEnvironment (INFRA-01 / OD-GUI-6)

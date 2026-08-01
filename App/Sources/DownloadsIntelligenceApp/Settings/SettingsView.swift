@@ -8,21 +8,23 @@ import EngineBridge
 /// Onboarding already established, plus an About section reporting both the
 /// real application and engine version (WP-GUI-11 Acceptance Criteria).
 ///
-/// AI Provider Settings (the disclosure-gated provider entry Hi-Fi §12
-/// mentions) and the undocumented "Documentation" label item are both out
-/// of this work package's scope (WP-GUI-11's own Scope: "Out of scope: AI
-/// Provider Settings, next milestone"; "Documentation" has no defined
-/// destination anywhere in this project's design documents and is not
-/// listed in WP-GUI-11's own Deliverables/Acceptance Criteria) — this
-/// screen is deliberately just the two sections WP-GUI-11 actually commits
-/// to, laid out so a future work package can add a third selector entry
-/// additively, the same way `AppShell`'s own switch already extends
-/// additively per section.
+/// AI Provider Settings (WP-GUI-12, added additively here) is the third
+/// selector entry the comment above used to anticipate as future work —
+/// per Hi-Fi §13's own Layout Specification, it's reached from this
+/// selector but rendered as "its own distinctly-weighted screen" rather
+/// than an inline section, since its disclosure content needs room to be
+/// read in full; `onOpenAIProviderSettings` is `SettingsSectionView`'s own
+/// local, `NavigationLink`-free toggle to that screen, not a new
+/// navigation primitive introduced here. The undocumented "Documentation"
+/// label item remains out of scope (it has no defined destination
+/// anywhere in this project's design documents).
 public struct SettingsView: View {
     @ObservedObject private var viewModel: SettingsViewModel
+    private let onOpenAIProviderSettings: () -> Void
 
-    public init(viewModel: SettingsViewModel) {
+    public init(viewModel: SettingsViewModel, onOpenAIProviderSettings: @escaping () -> Void) {
         self.viewModel = viewModel
+        self.onOpenAIProviderSettings = onOpenAIProviderSettings
     }
 
     public var body: some View {
@@ -44,6 +46,7 @@ public struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 32) {
                         sourceSection
                         destinationSection
+                        aiProviderSection
                         aboutSection
                     }
                     .frame(maxWidth: 480, alignment: .leading)
@@ -120,6 +123,30 @@ public struct SettingsView: View {
                     Task { await viewModel.chooseDestinationFolder(url) }
                 }
             }
+        }
+    }
+
+    // MARK: - AI Provider
+
+    /// The third selector entry (see this type's own top-level
+    /// documentation). Deliberately does not surface the current on/off
+    /// status here — status ownership belongs to the dedicated screen
+    /// itself (§13's own "Status: Off/On" is that screen's Content
+    /// Specification, not this selector's), so this row stays a plain
+    /// entry point rather than duplicating state two places could disagree
+    /// on.
+    @ViewBuilder
+    private var aiProviderSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("AI Provider")
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+
+            Text("Optional, off by default. Uses Anthropic's Claude API for harder classification judgment calls.")
+                .font(.body)
+                .foregroundStyle(.secondary)
+
+            SecondaryButton("Open AI Provider Settings", action: onOpenAIProviderSettings)
         }
     }
 

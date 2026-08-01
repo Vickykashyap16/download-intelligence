@@ -33,7 +33,22 @@ public enum EngineCommand: Equatable, Sendable {
     }
 
     public enum ProviderAction: Equatable, Sendable {
-        case enable
+        /// `yes: true` maps to the CLI's `-y`/`--yes` flag (INFRA-01 /
+        /// OD-GUI-5), skipping only the interactive confirmation prompt —
+        /// the disclosure text itself still prints engine-side regardless.
+        /// Mirrors `EngineCommand.execute(yes: Bool, debug: Bool)`'s exact
+        /// existing shape. The default (`false`) reproduces the exact
+        /// pre-INFRA-01 behavior byte-for-byte — still refused by
+        /// `ProcessRunner` without an explicit `allowInteractive` opt-in,
+        /// still mapping to bare `["provider", "enable"]` — for any caller
+        /// that constructs `.enable()` with no argument. Swift's own
+        /// pattern-matching rules mean this default only helps at
+        /// construction sites, not `switch`/`case` sites, so every existing
+        /// bare `.provider(.enable)` reference (a handful of call sites in
+        /// this package's own tests) needed updating to `.enable(yes:)`
+        /// alongside this change — a one-time, fully mechanical migration,
+        /// not a behavior change for any of them.
+        case enable(yes: Bool = false)
         case disable
         case status
     }
@@ -79,8 +94,10 @@ public enum EngineCommand: Equatable, Sendable {
             return ["init"]
         case .provider(let action):
             switch action {
-            case .enable:
-                return ["provider", "enable"]
+            case .enable(let yes):
+                var args = ["provider", "enable"]
+                if yes { args.append("-y") }
+                return args
             case .disable:
                 return ["provider", "disable"]
             case .status:
@@ -113,28 +130,28 @@ public enum EngineCommand: Equatable, Sendable {
     /// package also applies unconditionally, to hang forever waiting on
     /// input that will never arrive).
     ///
-    /// `provider enable`'s lack of any non-interactive mode today is a real,
-    /// disclosed gap between what a future AI Provider Settings screen will
-    /// need (a way to invoke `provider enable` after the GUI has already
-    /// shown its own disclosure and collected confirmation) and what the CLI
-    /// currently exposes. WP-GUI-00 does not resolve that gap — resolving it
-    /// would mean adding a new flag to `src/cli.py`, a change to a frozen
-    /// module requiring its own authorization under the
-    /// `Frozen Module Change Policy`, entirely out of this work package's
-    /// scope (`GUI Architecture Specification.md` §3's explicit "flags it
-    /// here as a concrete, well-scoped future engineering request... not as
-    /// something decided or built now" precedent, applied to this specific
-    /// case). It is recorded here, in code, precisely so the AI Provider
-    /// Settings work package (WP-GUI-12) inherits this fact rather than
-    /// re-discovering it.
+    /// `provider enable`'s original lack of any non-interactive mode was a
+    /// real, disclosed gap (tracked as OD-GUI-5) between what the AI
+    /// Provider Settings screen needs (a way to invoke `provider enable`
+    /// after the GUI has already shown its own disclosure and collected
+    /// confirmation) and what the CLI exposed at WP-GUI-00 time. It was
+    /// resolved by INFRA-01, which added `-y`/`--yes` to `provider enable`
+    /// in `src/cli.py` under the Frozen Module Change Policy's lightweight
+    /// patch path (`OD-GUI-5`, now Resolved). `.provider(.enable(yes:))`'s
+    /// `yes` parameter is this case's own counterpart to that flag, mirroring
+    /// `.execute(yes:debug:)` exactly: passing `yes: true` is what actually
+    /// reaches the new flag via `argv` above, and is also what this property
+    /// uses to report that the invocation no longer requires an interactive
+    /// terminal — both must agree, the same way `.execute`'s `yes` already
+    /// governs both its own `argv` and this property together.
     public var requiresInteractiveInput: Bool {
         switch self {
         case .initialSetup:
             return true
         case .execute(let yes, _):
             return !yes
-        case .provider(.enable):
-            return true
+        case .provider(.enable(let yes)):
+            return !yes
         default:
             return false
         }

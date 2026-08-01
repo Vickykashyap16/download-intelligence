@@ -89,8 +89,19 @@ final class EngineCommandTests: XCTestCase {
         XCTAssertEqual(EngineCommand.initialSetup.argv, ["init"])
     }
 
-    func test_provider_argv_enable() {
-        XCTAssertEqual(EngineCommand.provider(.enable).argv, ["provider", "enable"])
+    func test_provider_argv_enable_withoutYes() {
+        XCTAssertEqual(EngineCommand.provider(.enable(yes: false)).argv, ["provider", "enable"])
+    }
+
+    func test_provider_argv_enable_defaultYesValue() {
+        // The `yes` parameter's default (`false`) must reproduce the exact
+        // pre-INFRA-01 argv — confirms `.enable()`'s default is wired
+        // through to `argv`, not just declared.
+        XCTAssertEqual(EngineCommand.provider(.enable()).argv, ["provider", "enable"])
+    }
+
+    func test_provider_argv_enable_withYes() {
+        XCTAssertEqual(EngineCommand.provider(.enable(yes: true)).argv, ["provider", "enable", "-y"])
     }
 
     func test_provider_argv_disable() {
@@ -106,11 +117,17 @@ final class EngineCommandTests: XCTestCase {
     func test_requiresInteractiveInput_trueOnlyForTheThreeDocumentedPaths() {
         XCTAssertTrue(EngineCommand.initialSetup.requiresInteractiveInput)
         XCTAssertTrue(EngineCommand.execute(yes: false, debug: false).requiresInteractiveInput)
-        XCTAssertTrue(EngineCommand.provider(.enable).requiresInteractiveInput)
+        XCTAssertTrue(EngineCommand.provider(.enable(yes: false)).requiresInteractiveInput)
     }
 
     func test_requiresInteractiveInput_falseForExecuteWithYes() {
         XCTAssertFalse(EngineCommand.execute(yes: true, debug: false).requiresInteractiveInput)
+    }
+
+    func test_requiresInteractiveInput_falseForProviderEnableWithYes() {
+        // INFRA-01 / OD-GUI-5: `yes: true` is what WP-GUI-12 relies on to
+        // invoke `provider enable` without ProcessRunner's upfront refusal.
+        XCTAssertFalse(EngineCommand.provider(.enable(yes: true)).requiresInteractiveInput)
     }
 
     func test_requiresInteractiveInput_falseForEverythingElse() {
@@ -150,7 +167,8 @@ final class EngineCommandTests: XCTestCase {
             .undo(.last),
             .config(setSource: "/x"),
             .initialSetup,
-            .provider(.enable),
+            .provider(.enable(yes: false)),
+            .provider(.enable(yes: true)),
             .provider(.disable)
         ]
         for command in mutatingCommands {

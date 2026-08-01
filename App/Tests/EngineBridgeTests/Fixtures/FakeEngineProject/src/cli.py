@@ -32,8 +32,9 @@ behavior of the real src/cli.py:
   EngineMutationGuardTests can deterministically observe one mutating
   invocation still "in flight" when a second is attempted concurrently.
 * `provider`'s sub-branches mirror the real CLI's `enable` (interactive,
-  reads stdin), `disable` (non-interactive, immediate), and `status`
-  (read-only, immediate) shape.
+  reads stdin, unless `-y`/`--yes` is present — INFRA-01 / OD-GUI-5),
+  `disable` (non-interactive, immediate), and `status` (read-only,
+  immediate) shape.
 * The `DI_TEST_ENV_MARKER` check below exists only so
   ProcessRunnerTests can verify INFRA-01 / OD-GUI-6's
   `additionalEnvironment` parameter actually reaches this child process's
@@ -100,6 +101,8 @@ def main() -> int:
     if command == "provider":
         sub = args[1] if len(args) > 1 else None
         if sub == "enable":
+            if "-y" in args or "--yes" in args:
+                return 0
             try:
                 input()
             except EOFError:
