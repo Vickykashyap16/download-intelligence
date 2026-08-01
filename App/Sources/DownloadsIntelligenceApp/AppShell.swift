@@ -289,6 +289,8 @@ public struct AppShell: View {
                     beginUndo(filedRows: filedRows, target: .batchID(batchID))
                 }
             )
+        case .reports:
+            ReportsSectionView(bridge: bridge)
         default:
             EmptyStateView(
                 systemImageName: section.outlineSymbolName,
