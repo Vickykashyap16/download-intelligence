@@ -125,22 +125,52 @@ final class ExecuteViewModelTests: XCTestCase {
         XCTAssertFalse(allFileIDs.contains("needs-approval"))
     }
 
-    // MARK: - Real second fresh read before commit: a batch that empties out between load and confirm is caught
+    // MARK: - Real second fresh read before commit: a batch that genuinely empties between load and commit is caught
 
+    /// Deliberately does not use "call `confirmAndExecute()` twice" as its
+    /// simulation technique. `src/pipeline/execution.py`'s own documented
+    /// semantics (`needs_execution()`: "The sole recognition signal is
+    /// `record.processed_at is None`") make clear that a per-file failure —
+    /// this fixture's `auto-locked` record — never sets `processed_at`, so
+    /// it remains genuinely, correctly eligible for retry on every
+    /// subsequent `execute` (`reconcile_batch()`'s own `SAFE_TO_RETRY`
+    /// branch: "the record is already correctly positioned for
+    /// `needs_execution()` to pick it up again on the next
+    /// `execute_batch()` call"). A batch containing that record can never
+    /// become empty just by re-invoking `confirmAndExecute()` — that would
+    /// contradict the engine's own safe-retry guarantee, not exercise a
+    /// genuine empty-batch condition.
+    ///
+    /// Instead, this test simulates the pending batch genuinely
+    /// disappearing between `loadConfirmation()` and `confirmAndExecute()`
+    /// (e.g. another process already executed everything) the same way
+    /// `MetadataStoreReader` itself documents an empty store: overwriting
+    /// the isolated fixture copy's own `metadata_store.json` with `[]`
+    /// directly, before `confirmAndExecute()` performs its own required
+    /// fresh read.
     func test_confirmAndExecute_batchBecomesEmptyBeforeCommit_reportsNothingToFile() async throws {
-        let bridge = try makeIsolatedBridge(project: "ExecutingEngineProject")
+        let root = try fixtureURL("ExecutingEngineProject")
+        let tempRoot = makeTempDirectory()
+        try FileManager.default.copyItem(at: root, to: tempRoot)
+        addTeardownBlock { try? FileManager.default.removeItem(at: tempRoot) }
+        let metadataStoreURL = tempRoot.appendingPathComponent("Database/Metadata/metadata_store.json")
+        try FileManager.default.setAttributes([.posixPermissions: 0o644], ofItemAtPath: metadataStoreURL.path)
+
+        let bridge = EngineBridge(configuration: .init(
+            projectRootURL: tempRoot,
+            minimumSupportedEngineVersion: minimumSupportedVersion,
+            maximumSupportedEngineVersion: maximumSupportedVersion,
+            guiLogDirectoryURL: makeTempDirectory()
+        ))
         let viewModel = ExecuteViewModel(bridge: bridge)
 
         await viewModel.loadConfirmation()
         guard case .confirming = viewModel.phase else {
-            return XCTFail("expected .confirming before simulating an out-of-band change")
+            return XCTFail("expected .confirming before simulating the batch genuinely disappearing")
         }
 
-        // Simulate the batch becoming empty between load and commit (e.g.
-        // another process already executed everything) by invoking execute
-        // twice in a row — the second invocation's own fresh pre-commit
-        // read must see nothing left to file.
-        await viewModel.confirmAndExecute()
+        try "[]".write(to: metadataStoreURL, atomically: true, encoding: .utf8)
+
         await viewModel.confirmAndExecute()
 
         XCTAssertEqual(viewModel.phase, .nothingToFile)
