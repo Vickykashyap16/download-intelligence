@@ -24,13 +24,24 @@ public struct AppShell: View {
     @State private var scanViewModel: ScanViewModel?
 
     // Execute (what Scan Complete's "File the N now" and Home's "File them
-    // now" both lead to) remains out of scope for WP-GUI-04 — this is its
-    // own, distinct "not built yet" placeholder, separate from scanning
-    // now that scanning does something real. Reusing the scan stub here
-    // instead (as WP-GUI-03 did, before either screen existed) would
-    // incorrectly launch a real `run` invocation when the user actually
-    // asked to file an already-computed batch.
-    @State private var isFilingStubShowing = false
+    // now" both lead to) — WP-GUI-04's own "not built yet" placeholder here
+    // (formerly `isFilingStubShowing`) is filled in for real by WP-GUI-07.
+    // Owned here, at `AppShell`'s level, for the same reason `scanViewModel`
+    // is: Execute is a real, physical file operation running as a
+    // background subprocess, and Sidebar navigation away from it must never
+    // silently abandon an in-flight invocation (`ExecuteViewModel`'s own
+    // documentation; `Desktop Implementation Blueprint.md` §7). `nil`
+    // whenever no Execute flow is in progress or being reviewed; creating
+    // one (`beginExecute()`) is what the user's "File them now"/"Execute
+    // now"/"File the N now" actions all converge on.
+    @State private var executeViewModel: ExecuteViewModel?
+
+    // Undo (what Execute's own result screen leads to) remains out of scope
+    // for WP-GUI-07 (`GUI Engineering Work Packages.md`, WP-GUI-07 Scope:
+    // "Out of scope: Undo (next milestone)") — its own, distinct "not built
+    // yet" placeholder, mirroring the exact pattern this file previously
+    // used for Execute itself before this work package filled it in.
+    @State private var isUndoStubShowing = false
 
     // Preview (WP-GUI-05) has nothing in flight to preserve across
     // Sidebar navigation the way a running scan does — `PreviewFlowView`
@@ -105,7 +116,7 @@ public struct AppShell: View {
                         },
                         onFileNow: {
                             self.scanViewModel = nil
-                            isFilingStubShowing = true
+                            beginExecute()
                             Task { await lifecycle.start() }
                         },
                         extraCompletionActionTitle: "Continue to Home",
@@ -144,19 +155,30 @@ public struct AppShell: View {
         scanViewModel = ScanViewModel(bridge: bridge)
     }
 
-    /// Execute remains out of scope for WP-GUI-04 (`GUI Engineering Work
-    /// Packages.md`, WP-GUI-04 Scope: "Out of scope: Preview, Review Queue,
-    /// or Execute") — this is its own "not built yet" placeholder, shared
-    /// by every call site that can reach it (Home's "File them now," Scan
-    /// Complete's "File the N now"), one implementation reused per `GUI
-    /// Architecture Specification.md` §4.
+    /// Starts a new Execute flow — the single place an `ExecuteViewModel`
+    /// is created, so every entry point that can reach Execute (Home's
+    /// "File them now," Scan Complete's "File the N now," Preview's
+    /// "Execute now," and onboarding's own "File the N now") always begins
+    /// from the exact same fresh state, mirroring `beginScan()`'s own
+    /// single-creation-point pattern.
+    private func beginExecute() {
+        executeViewModel = ExecuteViewModel(bridge: bridge)
+    }
+
+    /// Undo remains out of scope for WP-GUI-07 (`GUI Engineering Work
+    /// Packages.md`, WP-GUI-07 Scope: "Out of scope: Undo (next
+    /// milestone)") — this is its own "not built yet" placeholder,
+    /// reachable only from Execute's own result screen, mirroring the
+    /// exact "not built yet" stub pattern this file previously used for
+    /// Execute itself (`GUI Architecture Specification.md` §4's "one
+    /// implementation per component, reused everywhere").
     @ViewBuilder
-    private func filingStub(secondaryAction: @escaping () -> Void) -> some View {
+    private func undoStub(secondaryAction: @escaping () -> Void) -> some View {
         EmptyStateView(
-            systemImageName: "tray.and.arrow.down",
-            heading: "Filing isn't built yet",
+            systemImageName: "arrow.uturn.backward",
+            heading: "Undo isn't built yet",
             explanation: "That's a future work package.",
-            secondaryActionTitle: "Back to Home",
+            secondaryActionTitle: "Back",
             secondaryAction: secondaryAction
         )
     }
@@ -165,14 +187,21 @@ public struct AppShell: View {
     private func placeholderContent(for section: AppSection) -> some View {
         switch section {
         case .home:
-            if isFilingStubShowing {
-                filingStub { isFilingStubShowing = false }
+            if isUndoStubShowing {
+                undoStub { isUndoStubShowing = false }
+            } else if let executeViewModel {
+                ExecuteFlowView(
+                    viewModel: executeViewModel,
+                    onCancel: { self.executeViewModel = nil },
+                    onUndo: { isUndoStubShowing = true },
+                    onBackToHome: { self.executeViewModel = nil }
+                )
             } else if isPreviewShowing {
                 PreviewFlowView(
                     bridge: bridge,
                     onExecuteNow: {
                         isPreviewShowing = false
-                        isFilingStubShowing = true
+                        beginExecute()
                     },
                     onReview: {
                         isPreviewShowing = false
@@ -195,7 +224,7 @@ public struct AppShell: View {
                     },
                     onFileNow: {
                         self.scanViewModel = nil
-                        isFilingStubShowing = true
+                        beginExecute()
                     },
                     onReviewFullPlan: {
                         self.scanViewModel = nil
@@ -207,7 +236,7 @@ public struct AppShell: View {
                     bridge: bridge,
                     onGoToReviewQueue: { selectedSection = .reviewQueue },
                     onScanRequested: { beginScan() },
-                    onFileThemNow: { isFilingStubShowing = true },
+                    onFileThemNow: { beginExecute() },
                     onGoToPreview: { isPreviewShowing = true }
                 )
             }
