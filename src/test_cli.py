@@ -1219,6 +1219,64 @@ def test_provider_enable_disclosure_text_shown_before_confirmation(tmp_path, mon
     assert "never written to src/config/sources.yaml" in captured.out
 
 
+def test_provider_enable_yes_flag_skips_confirmation_prompt(tmp_path, monkeypatch, capsys):
+    """INFRA-01 / OD-GUI-5: -y/--yes must enable without ever calling
+    input() — a scripted input list of zero responses raises if input() is
+    called at all, so this fails loudly if the prompt is not actually
+    skipped."""
+    config_path = _write_realistic_sources_config_with_provider_keys(tmp_path, monkeypatch)
+    monkeypatch.setattr(cli_module, "registered_classification_providers", lambda: ["claude"])
+    monkeypatch.setattr(cli_module, "registered_extraction_providers", lambda: ["claude"])
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-123")
+    monkeypatch.setattr("builtins.input", _scripted_input([]))
+
+    exit_code = cli_module.main(["provider", "enable", "-y"])
+
+    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert "enabled" in captured.out.lower()
+    reloaded = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    assert reloaded["ai_provider_consent"] is True
+    assert reloaded["classification_provider"] == "claude"
+    assert reloaded["extraction_provider"] == "claude"
+
+
+def test_provider_enable_yes_flag_still_shows_disclosure(tmp_path, monkeypatch, capsys):
+    """The confirmation prompt is skipped by -y, but the disclosure text
+    itself must still be printed — -y bypasses the interactive confirmation
+    step only, not the disclosure guarantee."""
+    _write_realistic_sources_config_with_provider_keys(tmp_path, monkeypatch)
+    monkeypatch.setattr(cli_module, "registered_classification_providers", lambda: ["claude"])
+    monkeypatch.setattr(cli_module, "registered_extraction_providers", lambda: ["claude"])
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-123")
+    monkeypatch.setattr("builtins.input", _scripted_input([]))
+
+    cli_module.main(["provider", "enable", "--yes"])
+
+    captured = capsys.readouterr()
+    assert "real, metered API cost" in captured.out
+    assert "never written to src/config/sources.yaml" in captured.out
+
+
+def test_provider_enable_without_yes_flag_still_prompts(tmp_path, monkeypatch, capsys):
+    """Backward-compatibility check: omitting -y must reproduce the exact
+    pre-INFRA-01 behavior — input() is still called, and a declined answer
+    still changes nothing."""
+    config_path = _write_realistic_sources_config_with_provider_keys(tmp_path, monkeypatch)
+    monkeypatch.setattr(cli_module, "registered_classification_providers", lambda: ["claude"])
+    monkeypatch.setattr(cli_module, "registered_extraction_providers", lambda: ["claude"])
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-123")
+    monkeypatch.setattr("builtins.input", _scripted_input(["n"]))
+
+    exit_code = cli_module.main(["provider", "enable"])
+
+    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert "Not enabled" in captured.out
+    reloaded = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    assert reloaded["ai_provider_consent"] is False
+
+
 def test_provider_disable_writes_only_consent_key(tmp_path, monkeypatch, capsys):
     config_path = _write_realistic_sources_config_with_provider_keys(
         tmp_path, monkeypatch, classification_provider="claude",

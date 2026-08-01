@@ -181,6 +181,61 @@ final class ProcessRunnerTests: XCTestCase {
         XCTAssertTrue(result.standardError.contains("EOF"))
     }
 
+    // MARK: - additionalEnvironment (INFRA-01 / OD-GUI-6)
+
+    func test_additionalEnvironment_defaultOmitted_leavesChildEnvironmentUnaffected() async throws {
+        let runner = try makeRunner()
+        let result = try await runner.run(.version)
+
+        // No DI_TEST_ENV_MARKER was supplied, so the fixture's echo branch
+        // never fires — proving the default (`[:]`) reproduces today's
+        // exact behavior with no new output introduced.
+        XCTAssertFalse(result.standardOutput.contains("ENV_ECHO:"))
+        XCTAssertTrue(result.standardOutput.contains("Pipeline Version: 9.9.9-fixture"))
+    }
+
+    func test_additionalEnvironment_isDeliveredToTheChildProcess() async throws {
+        let runner = try makeRunner()
+        let result = try await runner.run(
+            .version,
+            additionalEnvironment: ["DI_TEST_ENV_MARKER": "infra-01-injected"]
+        )
+
+        XCTAssertTrue(result.standardOutput.contains("ENV_ECHO:infra-01-injected"))
+        // The ambient environment (needed to resolve `python3` via
+        // `/usr/bin/env` in the first place) is still present — this is a
+        // merge, not a replacement.
+        XCTAssertTrue(result.standardOutput.contains("Pipeline Version: 9.9.9-fixture"))
+    }
+
+    func test_additionalEnvironment_takesPrecedenceOverAmbientValueOnCollision() async throws {
+        setenv("DI_TEST_ENV_MARKER", "ambient-value", 1)
+        defer { unsetenv("DI_TEST_ENV_MARKER") }
+
+        let runner = try makeRunner()
+        let result = try await runner.run(
+            .version,
+            additionalEnvironment: ["DI_TEST_ENV_MARKER": "injected-value"]
+        )
+
+        XCTAssertTrue(result.standardOutput.contains("ENV_ECHO:injected-value"))
+        XCTAssertFalse(result.standardOutput.contains("ENV_ECHO:ambient-value"))
+    }
+
+    func test_additionalEnvironment_isNeverReportedToTheLogger() async throws {
+        let recorder = RecordingLogger()
+        let runner = try makeRunner(logger: recorder)
+
+        _ = try await runner.run(.version, additionalEnvironment: ["DI_TEST_ENV_MARKER": "should-not-be-logged"])
+
+        let logged = await recorder.results
+        XCTAssertEqual(logged.count, 1)
+        // CommandResult carries only command/exitCode/stdout/stderr —
+        // additionalEnvironment has no field to leak into, and the logged
+        // command's own description is argv-derived only.
+        XCTAssertEqual(logged.first?.command.description, "version")
+    }
+
     // MARK: - Missing project root
 
     func test_missingProjectRoot_throwsProjectRootNotFound() async throws {

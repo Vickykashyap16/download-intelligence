@@ -74,14 +74,28 @@ public actor ProcessRunner {
 
     /// Runs `command` to completion and returns its full result.
     ///
-    /// - Parameter allowInteractive: Must be `true` to run a command for
-    ///   which `command.requiresInteractiveInput` is `true`. Defaults to
-    ///   `false`. This package provides no mechanism to actually *supply*
-    ///   interactive input even when this is `true` — stdin is always
-    ///   closed immediately after launch (see type documentation) — so
-    ///   setting this to `true` only changes whether the refusal in rule 1
-    ///   above happens; it does not make an interactive command behave
-    ///   differently once it starts.
+    /// - Parameters:
+    ///   - allowInteractive: Must be `true` to run a command for
+    ///     which `command.requiresInteractiveInput` is `true`. Defaults to
+    ///     `false`. This package provides no mechanism to actually *supply*
+    ///     interactive input even when this is `true` — stdin is always
+    ///     closed immediately after launch (see type documentation) — so
+    ///     setting this to `true` only changes whether the refusal in rule 1
+    ///     above happens; it does not make an interactive command behave
+    ///     differently once it starts.
+    ///   - additionalEnvironment: Extra environment variables merged over
+    ///     the inherited (ambient) environment for this invocation only,
+    ///     taking precedence on key collision. Defaults to `[:]`, which is a
+    ///     no-op — every existing caller that omits this parameter observes
+    ///     the exact prior behavior (full, unmodified ambient-environment
+    ///     inheritance). Added for INFRA-01 / OD-GUI-6 so a caller can
+    ///     deliver a credential (e.g. `ANTHROPIC_API_KEY`, retrieved from
+    ///     platform secure storage) to this one subprocess invocation
+    ///     without it ever being written to disk. This value is never
+    ///     logged: `CommandResult` carries only `command`/`exitCode`/
+    ///     `standardOutput`/`standardError`, and `GUILogger.log(result:)`
+    ///     never receives the `Process` or its environment — this parameter
+    ///     is deliberately kept out of both.
     /// - Throws: `EngineBridgeError.commandRequiresInteractiveInput` if
     ///   refused per rule 1; `EngineBridgeError.projectRootNotFound` if the
     ///   configured project root does not exist;
@@ -91,7 +105,8 @@ public actor ProcessRunner {
     ///   `CommandResult.outcome`).
     public func run(
         _ command: EngineCommand,
-        allowInteractive: Bool = false
+        allowInteractive: Bool = false,
+        additionalEnvironment: [String: String] = [:]
     ) async throws -> CommandResult {
         if command.requiresInteractiveInput && !allowInteractive {
             throw EngineBridgeError.commandRequiresInteractiveInput(command)
@@ -104,6 +119,20 @@ public actor ProcessRunner {
         process.currentDirectoryURL = configuration.projectRootURL
         process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
         process.arguments = configuration.pythonInvocation + ["-m", "src.cli"] + command.argv
+        if !additionalEnvironment.isEmpty {
+            // Merging over the ambient environment, rather than assigning
+            // `additionalEnvironment` alone, preserves everything the child
+            // would otherwise need (PATH, HOME, the Python interpreter's own
+            // resolution, etc.) — the same inherited environment every
+            // existing invocation already relies on, with just the supplied
+            // keys added or overridden on top. Left unset (the default,
+            // empty-dictionary case) `Process.environment` stays `nil`,
+            // which is exactly today's behavior: full, unmodified ambient
+            // inheritance.
+            process.environment = ProcessInfo.processInfo.environment.merging(
+                additionalEnvironment, uniquingKeysWith: { _, new in new }
+            )
+        }
 
         let stdinPipe = Pipe()
         let stdoutPipe = Pipe()

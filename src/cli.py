@@ -275,8 +275,17 @@ def build_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     provider_subparsers = provider_parser.add_subparsers(dest="provider_action")
-    provider_subparsers.add_parser(
+    enable_parser = provider_subparsers.add_parser(
         "enable", help="Turn on the Claude API provider (requires confirmation)."
+    )
+    enable_parser.add_argument(
+        "-y", "--yes", action="store_true",
+        help=(
+            "Skip the interactive confirmation prompt. The disclosure text "
+            "is still shown. Intended for a caller (e.g. a GUI) that has "
+            "already shown its own equivalent disclosure and collected "
+            "explicit confirmation before invoking this command."
+        ),
     )
     provider_subparsers.add_parser(
         "disable", help="Turn the opt-in provider back off."
@@ -581,7 +590,7 @@ _PROVIDER_DISCLOSURE_TEXT = (
 def _cmd_provider(args: argparse.Namespace) -> int:
     action = getattr(args, "provider_action", None)
     if action == "enable":
-        return _provider_enable()
+        return _provider_enable(yes=getattr(args, "yes", False))
     if action == "disable":
         return _provider_disable()
     if action in (None, "status"):
@@ -590,7 +599,7 @@ def _cmd_provider(args: argparse.Namespace) -> int:
     return 2
 
 
-def _provider_enable() -> int:
+def _provider_enable(yes: bool = False) -> int:
     classification_providers = registered_classification_providers()
     extraction_providers = registered_extraction_providers()
     if _PROVIDER_KEY not in classification_providers or _PROVIDER_KEY not in extraction_providers:
@@ -611,7 +620,7 @@ def _provider_enable() -> int:
         return 0
 
     print(_PROVIDER_DISCLOSURE_TEXT)
-    if not _confirm("Enable the Claude API provider?"):
+    if not yes and not _confirm("Enable the Claude API provider?"):
         print("Not enabled. Nothing was changed.")
         return 0
 

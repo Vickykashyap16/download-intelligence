@@ -34,7 +34,14 @@ behavior of the real src/cli.py:
 * `provider`'s sub-branches mirror the real CLI's `enable` (interactive,
   reads stdin), `disable` (non-interactive, immediate), and `status`
   (read-only, immediate) shape.
+* The `DI_TEST_ENV_MARKER` check below exists only so
+  ProcessRunnerTests can verify INFRA-01 / OD-GUI-6's
+  `additionalEnvironment` parameter actually reaches this child process's
+  environment (and takes precedence over an ambient value of the same
+  name) — it is not part of the real CLI's contract and does not
+  correspond to any real argv or command.
 """
+import os
 import sys
 import time
 
@@ -44,6 +51,10 @@ def main() -> int:
     if not args:
         print("fixture: no command given", file=sys.stderr)
         return 2
+
+    marker = os.environ.get("DI_TEST_ENV_MARKER")
+    if marker is not None:
+        print(f"ENV_ECHO:{marker}")
 
     command = args[0]
 

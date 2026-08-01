@@ -210,15 +210,27 @@ public actor EngineBridge {
     /// after first verifying engine compatibility.
     ///
     /// This method's entire body is orchestration: verify compatibility,
-    /// then delegate to `EngineMutationGuard.run(_:via:allowInteractive:)`
+    /// then delegate to
+    /// `EngineMutationGuard.run(_:via:allowInteractive:additionalEnvironment:)`
     /// — the single-mutation-slot rule (Task #578), the actual subprocess
     /// mechanics (Task #577), and per-invocation GUI logging (Task #580,
     /// via the `logger` already wired into `processRunner`) all remain
     /// exactly where they were built, not reimplemented here.
-    public func run(_ command: EngineCommand, allowInteractive: Bool = false) async throws -> CommandResult {
+    /// - Parameter additionalEnvironment: Forwarded unchanged to
+    ///   `EngineMutationGuard.run(_:via:allowInteractive:additionalEnvironment:)`.
+    ///   Defaults to `[:]`, a no-op, so every existing caller is unaffected
+    ///   (INFRA-01 / OD-GUI-6). Never logged: the `catch` block below logs
+    ///   only the command description and the error, never this value.
+    public func run(
+        _ command: EngineCommand,
+        allowInteractive: Bool = false,
+        additionalEnvironment: [String: String] = [:]
+    ) async throws -> CommandResult {
         try await verifyEngineIsCompatible()
         do {
-            return try await mutationGuard.run(command, via: processRunner, allowInteractive: allowInteractive)
+            return try await mutationGuard.run(
+                command, via: processRunner, allowInteractive: allowInteractive, additionalEnvironment: additionalEnvironment
+            )
         } catch {
             // ProcessRunner logs every CommandResult it actually produces,
             // success or failure, through the shared logger already — that

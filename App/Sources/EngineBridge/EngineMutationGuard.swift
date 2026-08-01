@@ -75,18 +75,25 @@ public actor EngineMutationGuard {
     ///     mechanics remain two independently testable responsibilities,
     ///     per this work package's "no duplicated logic" / single-
     ///     responsibility engineering standard.
-    ///   - allowInteractive: Forwarded unchanged to `runner.run(_:allowInteractive:)`.
+    ///   - allowInteractive: Forwarded unchanged to `runner.run(_:allowInteractive:additionalEnvironment:)`.
+    ///   - additionalEnvironment: Forwarded unchanged to
+    ///     `runner.run(_:allowInteractive:additionalEnvironment:)`. Defaults
+    ///     to `[:]`, a no-op, so every existing caller is unaffected
+    ///     (INFRA-01 / OD-GUI-6).
     /// - Throws: `EngineBridgeError.anotherMutatingOperationInProgress` if
     ///   `command.isMutating` is `true` and a different mutating command is
     ///   already occupying the slot. Otherwise, propagates whatever
-    ///   `runner.run(_:allowInteractive:)` itself throws.
+    ///   `runner.run(_:allowInteractive:additionalEnvironment:)` itself throws.
     public func run(
         _ command: EngineCommand,
         via runner: ProcessRunner,
-        allowInteractive: Bool = false
+        allowInteractive: Bool = false,
+        additionalEnvironment: [String: String] = [:]
     ) async throws -> CommandResult {
         guard command.isMutating else {
-            return try await runner.run(command, allowInteractive: allowInteractive)
+            return try await runner.run(
+                command, allowInteractive: allowInteractive, additionalEnvironment: additionalEnvironment
+            )
         }
 
         guard !mutationInFlight else {
@@ -95,6 +102,8 @@ public actor EngineMutationGuard {
         mutationInFlight = true
         defer { mutationInFlight = false }
 
-        return try await runner.run(command, allowInteractive: allowInteractive)
+        return try await runner.run(
+            command, allowInteractive: allowInteractive, additionalEnvironment: additionalEnvironment
+        )
     }
 }
