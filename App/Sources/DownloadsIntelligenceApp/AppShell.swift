@@ -291,12 +291,8 @@ public struct AppShell: View {
             )
         case .reports:
             ReportsSectionView(bridge: bridge)
-        default:
-            EmptyStateView(
-                systemImageName: section.outlineSymbolName,
-                heading: section.title,
-                explanation: "\(section.title)'s real content isn't built yet — that's a future work package."
-            )
+        case .settings:
+            SettingsSectionView(bridge: bridge)
         }
     }
 }
